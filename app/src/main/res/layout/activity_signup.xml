@@ -77,7 +77,9 @@
                     android:inputType="textPersonName"
                     android:paddingStart="24dp"
                     android:textColorHint="#8A8888"
-                    android:textSize="19sp" />
+                    android:textSize="19sp"
+                    android:textColor="@color/white"
+                    />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -103,7 +105,9 @@
                     android:inputType="textPersonName"
                     android:paddingStart="24dp"
                     android:textColorHint="#8A8888"
-                    android:textSize="19sp" />
+                    android:textSize="19sp"
+                    android:textColor="@color/white"
+                    />
 
 <!--                <TextView-->
 <!--                    android:id="@+id/textView2"-->
