@@ -51,7 +51,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:text="Name"
+                    android:textColor="#ffffff"
+                    android:textSize="21sp" />
+
+                <EditText
+                    android:id="@+id/ed_name_sign"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="@drawable/edittext_background"
+                    android:ems="10"
+                    android:hint="Enter your Name ..."
+                    android:inputType="textPersonName"
+                    android:paddingStart="24dp"
+                    android:textColorHint="#8A8888"
+                    android:textColor="#ffffff"
+                    android:textSize="19sp" />
+
 
                 <TextView
                     android:id="@+id/textView4"
@@ -65,7 +93,7 @@
                     android:textSize="21sp" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName3"
+                    android:id="@+id/ed_email_sign"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="32dp"
@@ -78,7 +106,8 @@
                     android:paddingStart="24dp"
                     android:textColorHint="#8A8888"
                     android:textSize="19sp"
-                    android:textColor="@color/white"
+                    android:textColor="#ffffff"
+
                     />
 
                 <TextView
@@ -93,7 +122,7 @@
                     android:textSize="21sp" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName2"
+                    android:id="@+id/ed_pass_sign"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="32dp"
@@ -109,31 +138,7 @@
                     android:textColor="@color/white"
                     />
 
-<!--                <TextView-->
-<!--                    android:id="@+id/textView2"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="32dp"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:layout_marginEnd="32dp"-->
-<!--                    android:text="Re-Password"-->
-<!--                    android:textColor="#ffffff"-->
-<!--                    android:textSize="21sp" />-->
 
-<!--                <EditText-->
-<!--                    android:id="@+id/editTextTextPersonName"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="50dp"-->
-<!--                    android:layout_marginStart="32dp"-->
-<!--                    android:layout_marginTop="8dp"-->
-<!--                    android:layout_marginEnd="32dp"-->
-<!--                    android:background="@drawable/edittext_background"-->
-<!--                    android:ems="10"-->
-<!--                    android:hint="Enter your password again ..."-->
-<!--                    android:inputType="textPersonName"-->
-<!--                    android:paddingStart="24dp"-->
-<!--                    android:textColorHint="#8A8888"-->
-<!--                    android:textSize="19sp" />-->
 
                 <Button
                     android:id="@+id/btn_sign"
