@@ -1,66 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/city"
+    android:orientation="vertical"
+    android:background="@drawable/main_back2"
     android:fitsSystemWindows="true"
+    android:gravity="center"
     tools:context=".MainActivity" >
 
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/black_han_sans"
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="32dp"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        android:fontFamily="@font/black_han_sans"-->
 
-        android:text="Book \nExchange"
-        android:textColor="#ffffff"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--        android:text="Book \nExchange"-->
+<!--        android:textColor="#ffffff"-->
+<!--        android:textSize="50sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <Button
         android:id="@+id/button_log"
         style="@android:style/Widget.Button"
         android:layout_width="340dp"
         android:layout_height="55dp"
-        android:layout_marginTop="400dp"
-        android:fontFamily="@font/black_han_sans"
+        android:layout_marginTop="500dp"
+        android:fontFamily="@font/cagliostro"
         android:background="@drawable/button_background"
         android:text="Login"
         android:textColor="#ffffff"
         android:textStyle="bold"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        android:textSize="25sp"/>
+
 
     <Button
         android:id="@+id/button_sign"
         style="@android:style/Widget.Button"
         android:layout_width="340dp"
         android:layout_height="55dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/button_background"
+        android:fontFamily="@font/cagliostro"
         android:text="Sign Up"
-        android:fontFamily="@font/black_han_sans"
-        android:layout_marginTop="32dp"
         android:textColor="#ffffff"
         android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_log" />
+        android:textStyle="bold" />
 
 
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

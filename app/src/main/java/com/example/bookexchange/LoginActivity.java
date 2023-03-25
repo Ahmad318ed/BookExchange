@@ -48,8 +48,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String email=email_t.getText().toString();
-                String pass=password.getText().toString();
+                String email=email_t.getText().toString().trim();
+                String pass=password.getText().toString().trim();
 
                 if(!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
 

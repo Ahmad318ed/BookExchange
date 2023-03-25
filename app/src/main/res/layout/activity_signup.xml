@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="15dp"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/textView2"
@@ -73,6 +73,8 @@
                     android:layout_marginEnd="32dp"
                     android:background="@drawable/edittext_background"
                     android:ems="10"
+                    android:paddingEnd="20dp"
+
                     android:hint="Enter your Name ..."
                     android:inputType="textPersonName"
                     android:paddingStart="24dp"
@@ -101,8 +103,10 @@
                     android:layout_marginEnd="32dp"
                     android:background="@drawable/edittext_background"
                     android:ems="10"
+                    android:paddingEnd="20dp"
+
                     android:hint="Enter your Email..."
-                    android:inputType="textPersonName"
+                    android:inputType="textEmailAddress"
                     android:paddingStart="24dp"
                     android:textColorHint="#8A8888"
                     android:textSize="19sp"
@@ -130,9 +134,11 @@
                     android:layout_marginEnd="32dp"
                     android:background="@drawable/edittext_background"
                     android:ems="10"
+                    android:maxLength="10"
                     android:hint="Enter your Password..."
-                    android:inputType="textPersonName"
+                    android:inputType="numberPassword"
                     android:paddingStart="24dp"
+                    android:paddingEnd="20dp"
                     android:textColorHint="#8A8888"
                     android:textSize="19sp"
                     android:textColor="@color/white"
@@ -149,8 +155,8 @@
                     android:layout_marginTop="30dp"
                     android:layout_marginEnd="32dp"
                     android:background="@drawable/button_background"
-                    android:text="Sign up"
-                    android:fontFamily="@font/black_han_sans"
+                    android:text="Sign Up"
+                    android:fontFamily="@font/cagliostro"
                     android:textColor="#ffffff"
                     android:textSize="25sp"
                     android:textStyle="bold" />
