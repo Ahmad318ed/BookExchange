@@ -27,9 +27,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     CustomProgressDialog dialog;
     Button btn_sign;
-    EditText ed_name,ed_email,ed_pass;
-    private  FirebaseDatabase database;
-    private  DatabaseReference myRef ;
+    EditText ed_name, ed_email, ed_pass;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     public FirebaseAuth auth;
 
@@ -39,17 +39,16 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         //Inflate
-        ed_name=findViewById(R.id.ed_name_sign);
-        ed_email=findViewById(R.id.ed_email_sign);
-        ed_pass=findViewById(R.id.ed_pass_sign);
-        btn_sign=findViewById(R.id.btn_sign);
+        ed_name = findViewById(R.id.ed_name_sign);
+        ed_email = findViewById(R.id.ed_email_sign);
+        ed_pass = findViewById(R.id.ed_pass_sign);
+        btn_sign = findViewById(R.id.btn_sign);
 
 
-
-        auth=FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("user");
-        DAOUser daoUser=new DAOUser();
+        DAOUser daoUser = new DAOUser();
 
 
         //SignIn Button
@@ -62,8 +61,8 @@ public class SignUpActivity extends AppCompatActivity {
                 String name = ed_name.getText().toString().trim();
 
 
-                dialog = new CustomProgressDialog(SignUpActivity.this);
-//              dialog.show();
+//                dialog = new CustomProgressDialog(SignUpActivity.this);
+//                dialog.show();
 
 
                 if (email.isEmpty()) {
@@ -95,7 +94,7 @@ public class SignUpActivity extends AppCompatActivity {
                                             String password = pass;
                                             String email = auth.getCurrentUser().getEmail().toString();
 
-//                                        dialog.cancel();
+//                                            dialog.cancel();
 
                                             Toast.makeText(SignUpActivity.this, " Successfully Sign Up ", Toast.LENGTH_SHORT).show();
                                             startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
@@ -115,7 +114,7 @@ public class SignUpActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(@NonNull Exception e) {
 
-                                Toast.makeText(SignUpActivity.this, "Failed Sign in Because :  "+e.getMessage() , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpActivity.this, "Failed Sign in Because :  " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
 
                             }
@@ -127,12 +126,8 @@ public class SignUpActivity extends AppCompatActivity {
                 }
 
 
-
-
             }
         });
-
-
 
 
     }

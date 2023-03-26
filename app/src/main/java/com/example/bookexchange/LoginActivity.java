@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         password=findViewById(R.id.ed_pass_log);
         btn_login=findViewById(R.id.btn_log);
 
+        //Database Class : it contain all the methods that u want from real time data base .
         DAOUser daoUser=new DAOUser();
 
         btn_login.setOnClickListener(new View.OnClickListener() {
