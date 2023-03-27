@@ -51,9 +51,15 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("user");
-        DAOUser daoUser = new DAOUser();
+
+
+
+
+
+
+
+
+
 
 
         //SignIn Button

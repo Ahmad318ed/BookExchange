@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_login = findViewById(R.id.btn_log);
         tv_forget=findViewById(R.id.tv_forget);
 
+
         //Database Class : it contain all the methods that u want from real time data base .
         DAOUser daoUser = new DAOUser();
         //Dialog For loading time
@@ -159,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
 
 
         //Forget password Text
