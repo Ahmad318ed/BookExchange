@@ -1,17 +1,15 @@
 package com.example.bookexchange;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 
-import com.example.bookexchange.R;
+import com.example.bookexchange.fragments.PostsFragment;
+import com.example.bookexchange.fragments.RequestsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -22,9 +20,12 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
 
-
-
+        // * Inflate Components *
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+
+
+
 
         replaceFragment(new PostsFragment());
         bottomNavigationView.setBackground(null);
@@ -41,6 +42,8 @@ public class HomeActivity extends AppCompatActivity {
             }
             return true;
         });
+
+
     }
 
 

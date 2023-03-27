@@ -4,10 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,7 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SignUpActivity extends AppCompatActivity {
 
 
-    CustomProgressDialog dialog;
+    ProgressDialog dialog;
     Button btn_sign;
     EditText ed_name, ed_email, ed_pass;
     private FirebaseDatabase database;
@@ -61,8 +66,9 @@ public class SignUpActivity extends AppCompatActivity {
                 String name = ed_name.getText().toString().trim();
 
 
-//                dialog = new CustomProgressDialog(SignUpActivity.this);
-//                dialog.show();
+                dialog = new ProgressDialog(SignUpActivity.this);
+                dialog.setTitle("Loading");
+                dialog.setMessage("Please Wait...");
 
 
                 if (email.isEmpty()) {
@@ -76,6 +82,8 @@ public class SignUpActivity extends AppCompatActivity {
                         ed_pass.setError("Password can not be less than (6) Numbers !");
                     } else {
 
+                        dialog.show();
+
 
                         auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -83,21 +91,39 @@ public class SignUpActivity extends AppCompatActivity {
 
                                 if (task.isSuccessful()) {
 
-
                                     User user = new User(email, pass);
-
-                                    daoUser.add(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
 
-                                            String id = auth.getCurrentUser().getUid().toString();
-                                            String password = pass;
-                                            String email = auth.getCurrentUser().getEmail().toString();
+                                            if (task.isSuccessful()) {
 
-//                                            dialog.cancel();
+                                                Toast.makeText(SignUpActivity.this, "Successfully Registered \nPlease Verify your account before Login !", Toast.LENGTH_LONG).show();
+                                                ed_name.setText("");
+                                                ed_pass.setText("");
+                                                ed_name.setText("");
 
-                                            Toast.makeText(SignUpActivity.this, " Successfully Sign Up ", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                                                //Add the Verified user to database
+                                                daoUser.add(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                                        String id = auth.getCurrentUser().getUid().toString();
+                                                        String password = pass;
+                                                        String email = auth.getCurrentUser().getEmail().toString();
+
+                                                        dialog.cancel();
+
+                                                        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+
+                                                    }
+                                                });
+
+
+                                            } else {
+
+                                                Toast.makeText(SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
 
                                         }
                                     });
@@ -105,6 +131,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                 } else {
 
+                                    dialog.hide();
 
                                 }
 
@@ -113,6 +140,8 @@ public class SignUpActivity extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
+
+                                dialog.cancel();
 
                                 Toast.makeText(SignUpActivity.this, "Failed Sign in Because :  " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
@@ -131,4 +160,25 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     }
+
+
+    //Press on any place in screen to cancel the keyboard
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+
+        return super.dispatchTouchEvent(event);
+    }
+
 }
