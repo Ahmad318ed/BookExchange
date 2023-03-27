@@ -103,26 +103,13 @@ public class SignUpActivity extends AppCompatActivity {
                                                 ed_pass.setText("");
                                                 ed_name.setText("");
 
-                                                //Add the Verified user to database
-                                                daoUser.add(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-
-                                                        String id = auth.getCurrentUser().getUid().toString();
-                                                        String password = pass;
-                                                        String email = auth.getCurrentUser().getEmail().toString();
-
-                                                        dialog.cancel();
-
-                                                        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-
-                                                    }
-                                                });
+                                                startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
+                                                finish();
 
 
                                             } else {
 
-                                                Toast.makeText(SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                             }
 
                                         }
@@ -141,9 +128,9 @@ public class SignUpActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(@NonNull Exception e) {
 
-                                dialog.cancel();
+                                dialog.hide();
 
-                                Toast.makeText(SignUpActivity.this, "Failed Sign in Because :  " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpActivity.this, "Failed Sign in Because :  " + e.getMessage(), Toast.LENGTH_LONG).show();
 
 
                             }
