@@ -3,17 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Back_main"
-    tools:context=".fragments.RequestsFragment">
+    tools:context=".ui.fragments.RequestsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Requests"
-        android:textColor="@color/white"
-        android:fontFamily="@font/black_han_sans"
-        android:textSize="40sp"
-        android:layout_gravity="center"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_request"
+        android:layout_width="match_parent"
+        android:layout_height="650dp"
+        tools:listitem="@layout/request_item"/>
 
 </FrameLayout>

@@ -6,33 +6,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/main_background"
+    android:background="@color/Back_main"
     android:fitsSystemWindows="true"
     android:gravity="center"
-    tools:context=".MainActivity" >
+    tools:context=".ui.activites.MainActivity" >
 
 
-<!--    <TextView-->
-<!--        android:id="@+id/textView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="32dp"-->
-<!--        android:layout_marginTop="32dp"-->
-<!--        android:fontFamily="@font/black_han_sans"-->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="33dp"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/black_han_sans"
+        android:text="Book \nExchange"
+        android:textColor="#ffffff"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        />
 
-<!--        android:text="Book \nExchange"-->
-<!--        android:textColor="#ffffff"-->
-<!--        android:textSize="50sp"-->
-<!--        android:textStyle="bold"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_log"
         style="@android:style/Widget.Button"
         android:layout_width="340dp"
         android:layout_height="55dp"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="400dp"
         android:fontFamily="@font/cagliostro"
         android:background="@drawable/button_background"
         android:text="Login"

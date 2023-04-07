@@ -1,4 +1,4 @@
-package com.example.bookexchange;
+package com.example.bookexchange.ui.activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookexchange.R;
 import com.example.bookexchange.dao.DAOUser;
 import com.example.bookexchange.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
