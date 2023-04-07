@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.bookexchange.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.ktx.Firebase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,6 +21,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser()!=null){
+            Intent intent = new Intent(this,HomeActivity.class);
+            startActivity(intent);
+        }
         button_login=findViewById(R.id.button_log);
         button_sign=findViewById(R.id.button_sign);
 
