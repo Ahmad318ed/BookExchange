@@ -9,4 +9,15 @@
     <color name="white">#FFFFFFFF</color>
     <color name="Main">#b739ff</color>
     <color name="Back_main">#111E2F</color>
+
+    <color name="fog_light">#e4eaf2</color>
+    <color name="fog_2">#c7cfd9</color>
+    <color name="fog_3">#8f99a6</color>
+    <color name="fog_4">#626973</color>
+    <color name="fog_dark">#353940</color>
+
+
+    <color name="orange_light">#ff6d53</color>
+    <color name="orange_dark">#e84a61</color>
+
 </resources>

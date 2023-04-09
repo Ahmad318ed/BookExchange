@@ -2,16 +2,34 @@
     <!-- Base application theme. -->
     <style name="Theme.BookExchange" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_700</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+
+
+        <!-- Theme.MaterialComponents.DayNight.NoActionBar -->
+
+
+        <!--   Color for the app bar and other primary UI elements. -->
+        <item name="colorPrimary">@color/fog_4</item>
+
+        <!--   A darker variant of the primary color, used for
+           the status bar (on Android 5.0+) and contextual app bars. -->
+        <item name="colorPrimaryVariant">@color/fog_dark</item>
+
+        <!--   a secondary color for controls like checkboxes and text fields. -->
+
+        <item name="colorOnPrimary">@color/fog_3</item>
+
+
+
+
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/purple_700</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/fog_light</item>
         <!-- Customize your theme here. -->
+
+        <item name="android:windowLightStatusBar" >true</item>
     </style>
 
 
@@ -19,4 +37,17 @@
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
+    
+    <style name="MyEditText">
+        <item name="android:fontFamily">@font/hellix_regular</item>
+        <item name="android:textColorHint">@color/fog_4</item>
+        <item name="android:textColor">@color/fog_dark</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:ems">13</item>
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingStart">24dp</item>
+
+    </style>
+
 </resources>

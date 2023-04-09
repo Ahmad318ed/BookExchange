@@ -31,7 +31,7 @@
         android:layout_width="340dp"
         android:layout_height="55dp"
         android:layout_marginTop="400dp"
-        android:fontFamily="@font/cagliostro"
+
         android:background="@drawable/button_background"
         android:text="Login"
         android:textColor="#ffffff"
@@ -46,7 +46,7 @@
         android:layout_height="55dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_background"
-        android:fontFamily="@font/cagliostro"
+
         android:text="Sign Up"
         android:textColor="#ffffff"
         android:textSize="25sp"

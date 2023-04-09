@@ -2,6 +2,7 @@ package com.example.bookexchange.ui.activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -29,6 +30,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -46,6 +48,26 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference myRef;
 
     public FirebaseAuth auth;
+
+    
+    //To check if the user already login , if that the case, the home page open direct
+    // but I comment it cause we don't have logout button yet, which is easy to accomplish.
+    
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        FirebaseUser currentUser = auth.getCurrentUser();
+//        if(currentUser != null){
+//            Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+//            finish();
+//            startActivity(intent);
+//        }
+//    }
+
+
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,4 +271,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    public void goToSignUpScreen(View view) {
+        Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
+        startActivity(intent);
+    }
 }
