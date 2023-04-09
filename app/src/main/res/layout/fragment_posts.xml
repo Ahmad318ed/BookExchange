@@ -7,35 +7,28 @@
     tools:context=".ui.fragments.PostsFragment">
 
 
+
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
+
         <!-- TODO: Update blank fragment layout -->
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:inputType="text"
-            android:background="@drawable/search_back"
-            app:queryHint="Search for Books .."
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:iconifiedByDefault="false"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_post"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="5dp"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/post_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

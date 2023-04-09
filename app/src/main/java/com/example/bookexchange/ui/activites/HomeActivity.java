@@ -1,17 +1,27 @@
 package com.example.bookexchange.ui.activites;
 
+import static com.example.bookexchange.ui.fragments.PostsFragment.myList;
+import static com.example.bookexchange.ui.fragments.PostsFragment.myadapter;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,31 +31,37 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.bookexchange.R;
+import com.example.bookexchange.models.Post;
 import com.example.bookexchange.ui.fragments.PostsFragment;
 import com.example.bookexchange.ui.fragments.RequestsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
 
+        Toolbar toolbar=findViewById(R.id.toolbar_custom);
+        setSupportActionBar(toolbar);
+
+
         // * Inflate Components *
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         fab = findViewById(R.id.fab);
-
-
-
-
 
 
         replaceFragment(new PostsFragment());
@@ -76,7 +92,6 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-
     }
 
 
@@ -103,7 +118,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                Toast.makeText(HomeActivity.this,"Create a Post is clicked",Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "Create a Post is clicked", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -113,7 +128,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                Toast.makeText(HomeActivity.this,"Create a Request is Clicked",Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "Create a Request is Clicked", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -128,7 +143,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
@@ -136,6 +151,29 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    private void filtertext(String text) {
+
+        List<Post> filteredList = new ArrayList<>();
+
+        for (Post post : myList) {
+
+            if (post.getBookName().toLowerCase().contains(text.toLowerCase())) {
+
+                filteredList.add(post);
+
+            }
+
+            if (filteredList.isEmpty()) {
+
+
+            } else {
+
+                myadapter.setfilteredlist(filteredList);
+
+            }
+
+        }
+    }
 
 
     //Press on any place in screen to cancel the keyboard
@@ -156,5 +194,42 @@ public class HomeActivity extends AppCompatActivity {
 
         return super.dispatchTouchEvent(event);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+         getMenuInflater().inflate(R.menu.menu,menu);
+
+
+        MenuItem menuItem=menu.findItem(R.id.action_search);
+
+        SearchView searchView=(SearchView)menuItem.getActionView();
+        searchView.setQueryHint("Here..");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filtertext(newText);
+
+                return true;
+            }
+        });
+
+        return true;
     }
+
+
+
+
+
+
+
+
+}
 
