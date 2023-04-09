@@ -16,6 +16,7 @@
         android:layout_marginTop="7dp"
         android:layout_marginBottom="8dp"
         android:text="Forget Password"
+        android:fontFamily="@font/hellix_regular"
         android:textSize="22sp"
         android:textColor="@color/white"
         android:textAlignment="center"
@@ -36,6 +37,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="Email"
+        android:fontFamily="@font/hellix_regular"
         android:textColor="#ffffff"
         android:textSize="21sp" />
 
@@ -43,12 +45,14 @@
         android:id="@+id/email_forget"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        style="@style/MyEditText"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/edittext_background"
         android:ems="10"
+        android:fontFamily="@font/hellix_regular"
         android:hint="Enter your Email"
         android:inputType="textEmailAddress"
         android:paddingStart="24dp"
@@ -61,20 +65,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-    <Button
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/reset_btn"
-        style="@android:style/Widget.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:fontFamily="@font/hellix_medium"
         android:layout_weight="1"
         android:layout_margin="15dp"
-        android:background="@drawable/button_background"
-        android:fontFamily="@font/cagliostro"
+        android:background="@drawable/gradient_button"
         android:paddingEnd="20dp"
         android:text="Reset"
         android:textColor="#ffffff"
         android:textSize="22sp"
-        android:textStyle="bold" />
+       />
 
         <Button
             android:id="@+id/cancel_btn"
@@ -84,7 +90,7 @@
             android:layout_margin="15dp"
             android:layout_weight="1"
             android:background="@drawable/button_background"
-            android:fontFamily="@font/cagliostro"
+            android:fontFamily="@font/hellix_regular"
             android:paddingEnd="20dp"
             android:text="Cancel"
             android:textColor="#ffffff"
