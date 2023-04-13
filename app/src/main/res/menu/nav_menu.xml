@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+<group  >
+
+    <item
+        android:id="@+id/nav_my_profile"
+        android:title="@string/my_profile"
+        android:icon="@drawable/ic_outline_person"/>
+
+    <item
+        android:id="@+id/nav_my_posts"
+        android:title="@string/my_posts"
+        android:icon="@drawable/ic_articale"/>
+
+    <item
+        android:id="@+id/nav_my_requests"
+        android:title="@string/my_requests"
+        android:icon="@drawable/ic_article2"/>
+
+    <item
+        android:id="@+id/nav_my_editable_profile"
+        android:title="@string/edit_profile"
+        android:icon="@drawable/ic_edit"/>
+
+
+    <item
+        android:id="@+id/nav_logout"
+        android:title="@string/logout"
+        android:icon="@drawable/ic_logout"/>
+
+</group>
+
+
+</menu>

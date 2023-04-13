@@ -148,13 +148,13 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="7dp">
 
                     <com.google.android.material.divider.MaterialDivider
                         android:id="@+id/materialDivider"
                         android:layout_width="270dp"
                         android:layout_height="1dp"
-                        app:dividerColor="@color/orange_light"
+                        app:dividerColor="@color/fog_3"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

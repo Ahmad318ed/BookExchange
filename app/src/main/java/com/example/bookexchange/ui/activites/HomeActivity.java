@@ -3,10 +3,14 @@ package com.example.bookexchange.ui.activites;
 import static com.example.bookexchange.ui.fragments.PostsFragment.myList;
 import static com.example.bookexchange.ui.fragments.PostsFragment.myadapter;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -38,6 +43,8 @@ import com.example.bookexchange.ui.fragments.PostsFragment;
 import com.example.bookexchange.ui.fragments.RequestsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +53,10 @@ public class HomeActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
+    Toolbar toolbar;
 
+    private DrawerLayout drawerLayout;
+    NavigationView nav_view;
 
 
     @Override
@@ -55,8 +65,72 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
 
-        Toolbar toolbar=findViewById(R.id.toolbar_custom);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        nav_view = findViewById(R.id.nav_view);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+
+        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.nav_my_profile:
+                        Toast.makeText(HomeActivity.this, "Profile", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_my_posts:
+                        Toast.makeText(HomeActivity.this, "My Posts", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_my_requests:
+                        Toast.makeText(HomeActivity.this, "My Requests", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_my_editable_profile:
+                        Toast.makeText(HomeActivity.this, "Edit Profile", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_logout:
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        finish();
+                        startActivity(intent);
+
+                        break;
+                    default:
+                        break;
+                }
+
+
+//                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
+
+
+
+
+
+        //////////////////////////////////////////////////////
+
+
+
+
+
+        toolbar = findViewById(R.id.toolbar_custom);
         setSupportActionBar(toolbar);
+
+        //add navigation button and open it
+        toolbar.setNavigationIcon(R.drawable.ic_navigation);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
 
 
         // * Inflate Components *
@@ -198,12 +272,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-         getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
 
 
-        MenuItem menuItem=menu.findItem(R.id.action_search);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
 
-        SearchView searchView=(SearchView)menuItem.getActionView();
+        SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Here..");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -223,12 +297,6 @@ public class HomeActivity extends AppCompatActivity {
 
         return true;
     }
-
-
-
-
-
-
 
 
 }

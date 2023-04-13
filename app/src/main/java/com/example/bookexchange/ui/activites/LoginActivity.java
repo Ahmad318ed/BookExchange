@@ -54,17 +54,17 @@ public class LoginActivity extends AppCompatActivity {
     // but I comment it cause we don't have logout button yet, which is easy to accomplish.
     
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = auth.getCurrentUser();
-//        if(currentUser != null){
-//            Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-//            finish();
-//            startActivity(intent);
-//        }
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if(currentUser != null){
+            Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+            finish();
+            startActivity(intent);
+        }
+    }
 
 
     
