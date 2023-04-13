@@ -2,15 +2,15 @@ package com.example.bookexchange.models;
 
 public class Post {
 
-    String bookName,bookEdition,bookCollege,bookPrice,bookSeller;
+    String bookName,bookSeller,bookCollege,bookPrice,person_num;
     int img;
 
     public Post() {
     }
 
-    public Post(String bookName, String bookEdition,int img,String bookCollege,String bookPrice,String bookSeller) {
+    public Post(String bookName, String bookSeller,int img,String bookCollege,String bookPrice,String person_num) {
         this.bookName = bookName;
-        this.bookEdition = bookEdition;
+        this.person_num = person_num;
         this.img=img;
         this.bookCollege=bookCollege;
         this.bookPrice=bookPrice;
@@ -57,13 +57,11 @@ public class Post {
         this.bookName = bookName;
     }
 
-    public String getBookEdition() {
-        return bookEdition;
+    public String getPerson_num() {
+        return person_num;
     }
 
-    public void setBookEdition(String bookEdition) {
-        this.bookEdition = bookEdition;
+    public void setPerson_num(String person_num) {
+        this.person_num = person_num;
     }
-
-
 }

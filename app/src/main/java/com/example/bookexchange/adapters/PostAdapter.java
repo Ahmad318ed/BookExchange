@@ -41,7 +41,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.post_item,parent,false);
+        View view = layoutInflater.inflate(R.layout.post_item2,parent,false);
         PostViewHolder viewHolder = new PostViewHolder(view);
 
         return viewHolder;
@@ -55,7 +55,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         Log.i(TAG, "onBindViewHolder: "+myPostList);
 
         holder.tv_name.setText(myPostList.getBookName());
-        holder.tv_edition.setText(myPostList.getBookEdition());
+        holder.tv_presons_num.setText(myPostList.getPerson_num());
         holder.img.setImageResource(myPostList.getImg());
         holder.tv_college.setText(myPostList.getBookCollege());
         holder.tv_price.setText(myPostList.getBookPrice());
@@ -74,18 +74,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public class PostViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tv_name,tv_edition,tv_college,tv_price,tv_seller;
+        TextView tv_name,tv_college,tv_price,tv_seller,tv_presons_num;
         ImageView img;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tv_name=itemView.findViewById(R.id.book_name_post);
-            tv_edition=itemView.findViewById(R.id.textEdition_post);
-            img=itemView.findViewById(R.id.img_book_post);
-            tv_college=itemView.findViewById(R.id.textCollege_post);
-            tv_price=itemView.findViewById(R.id.textSellPrice_post);
-            tv_seller=itemView.findViewById(R.id.textUsername_post);
+            tv_name=itemView.findViewById(R.id.book_name);
+            img=itemView.findViewById(R.id.book_img);
+            tv_college=itemView.findViewById(R.id.tv_book_college);
+            tv_price=itemView.findViewById(R.id.tv_price);
+            tv_seller=itemView.findViewById(R.id.book_seller);
+            tv_presons_num=itemView.findViewById(R.id.tv_people_requests_num);
 
 
 

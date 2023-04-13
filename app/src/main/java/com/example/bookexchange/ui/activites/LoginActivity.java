@@ -2,7 +2,6 @@ package com.example.bookexchange.ui.activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -30,7 +29,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -78,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         email_t = findViewById(R.id.ed_email_log);
         password = findViewById(R.id.ed_pass_log);
-        btn_login = findViewById(R.id.btn_log);
+        btn_login = findViewById(R.id.btn_take);
         tv_forget=findViewById(R.id.tv_forget);
 
 

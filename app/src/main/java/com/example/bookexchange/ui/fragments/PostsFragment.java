@@ -45,19 +45,15 @@ public class PostsFragment extends Fragment {
         View view = inflater.from(getContext()).inflate(R.layout.fragment_posts, container, false);
 
 
-        Post post1 = new Post();
-        Post post2 = new Post();
-        Post post3 = new Post();
-        Post post4 = new Post();
-        Post post5 = new Post();
-        Post post6 = new Post();
+        Post post1 = new Post("Data Structure", "Abdelhadi Alothemen", R.drawable.data_structure, "تكنلوجيا المعلومات", "1.5", "6");
+        Post post2 = new Post("ENERGY MANUAL PRICE", "Mosa Jaradat", R.drawable.en, "Business", "2.0", "3");
+        Post post3 = new Post("12 Rules for Life An Antidote to Chaos", "Ahmad Esam", R.drawable.rul, "شريعه واصول الدين", "asd", "asd");
 
 
         myList.add(post1);
         myList.add(post2);
         myList.add(post3);
-        myList.add(post4);
-        myList.add(post5);
+
 
 
         recyclerView = view.findViewById(R.id.rv_post);
