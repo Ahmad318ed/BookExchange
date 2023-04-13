@@ -21,6 +21,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     Context context;
     List<Post> myPostArray;
 
+    public PostAdapter() {
+    }
+
     public PostAdapter(Context context, List<Post> myPostArray) {
 
         this.context=context;
