@@ -74,6 +74,7 @@
                     android:layout_height="50dp"
                     style="@style/MyEditText"
                     android:hint="Email"
+                    android:paddingEnd="20dp"
                     android:inputType="textEmailAddress"
                     />
 
@@ -84,6 +85,7 @@
                     android:layout_height="50dp"
                     style="@style/MyEditText"
                     android:layout_marginTop="10dp"
+                    android:paddingEnd="20dp"
                     android:hint="Password"
                     android:inputType="textPassword"
                    />
@@ -130,14 +132,14 @@
 <!--                </LinearLayout>-->
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_log"
+                    android:id="@+id/btn_take"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:background="@drawable/gradient_button"
                     android:layout_marginTop="30dp"
                     android:ems="13"
                     android:layout_gravity="center"
-                    android:text="Login"
+                    android:text="@string/login"
                     android:textSize="19sp"
                     android:textAlignment="center"
                     android:textAllCaps="false"

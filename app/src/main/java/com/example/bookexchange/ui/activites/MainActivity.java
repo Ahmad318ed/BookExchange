@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this,HomeActivity.class);
             startActivity(intent);
         }
+
+
+
         button_login=findViewById(R.id.button_log);
         button_sign=findViewById(R.id.button_sign);
 
