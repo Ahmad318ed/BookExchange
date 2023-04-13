@@ -74,7 +74,8 @@
             android:layout_width="18dp"
             android:layout_height="21dp"
             android:layout_marginEnd="2dp"
-           android:src="@drawable/presons" />
+           android:src="@drawable/presons"
+            app:tint="@color/gray" />
 
         <TextView
             android:id="@+id/tv_people_requests_num"
@@ -130,7 +131,8 @@
             android:layout_width="18dp"
             android:layout_height="21dp"
             android:layout_marginEnd="2dp"
-            android:src="@drawable/dollar_price" />
+            android:src="@drawable/attach_money"
+            app:tint="@color/gray" />
 
         <TextView
             android:id="@+id/tv_price"

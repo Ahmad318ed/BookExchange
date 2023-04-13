@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -47,25 +48,26 @@ public class LoginActivity extends AppCompatActivity {
 
     public FirebaseAuth auth;
 
-    
+
     //To check if the user already login , if that the case, the home page open direct
     // but I comment it cause we don't have logout button yet, which is easy to accomplish.
-    
+
 
     @Override
     public void onStart() {
         super.onStart();
+
+
         // Check if user is signed in (non-null) and update UI accordingly.
+
         FirebaseUser currentUser = auth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+        if (currentUser != null) {
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             finish();
             startActivity(intent);
         }
     }
 
-
-    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +79,13 @@ public class LoginActivity extends AppCompatActivity {
         email_t = findViewById(R.id.ed_email_log);
         password = findViewById(R.id.ed_pass_log);
         btn_login = findViewById(R.id.btn_take);
-        tv_forget=findViewById(R.id.tv_forget);
+        tv_forget = findViewById(R.id.tv_forget);
 
-
+//        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+//        if (firebaseAuth.getCurrentUser()!=null){
+//            Intent intent = new Intent(this,HomeActivity.class);
+//            startActivity(intent);
+//        }
         //Database Class : it contain all the methods that u want from real time data base .
         DAOUser daoUser = new DAOUser();
         //Dialog For loading time
@@ -123,7 +129,6 @@ public class LoginActivity extends AppCompatActivity {
                                                 String id = auth.getCurrentUser().getUid().toString();
                                                 String password = pass;
                                                 String email = auth.getCurrentUser().getEmail().toString();
-
 
 
                                             }
@@ -183,7 +188,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
         //Forget password Text
         tv_forget.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onClick(View view) {
 
                         String userEmail = emailBox.getText().toString();
-                        if (TextUtils.isEmpty(userEmail) && !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()){
+                        if (TextUtils.isEmpty(userEmail) && !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
                             Toast.makeText(LoginActivity.this, "Enter your registered email !", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -208,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
                         auth.sendPasswordResetEmail(userEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
+                                if (task.isSuccessful()) {
                                     Toast.makeText(LoginActivity.this, "Check your email", Toast.LENGTH_SHORT).show();
                                     dialog.dismiss();
                                 } else {
@@ -228,8 +232,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
 
-
-                if (dialog.getWindow() != null){
+                if (dialog.getWindow() != null) {
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                 }
                 dialog.show();
@@ -237,16 +240,10 @@ public class LoginActivity extends AppCompatActivity {
             }
 
 
-
-
         });
 
 
-
     }
-
-
-
 
 
     //Press on any place in screen to cancel the keyboard
@@ -270,7 +267,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void goToSignUpScreen(View view) {
-        Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
+        Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(intent);
     }
 }

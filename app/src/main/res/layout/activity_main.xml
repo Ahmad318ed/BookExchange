@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/Back_main"
+    android:fitsSystemWindows="true"
+    android:gravity="center"
+    tools:context=".ui.activites.MainActivity" >
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="33dp"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/black_han_sans"
+        android:text="Book \nExchange"
+        android:textColor="#ffffff"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_log"
+        style="@android:style/Widget.Button"
+        android:layout_width="340dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="400dp"
+        android:fontFamily="@font/cagliostro"
+        android:background="@drawable/button_background"
+        android:text="Login"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:textSize="25sp"/>
+
+
+    <Button
+        android:id="@+id/button_sign"
+        style="@android:style/Widget.Button"
+        android:layout_width="340dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:fontFamily="@font/cagliostro"
+        android:text="Sign Up"
+        android:textColor="#ffffff"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+
+
+
+
+</LinearLayout>
