@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="login">Login</string>
+    <string name="app_name">Book Exchange</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_profile">My Profile</string>
+    <string name="logout">Logout</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="my_requests">My requests</string>
+    <string name="my_posts">My posts</string>
+    <string name="navigation_drawer_open">oper</string>
+    <string name="navigation_drawer_close">close</string>
 </resources>

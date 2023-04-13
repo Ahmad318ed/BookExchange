@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="15dp"
     android:orientation="vertical"
-    android:background="@color/Back_main"
+    android:background="@color/fog_dark"
     android:padding="10dp"
     android:gravity="center">
 
@@ -64,38 +64,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="horizontal">
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/reset_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:fontFamily="@font/hellix_medium"
-        android:layout_weight="1"
-        android:layout_margin="15dp"
-        android:background="@drawable/gradient_button"
-        android:paddingEnd="20dp"
-        android:text="Reset"
-        android:textColor="#ffffff"
-        android:textSize="22sp"
-       />
 
         <Button
             android:id="@+id/cancel_btn"
             style="@android:style/Widget.Button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:layout_weight="1"
             android:background="@drawable/button_background"
-            android:fontFamily="@font/hellix_regular"
-            android:paddingEnd="20dp"
+            android:fontFamily="@font/hellix_medium"
             android:text="Cancel"
-            android:textColor="#ffffff"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/reset_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="6"
+        android:textAllCaps="false"
+        android:layout_margin="15dp"
+        style="@style/nav_style"
+        android:background="@drawable/gradient_button"
+        android:text="Reset"
+        android:textColor="@color/white"
+        android:fontFamily="@font/hellix_medium"
+        android:textSize="19sp"
+       />
+
+
 
 </LinearLayout>
 
