@@ -52,8 +52,10 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    FloatingActionButton fab;
+   public static FloatingActionButton fab;
     Toolbar toolbar;
+
+
 
     private DrawerLayout drawerLayout;
     NavigationView nav_view;
@@ -120,6 +122,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
+        fab=findViewById(R.id.fab);
         toolbar = findViewById(R.id.toolbar_custom);
         setSupportActionBar(toolbar);
 

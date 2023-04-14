@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:layout_above="@id/bottomNavigationView"
             android:layout_marginTop="?attr/actionBarSize"
-            android:layout_marginBottom="?attr/actionBarSize" />
+             />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
@@ -34,6 +34,7 @@
             android:layout_gravity="bottom"
             app:fabCradleMargin="10dp"
             app:fabCradleRoundedCornerRadius="20dp"
+            app:hideOnScroll="true"
             app:fabCradleVerticalOffset="10dp"
             >
 

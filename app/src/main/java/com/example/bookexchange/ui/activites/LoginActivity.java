@@ -57,15 +57,15 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-
         // Check if user is signed in (non-null) and update UI accordingly.
 
-        FirebaseUser currentUser = auth.getCurrentUser();
-        if (currentUser != null) {
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            finish();
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser()!=null){
+            Intent intent = new Intent(this,HomeActivity.class);
             startActivity(intent);
         }
+
     }
 
 
@@ -75,17 +75,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
+
         auth = FirebaseAuth.getInstance();
         email_t = findViewById(R.id.ed_email_log);
         password = findViewById(R.id.ed_pass_log);
         btn_login = findViewById(R.id.btn_take);
         tv_forget = findViewById(R.id.tv_forget);
 
-//        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-//        if (firebaseAuth.getCurrentUser()!=null){
-//            Intent intent = new Intent(this,HomeActivity.class);
-//            startActivity(intent);
-//        }
+//
         //Database Class : it contain all the methods that u want from real time data base .
         DAOUser daoUser = new DAOUser();
         //Dialog For loading time

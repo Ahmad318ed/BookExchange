@@ -106,7 +106,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                 Toast.makeText(SignUpActivity.this, "Successfully Registered \nPlease Verify your account before Login !", Toast.LENGTH_LONG).show();
                                                 ed_name.setText("");
                                                 ed_pass.setText("");
-                                                ed_name.setText("");
+                                                ed_email.setText("");
 
                                                 startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                                                 finish();

@@ -2,16 +2,16 @@ package com.example.bookexchange.models;
 
 public class Request {
 
-    String bookName,bookEdition,bookCollege,bookPrice,bookSeller;
+    String bookName,bookSeller,bookCollege,bookPrice,person_num;
     int img;
 
     public Request() {
     }
 
-    public Request(String bookName, String bookEdition,int img,String bookCollege,String bookPrice,String bookSeller) {
+    public Request(String bookName, String bookSeller,int img,String bookCollege,String bookPrice,String person_num) {
         this.bookName = bookName;
-        this.bookEdition = bookEdition;
-        this.img = img;
+        this.person_num = person_num;
+        this.img=img;
         this.bookCollege=bookCollege;
         this.bookPrice=bookPrice;
         this.bookSeller=bookSeller;
@@ -50,12 +50,12 @@ public class Request {
         this.bookName = bookName;
     }
 
-    public String getBookEdition() {
-        return bookEdition;
+    public String getPerson_num() {
+        return person_num;
     }
 
-    public void setBookEdition(String bookEdition) {
-        this.bookEdition = bookEdition;
+    public void setPerson_num(String person_num) {
+        this.person_num = person_num;
     }
 
     public int getImg() {

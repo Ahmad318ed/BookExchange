@@ -44,12 +44,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         final Request myRequestList = myRequestArray.get(position);
 
         holder.tv_name.setText(myRequestList.getBookName());
-        holder.tv_edition.setText(myRequestList.getBookEdition());
+        holder.tv_presons_num.setText(myRequestList.getPerson_num());
         holder.img.setImageResource(myRequestList.getImg());
         holder.tv_college.setText(myRequestList.getBookCollege());
         holder.tv_price.setText(myRequestList.getBookPrice());
         holder.tv_seller.setText(myRequestList.getBookSeller());
-
 
 
 
@@ -66,20 +65,18 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
     public class RequestViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tv_name,tv_edition,tv_seller,tv_college,tv_price;
+        TextView tv_name,tv_college,tv_price,tv_seller,tv_presons_num;
         ImageView img;
 
         public RequestViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tv_name=itemView.findViewById(R.id.textName_request);
-            tv_edition=itemView.findViewById(R.id.textEdition_request);
-            img=itemView.findViewById(R.id.img_book);
-
-            tv_price=itemView.findViewById(R.id.textSellPrice_request);
-            tv_college=itemView.findViewById(R.id.textCollege_request);
-            tv_seller=itemView.findViewById(R.id.textUsername_request);
-
+            tv_name=itemView.findViewById(R.id.book_name_request);
+            img=itemView.findViewById(R.id.book_img_request);
+            tv_college=itemView.findViewById(R.id.tv_book_college_request);
+            tv_price=itemView.findViewById(R.id.tv_price_request_request);
+            tv_seller=itemView.findViewById(R.id.book_seller_request);
+            tv_presons_num=itemView.findViewById(R.id.tv_people_requests_num_request);
 
         }
 

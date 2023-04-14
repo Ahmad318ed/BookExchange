@@ -26,6 +26,8 @@ import com.example.bookexchange.adapters.PostAdapter;
 import com.example.bookexchange.R;
 import com.example.bookexchange.models.Post;
 import com.example.bookexchange.models.Request;
+import com.example.bookexchange.ui.activites.HomeActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,21 +41,19 @@ public class PostsFragment extends Fragment {
     public static List<Post> myList = new ArrayList<>();
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.from(getContext()).inflate(R.layout.fragment_posts, container, false);
 
 
-        Post post1 = new Post("Data Structure", "Abdelhadi Alothemen", R.drawable.data_structure, "تكنلوجيا المعلومات", "1.5", "6");
-        Post post2 = new Post("ENERGY MANUAL PRICE", "Mosa Jaradat", R.drawable.en, "Business", "2.0", "3");
-        Post post3 = new Post("12 Rules for Life An Antidote to Chaos", "Ahmad Esam", R.drawable.rul, "شريعه واصول الدين", "asd", "asd");
+        Post post1 = new Post("Data Structure", "Abdelhadi Alothemen", R.drawable.book_sized, "كلية الفقه الحنفي", "1.5", "6");
+        Post post2 = new Post("ENERGY MANUAL PRICE", "Mosa Jaradat", R.drawable.en, "كلية المال والاعمال", "2.0", "3");
+        Post post3 = new Post("Software Testing", "Ahmad Esam", R.drawable.elonmask, "كلية تكنلوجيا المعلومات", "1.5", "2");
 
 
         myList.add(post1);
         myList.add(post2);
         myList.add(post3);
-
 
 
         recyclerView = view.findViewById(R.id.rv_post);
@@ -63,6 +63,25 @@ public class PostsFragment extends Fragment {
         recyclerView.setAdapter(myadapter);
         myadapter.notifyDataSetChanged();
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    HomeActivity.fab.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 1 || dy < 1 && HomeActivity.fab.isShown()) {
+                    HomeActivity.fab.hide();
+                }
+
+
+            }
+        });
 
         return view;
     }
