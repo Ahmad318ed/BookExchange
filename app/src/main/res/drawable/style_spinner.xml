@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+
+        <layer-list>
+
+            <item>
+
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/fog_light" />
+                    <corners android:radius="10dp" />
+                    <padding android:right="10dp" />
+                </shape>
+
+
+            </item>
+
+            <item android:drawable="@drawable/baseline_arrow_drop_down_circle_24"
+                android:gravity="center|end">
+
+
+            </item>
+
+
+        </layer-list>
+
+
+    </item>
+</selector>

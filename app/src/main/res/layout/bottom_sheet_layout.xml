@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dialog"
-    android:backgroundTint="@color/Back_main">
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/remove"
         android:layout_gravity="center|top"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/remove" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,95 +21,95 @@
             android:id="@+id/createText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="viewStart"
-            android:text="Create"
-            android:padding="8dp"
-            android:textColor="@color/white"
             android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:text="Create"
+            android:textAlignment="viewStart"
+            android:textColor="@color/white"
             android:textSize="25dp" />
 
         <ImageView
+            android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_clear_24"
             android:layout_marginLeft="250dp"
             android:layout_marginTop="8dp"
-            android:id="@+id/cancelButton"/>
+            android:src="@drawable/baseline_clear_24" />
 
     </LinearLayout>
 
 
     <LinearLayout
         android:id="@+id/createPost"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:orientation="horizontal"
         android:padding="10dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/add"/>
+            android:src="@drawable/add" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
             android:text="Create a Post"
             android:textColor="@color/white"
-            android:layout_marginLeft="30dp"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/CreateRequest"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="10dp">
 
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/add"/>
+            android:src="@drawable/add" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
             android:text="Create a request"
             android:textColor="@color/white"
-            android:layout_marginLeft="30dp"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
     </LinearLayout>
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/layoutLive"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:paddingLeft="10dp"-->
-<!--        android:paddingRight="10dp"-->
-<!--        android:paddingTop="10dp"-->
-<!--        android:paddingBottom="30dp">-->
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/layoutLive"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:paddingLeft="10dp"-->
+    <!--        android:paddingRight="10dp"-->
+    <!--        android:paddingTop="10dp"-->
+    <!--        android:paddingBottom="30dp">-->
 
 
-<!--        <ImageView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/add"/>-->
+    <!--        <ImageView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:src="@drawable/add"/>-->
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Go live"-->
-<!--            android:textColor="@color/Main"-->
-<!--            android:layout_marginLeft="30dp"-->
-<!--            android:textSize="16sp"/>-->
+    <!--        <TextView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="Go live"-->
+    <!--            android:textColor="@color/Main"-->
+    <!--            android:layout_marginLeft="30dp"-->
+    <!--            android:textSize="16sp"/>-->
 
-<!--    </LinearLayout>-->
+    <!--    </LinearLayout>-->
 
 </LinearLayout>

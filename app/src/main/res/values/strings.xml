@@ -10,4 +10,5 @@
     <string name="my_posts">My posts</string>
     <string name="navigation_drawer_open">oper</string>
     <string name="navigation_drawer_close">close</string>
+    <string name="submit">Submit</string>
 </resources>

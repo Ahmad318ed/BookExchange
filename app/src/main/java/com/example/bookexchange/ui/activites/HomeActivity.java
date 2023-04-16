@@ -195,7 +195,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                Toast.makeText(HomeActivity.this, "Create a Post is clicked", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(),CreatePostActivity.class ));
 
             }
         });
