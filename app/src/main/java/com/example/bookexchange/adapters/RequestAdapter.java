@@ -44,7 +44,6 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         final Request myRequestList = myRequestArray.get(position);
 
         holder.tv_name.setText(myRequestList.getBookName());
-        holder.tv_presons_num.setText(myRequestList.getPerson_num());
         holder.img.setImageResource(myRequestList.getImg());
         holder.tv_college.setText(myRequestList.getBookCollege());
         holder.tv_price.setText(myRequestList.getBookPrice());
@@ -65,7 +64,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
     public class RequestViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tv_name,tv_college,tv_price,tv_seller,tv_presons_num;
+        TextView tv_name,tv_college,tv_price,tv_seller;
         ImageView img;
 
         public RequestViewHolder(@NonNull View itemView) {
@@ -76,7 +75,6 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
             tv_college=itemView.findViewById(R.id.tv_book_college_request);
             tv_price=itemView.findViewById(R.id.tv_price_request_request);
             tv_seller=itemView.findViewById(R.id.book_seller_request);
-            tv_presons_num=itemView.findViewById(R.id.tv_people_requests_num_request);
 
         }
 

@@ -7,6 +7,7 @@
     android:background="@color/white"
     tools:context=".ui.activites.LoginActivity">
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -67,11 +68,22 @@
                 android:orientation="vertical">
 
 
+<!--                <EditText-->
+<!--                    android:id="@+id/ed_name_log"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    style="@style/MyEditText"-->
+<!--                    android:hint="Name"-->
+<!--                    android:paddingEnd="20dp"-->
+<!--                    android:inputType="textPersonName"-->
+<!--                    />-->
 
                 <EditText
                     android:id="@+id/ed_email_log"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
                     style="@style/MyEditText"
                     android:hint="Email"
                     android:paddingEnd="20dp"

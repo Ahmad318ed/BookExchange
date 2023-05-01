@@ -17,8 +17,31 @@
             android:orientation="vertical"
             android:padding="5dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Post"
+                android:textColor="@color/fog_dark"
+                android:fontFamily="@font/hellix_medium"
+                android:textSize="35sp"
+                android:layout_gravity="center"
+                android:textAllCaps="false"
+                android:layout_margin="40sp"
+
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="* Please put a good Quality Image for the Book *"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:fontFamily="@font/hellix_regular"
+                android:textColor="@color/fog_4"
+                android:textSize="13sp" />
+
             <ImageView
-                android:id="@+id/book_imageView"
+                android:id="@+id/book_imageView_post"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_marginBottom="25dp"
@@ -30,20 +53,9 @@
                 android:src="@drawable/book_name" />
 
 
-            <EditText
-                android:id="@+id/ed_username"
-                style="@style/MyEditText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_margin="10dp"
-                android:drawableLeft="@drawable/person"
-                android:drawablePadding="10dp"
-                android:hint="Your name"
-                android:inputType="text"
-                android:paddingEnd="20dp" />
 
             <EditText
-                android:id="@+id/ed_book_name"
+                android:id="@+id/ed_book_name_post"
                 style="@style/MyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -57,7 +69,7 @@
 
 
             <EditText
-                android:id="@+id/ed_book_collage"
+                android:id="@+id/ed_book_edition_post"
                 style="@style/MyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -80,7 +92,7 @@
                 android:textColor="@color/fog_dark" />
 
             <Spinner
-                android:id="@+id/spinner1"
+                android:id="@+id/spinner1_post"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -98,7 +110,7 @@
                 android:textColor="@color/fog_dark" />
 
             <Spinner
-                android:id="@+id/spinner2"
+                android:id="@+id/spinner2_post"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -116,7 +128,7 @@
                 android:textColor="@color/fog_dark" />
 
             <Spinner
-                android:id="@+id/spinner3"
+                android:id="@+id/spinner3_post"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -126,7 +138,7 @@
                 android:background="@drawable/style_spinner" />
 
             <EditText
-                android:id="@+id/ed_details"
+                android:id="@+id/ed_details_post"
                 style="@style/MyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
@@ -134,13 +146,22 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="20dp"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890مُحَمَّدٌ رَّسُولُ اللَّهِ وَالَّذِينَ مَعَهُ أَشِدَّاءُ عَلَى الكُفَّارِ رُحَمَاءُ بَيْنَهُمْ تَرَاهُمْ رُكَّعاً سُجَّداً يَبْتَغُونَ فَضْلاً مِّنَ اللَّهِ وَرِضْوَاناً سِيمَاهُمْ فِي وَجُوهِهِم مِّنْ أَثَرِ السُّجُودِ ذَلِكَ مَثَلُهُمْ فِي التَّوْرَاةِ وَمَثَلُهُمْ فِي الإِنجِيلِ كَزَرْعٍ أَخْرَجَ\n "
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890أبتثجحخدذرزسشصضطظعغفقكلمنهـويَؤاأئ ةء.,)(*%$ّآلآ\n "
                 android:gravity="top"
                 android:hint="Details.."
                 android:inputType="text"
                 android:maxLines="4"
                 android:padding="5dp"
                 android:paddingEnd="20dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -150,7 +171,7 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_submit"
+                    android:id="@+id/btn_submit_post"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -186,14 +207,14 @@
     </androidx.core.widget.NestedScrollView>
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/img_camera_post"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="35dp"
-        app:layout_anchor="@id/book_imageView"
+        app:layout_anchor="@id/book_imageView_post"
         app:layout_anchorGravity="end|center|bottom"
         android:src="@drawable/baseline_photo_camera_24"
         app:backgroundTint="@color/orange_dark"

@@ -75,23 +75,7 @@
         app:layout_constraintStart_toEndOf="@+id/book_img_request"
         app:layout_constraintTop_toBottomOf="@+id/tv_book_college_request">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="2dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/person"
-            app:tint="@color/gray" />
 
-        <TextView
-            android:id="@+id/tv_people_requests_num_request"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/hellix_regular"
-            android:gravity="center"
-            android:text="5"
-            android:textAlignment="center"
-            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -113,7 +97,7 @@
             android:background="@drawable/gradient_button"
             android:ems="13"
             android:fontFamily="@font/hellix_medium"
-            android:text="Take"
+            android:text="Give"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="#ffffff" />
@@ -149,12 +133,10 @@
         android:id="@+id/persons_layout_request"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-
         android:orientation="horizontal"
-        app:layout_constraintStart_toEndOf="@+id/price_layout_request"
+        app:layout_constraintStart_toEndOf="@+id/book_img_request"
         app:layout_constraintTop_toBottomOf="@+id/tv_book_college_request">
 
         <ImageView

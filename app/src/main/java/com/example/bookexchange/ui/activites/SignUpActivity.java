@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,8 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
     ProgressDialog dialog;
     Button btn_sign;
     EditText ed_name, ed_email, ed_pass;
-    private FirebaseDatabase database;
-    private DatabaseReference myRef;
+
 
     public FirebaseAuth auth;
 
@@ -49,16 +50,6 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         auth = FirebaseAuth.getInstance();
-
-
-
-
-
-
-
-
-
-
 
 
         //SignIn Button
@@ -95,9 +86,14 @@ public class SignUpActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 if (task.isSuccessful()) {
+                                    FirebaseUser user = auth.getCurrentUser();
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(name)
+                                            .build();
+                                    user.updateProfile(profileUpdates);
+                                    user.sendEmailVerification();
 
-                                    User user = new User(email, pass);
-                                    auth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
 
@@ -107,8 +103,9 @@ public class SignUpActivity extends AppCompatActivity {
                                                 ed_name.setText("");
                                                 ed_pass.setText("");
                                                 ed_email.setText("");
-
-                                                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                                                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                                                intent.putExtra("isSignUp", true);
+                                                startActivity(intent);
                                                 finish();
 
 

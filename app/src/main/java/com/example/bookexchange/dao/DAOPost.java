@@ -24,7 +24,9 @@ public class DAOPost {
 
     public Task<Void>add(Post post){
 
-        return databaseReference.child(FirebaseAuth.getInstance().getUid()).setValue(post);
+
+        return databaseReference.push().setValue(post);
+
 
     }
 

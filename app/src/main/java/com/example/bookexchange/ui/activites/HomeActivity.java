@@ -1,7 +1,8 @@
 package com.example.bookexchange.ui.activites;
 
-import static com.example.bookexchange.ui.fragments.PostsFragment.myList;
+
 import static com.example.bookexchange.ui.fragments.PostsFragment.myadapter;
+import static com.example.bookexchange.ui.fragments.PostsFragment.postList;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -52,9 +53,8 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-   public static FloatingActionButton fab;
+    public static FloatingActionButton fab;
     Toolbar toolbar;
-
 
 
     private DrawerLayout drawerLayout;
@@ -96,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_logout:
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         finish();
                         startActivity(intent);
@@ -113,16 +113,10 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-
-
-
         //////////////////////////////////////////////////////
 
 
-
-
-
-        fab=findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         toolbar = findViewById(R.id.toolbar_custom);
         setSupportActionBar(toolbar);
 
@@ -195,7 +189,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                startActivity(new Intent(getApplicationContext(),CreatePostActivity.class ));
+                startActivity(new Intent(getApplicationContext(), CreatePostActivity.class));
+                finish();
 
             }
         });
@@ -205,7 +200,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                Toast.makeText(HomeActivity.this, "Create a Request is Clicked", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), CreateRequestActivity.class));
+                finish();
 
             }
         });
@@ -232,7 +228,7 @@ public class HomeActivity extends AppCompatActivity {
 
         List<Post> filteredList = new ArrayList<>();
 
-        for (Post post : myList) {
+        for (Post post : postList) {
 
             if (post.getBookName().toLowerCase().contains(text.toLowerCase())) {
 
@@ -252,6 +248,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+    }
 
     //Press on any place in screen to cancel the keyboard
     public boolean dispatchTouchEvent(MotionEvent event) {
@@ -301,6 +303,11 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        // Call finish() to exit the app when back button is pressed
+        finish();
+    }
 
 }
 

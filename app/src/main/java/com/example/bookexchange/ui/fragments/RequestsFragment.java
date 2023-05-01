@@ -23,25 +23,34 @@ import java.util.List;
 public class RequestsFragment extends Fragment {
 
     RecyclerView recyclerView;
-    RequestAdapter myadapter;
-    List<Request> myList = new ArrayList<>();
+    public static RequestAdapter myadapter;
+    public static List<Request> myList = new ArrayList<>();
+    private boolean fabShouldBeHidden = false; // Flag to keep track of FAB visibility
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.from(getContext()).inflate(R.layout.fragment_requests, container, false);
+        fabShouldBeHidden = false;
 
-        Request Request1 = new Request("Data Structure", "Ysra Khaled",R.drawable.data_structure,"كلية تيكنلوجيا المعلومات","1","3");
-        Request Request2 = new Request(" علوم عسكرية ", "موسى العوضي",R.drawable.alom,"كلية الاداب","0.5","5");
-        Request Request3 = new Request("Algorithms", "Mazen Kamel",R.drawable.algorithms,"كلية تيكنلوجيا المعلومات","Free","12");
+        myList.clear();
+
+        Request Request1 = new Request("Data Structure", "Ysra Khaled", R.drawable.data_structure, "كلية تيكنلوجيا المعلومات", "1");
+        Request Request2 = new Request(" علوم عسكرية ", "موسى العوضي", R.drawable.alom, "كلية الاداب", "0.5");
+        Request Request3 = new Request("Algorithms", "Mazen Kamel", R.drawable.algorithms, "كلية تيكنلوجيا المعلومات", "Free");
 
 
         myList.add(Request1);
         myList.add(Request2);
         myList.add(Request3);
+        myList.add(Request1);
+        myList.add(Request2);
+
 
         recyclerView = view.findViewById(R.id.rv_request);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
+
         myadapter = new RequestAdapter(requireContext(), myList);
         recyclerView.setAdapter(myadapter);
         myadapter.notifyDataSetChanged();
@@ -49,23 +58,49 @@ public class RequestsFragment extends Fragment {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
+                        .findLastVisibleItemPosition();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && !(lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1)) {
                     HomeActivity.fab.show();
                 }
                 super.onScrollStateChanged(recyclerView, newState);
 
             }
-
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 1 || dy < 1 && HomeActivity.fab.isShown()) {
-                    HomeActivity.fab.hide();
-                }
+                // Get the last visible item position
+                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
+                        .findLastVisibleItemPosition();
 
+                // Check if the last visible item is the last item in the RecyclerView
+                if (lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
+                    // Hide the FAB and set flag to true
+                    HomeActivity.fab.hide();
+                    fabShouldBeHidden = true;
+                } else {
+                    // Set flag to false and show the FAB
+                    fabShouldBeHidden = false;
+                    HomeActivity.fab.show();
+                }
 
             }
         });
 
+
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Show or hide the FAB based on the flag
+        if (fabShouldBeHidden) {
+            HomeActivity.fab.hide();
+        } else {
+            HomeActivity.fab.show();
+        }
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.example.bookexchange.ui.activites;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -42,9 +43,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView tv_forget;
     public EditText password, email_t;
 
-    private FirebaseDatabase database;
 
-    private DatabaseReference myRef;
+    public static User current_User;
 
     public FirebaseAuth auth;
 
@@ -59,11 +59,21 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check if user is signed in (non-null) and update UI accordingly.
 
+        boolean isSignUp = getIntent().getBooleanExtra("isSignUp", false);
+        if (isSignUp) {
+            // Show a welcome message or something else for new users
 
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser()!=null){
-            Intent intent = new Intent(this,HomeActivity.class);
-            startActivity(intent);
+        } else {
+
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            if (firebaseAuth.getCurrentUser() != null) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+
+
         }
 
     }
@@ -73,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
 
 
         auth = FirebaseAuth.getInstance();
@@ -114,24 +123,28 @@ public class LoginActivity extends AppCompatActivity {
                             auth.signInWithEmailAndPassword(email, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    User user = new User(email, pass);
+
+                                    FirebaseUser user1 = authResult.getUser();
+                                    String name = user1.getDisplayName();
+                                    String id = user1.getUid();
+                                    String emaill=user1.getEmail();
+
+
+
+                                    current_User = new User(id, emaill, name);
 
 
                                     if (auth.getCurrentUser().isEmailVerified()) {
                                         //Add the Verified user to database
-                                        daoUser.add(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        daoUser.add(current_User).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
-
-                                                String id = auth.getCurrentUser().getUid().toString();
-                                                String password = pass;
-                                                String email = auth.getCurrentUser().getEmail().toString();
 
 
                                             }
                                         });
 
-                                        Toast.makeText(LoginActivity.this, " Successfully Log In  ", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(LoginActivity.this, "Welcome " +name, Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                         finish();
 
@@ -266,5 +279,12 @@ public class LoginActivity extends AppCompatActivity {
     public void goToSignUpScreen(View view) {
         Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
     }
 }

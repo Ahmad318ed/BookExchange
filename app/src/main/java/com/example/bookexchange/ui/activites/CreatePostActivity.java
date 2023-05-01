@@ -1,81 +1,285 @@
 package com.example.bookexchange.ui.activites;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.bookexchange.R;
-import com.google.android.gms.cast.framework.media.ImagePicker;
+import com.example.bookexchange.dao.DAOPost;
+import com.example.bookexchange.models.Post;
+import com.example.bookexchange.ui.fragments.PostsFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.karumi.dexter.listener.single.PermissionListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CreatePostActivity extends AppCompatActivity {
     Spinner spinner1, spinner2, spinner3;
     private static final int PICK_IMAGE_REQUEST = 1;
+    public static String username, userEmail, username_Id;
     private static final int MAX_IMAGE_SIZE = 500; // Maximum image size in pixels
 
+    Button btn_submit;
+    String selectedValue1 = ""; // Initialize a variable to store the selected value
+    String selectedValue2 = ""; // Initialize a variable to store the selected value
+    String selectedValue3 = ""; // Initialize a variable to store the selected value
 
-    ImageView imageView, imagepicker;
+    FirebaseUser currentUser;
+    DAOPost daoPost;
 
+    public FirebaseAuth auth;
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
+
+    public static Uri selectedImageUri;
+    String imageSelectedURl;
+
+    ImageView imageView;
+
+    ImageButton imagePicker;
+    EditText ed_name, ed_book_name, ed_book_edition, details;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
 
-
-        imageView = findViewById(R.id.book_imageView);
-        imagepicker = findViewById(R.id.fab_camera);
-        imagepicker.setOnClickListener(new View.OnClickListener() {
+        auth = FirebaseAuth.getInstance();
+        daoPost = new DAOPost();
+        currentUser = auth.getCurrentUser();
+        btn_submit = findViewById(R.id.btn_submit_post);
+        mProgressBar = findViewById(R.id.progressBar);
+        ed_book_name = findViewById(R.id.ed_book_name_post);
+        ed_book_edition = findViewById(R.id.ed_book_edition_post);
+        details = findViewById(R.id.ed_details_post);
+        loadSpinners();
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedValue1 = parent.getItemAtPosition(position).toString(); // Get the selected item from the spinner and store it in the selectedValue variable
 
 
-                pickImageFromGallery();
 
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedValue1=parent.getItemAtPosition(0).toString();
+            }
+        });
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedValue2 = parent.getItemAtPosition(position).toString(); // Get the selected item from the spinner and store it in the selectedValue variable
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedValue2=parent.getItemAtPosition(0).toString();
+            }
+        });
+        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedValue3 = parent.getItemAtPosition(position).toString(); // Get the selected item from the spinner and store it in the selectedValue variable
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedValue3=parent.getItemAtPosition(0).toString();
             }
         });
 
 
-        loadSpinners();
+        imageView = findViewById(R.id.book_imageView_post);
+        imagePicker = findViewById(R.id.img_camera_post);
+        imagePicker.setOnClickListener(v -> pickImageFromGallery());
+
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                username = currentUser.getDisplayName();
+                userEmail = currentUser.getEmail();
+                username_Id = currentUser.getUid();
+                String bookName = ed_book_name.getText().toString().trim();
+                String bookEdition = ed_book_edition.getText().toString().trim();
+                String detailsText = details.getText().toString().trim();
+                String spinner1Value = selectedValue1;
+                String spinner2Value = selectedValue2;
+                String spinner3Value = selectedValue3;
+
+                if (!bookName.isEmpty()) {
+
+                    if (!bookEdition.isEmpty()) {
+
+                        if (!(selectedImageUri == null)) {
+
+                            if(!(spinner1.getSelectedItem().toString()=="None")) {
+
+
+                                if(!(spinner2.getSelectedItem().toString()=="None")){
+
+
+                                    if(!(spinner3.getSelectedItem().toString()=="None")) {
+
+
+                                        Toast.makeText(CreatePostActivity.this, "Loading ..", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(CreatePostActivity.this, "Please wait ..", Toast.LENGTH_SHORT).show();
+
+                                        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("posts_images");
+                                        StorageReference imgfilePath = storageRef.child(selectedImageUri.getLastPathSegment());
+                                        imgfilePath.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+
+                                                        mProgressBar.setProgress(0);
+                                                    }
+                                                }, 500);
+
+
+                                                imgfilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                    @Override
+                                                    public void onSuccess(Uri uri) {
+
+
+                                                        imageSelectedURl = uri.toString();
+
+
+                                                        Date date = Calendar.getInstance().getTime();
+                                                        String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
+
+
+                                                        Post post = new Post(imageSelectedURl, bookName, username, userEmail, username_Id, spinner1Value, spinner2Value, "3", bookEdition, spinner3Value, detailsText, dateFormat);
+
+                                                        onBackPressed();
+
+                                                        daoPost.add(post).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void unused) {
+
+                                                                Toast.makeText(CreatePostActivity.this, "good db", Toast.LENGTH_SHORT).show();
+
+                                                                onBackPressed();
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                onBackPressed();
+
+                                                                Toast.makeText(CreatePostActivity.this, "wrong db", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+
+
+                                                    }
+                                                });
+
+                                            }
+                                        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+
+                                                double progress = 100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount();
+
+                                                mProgressBar.setProgress((int) progress);
+                                            }
+                                        });
+
+                                    }else{
+
+                                        Toast.makeText(getApplicationContext(), "Plz put a States for the Book !", Toast.LENGTH_LONG).show();
+
+
+                                    }
+
+                                }else{
+
+                                    Toast.makeText(getApplicationContext(), "Plz put a Price for the Book !", Toast.LENGTH_LONG).show();
+
+
+                                }
+
+                            }else{
+
+                                Toast.makeText(getApplicationContext(), "Plz put a Collage for the Book !", Toast.LENGTH_LONG).show();
+
+
+                            }
+
+
+                        }else{
+
+                            Toast.makeText(getApplicationContext(), "Plz put a image for the Book !", Toast.LENGTH_LONG).show();
+
+                        }
+
+                    }else{
+
+                        ed_book_edition.setError("Plz put a Edition for the Book !");
+
+                    }
+
+                }else{
+
+                    ed_book_name.setError("Plz set a name for the Book !");
+
+                }
+
+
+
+
+                ///////////////////////////END OF SUBMIT
+
+
+
+            }
+        });
 
 
     }
@@ -86,7 +290,9 @@ public class CreatePostActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri selectedImageUri = data.getData();
+            selectedImageUri = data.getData();
+
+
             try {
                 Bitmap bitmap = getBitmapFromUri(selectedImageUri);
                 if (bitmap != null) {
@@ -102,31 +308,13 @@ public class CreatePostActivity extends AppCompatActivity {
         }
 
 
-//        Uri filepath = data.getData();
-//        if (requestCode == 1 && resultCode == RESULT_OK) {
-//
-//
-//            try {
-//                InputStream inputStream = getContentResolver().openInputStream(filepath);
-//                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//                imageView.setImageBitmap(bitmap);
-//            } catch (FileNotFoundException e) {
-//
-//                throw new RuntimeException(e);
-//
-//            }
-//
-//
-//        }
-
-
     }
 
     private void loadSpinners() {
 
-        spinner1 = findViewById(R.id.spinner1);
-        spinner2 = findViewById(R.id.spinner2);
-        spinner3 = findViewById(R.id.spinner3);
+        spinner1 = findViewById(R.id.spinner1_post);
+        spinner2 = findViewById(R.id.spinner2_post);
+        spinner3 = findViewById(R.id.spinner3_post);
 
         String[] value1 = {"None", "Information  technology  collage", "College  of  Arts  and  Sciences", "College  of  Da'wah  and  Fundamentals  of  Religion", "Sheikh  Noah  College  of  Sharia  and  Law"
                 , "Faculty  of  Educational  Sciences", "College  of  arts  and  sciences", "College  of  Arts  and  Islamic  Architecture", "College  Money  and  Business", "Faculty  of  Al  Maliki  Jurisprudence"
@@ -137,14 +325,14 @@ public class CreatePostActivity extends AppCompatActivity {
         spinner1.setSelection(0);
 
 
-        String[] value2 = {"Free", "0.5", "1", "1.5"};
+        String[] value2 = {"None","Free", "0.5", "1", "1.5"};
         ArrayList<String> arrayList2 = new ArrayList<>(Arrays.asList(value2));
         ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<>(this, R.layout.style_spinn, arrayList2);
         spinner2.setAdapter(arrayAdapter2);
         spinner2.setSelection(0);
 
 
-        String[] value3 = {"Used", "New"};
+        String[] value3 = {"None","Used", "New"};
         ArrayList<String> arrayList3 = new ArrayList<>(Arrays.asList(value3));
         ArrayAdapter<String> arrayAdapter3 = new ArrayAdapter<>(this, R.layout.style_spinn, arrayList3);
         spinner3.setAdapter(arrayAdapter3);
@@ -210,5 +398,9 @@ public class CreatePostActivity extends AppCompatActivity {
         return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this,HomeActivity.class));
+    }
 }

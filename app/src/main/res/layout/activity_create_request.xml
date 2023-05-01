@@ -1,0 +1,226 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activites.CreateRequestActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Request"
+                android:textColor="@color/fog_dark"
+                android:fontFamily="@font/hellix_medium"
+                android:textSize="35sp"
+                android:layout_gravity="center"
+                android:textAllCaps="false"
+                android:layout_margin="40sp"
+
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="* Please put a good Quality Image for the Book *"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:fontFamily="@font/hellix_regular"
+                android:textColor="@color/fog_4"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:id="@+id/book_imageView_request"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/fog_light"
+                android:scaleType="fitCenter"
+                android:src="@drawable/book_name" />
+
+
+            <EditText
+                android:id="@+id/ed_username_request"
+                style="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:drawableLeft="@drawable/person"
+                android:drawablePadding="10dp"
+                android:hint="Your name"
+                android:inputType="text"
+                android:paddingEnd="20dp" />
+
+            <EditText
+                android:id="@+id/ed_book_name_request"
+                style="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:drawableLeft="@drawable/book_name"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/gray"
+                android:hint="Book name"
+                android:inputType="text"
+                android:paddingEnd="20dp" />
+
+
+            <EditText
+                android:id="@+id/ed_book_collage_request"
+                style="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="35dp"
+                android:drawableLeft="@drawable/book_name"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/gray"
+                android:hint="Book Edition"
+                android:inputType="number"
+                android:paddingEnd="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text=" Book Collage"
+                android:textColor="@color/fog_dark" />
+
+            <Spinner
+                android:id="@+id/spinner1_request"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/style_spinner" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+
+                android:text=" Book Price"
+                android:textColor="@color/fog_dark" />
+
+            <Spinner
+                android:id="@+id/spinner2_request"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/style_spinner" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+
+                android:text=" Book States"
+                android:textColor="@color/fog_dark" />
+
+            <Spinner
+                android:id="@+id/spinner3_request"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/style_spinner" />
+
+            <EditText
+                android:id="@+id/ed_details_request"
+                style="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890أبتثجحخدذرزسشصضطظعغفقكلمنهـويَؤأئء.,)(*%$ّآلآ\n "
+                android:gravity="top"
+                android:hint="Details.."
+                android:inputType="text"
+                android:maxLines="4"
+                android:padding="5dp"
+                android:paddingEnd="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_submit_request"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/gradient_button"
+                    android:ems="13"
+                    android:fontFamily="@font/hellix_medium"
+                    android:text="@string/submit"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff" />
+
+
+                <!--        <androidx.appcompat.widget.AppCompatButton-->
+                <!--            android:id="@+id/btn_take"-->
+                <!--            android:layout_width="100dp"-->
+                <!--            android:layout_height="wrap_content"-->
+                <!--            android:background="@drawable/gradient_button"-->
+                <!--            android:layout_margin="10dp"-->
+                <!--            android:ems="13"-->
+                <!--            android:layout_gravity="center"-->
+                <!--            android:text="@string/login"-->
+                <!--            android:textAlignment="center"-->
+                <!--            android:textAllCaps="false"-->
+                <!--            android:fontFamily="@font/hellix_medium"-->
+                <!--            android:textColor="#ffffff"-->
+                <!--            />-->
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_camera_request"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="35dp"
+        app:layout_anchor="@id/book_imageView_request"
+        app:layout_anchorGravity="end|center|bottom"
+        android:src="@drawable/baseline_photo_camera_24"
+        app:backgroundTint="@color/orange_dark"
+        app:rippleColor="@color/orange_light" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
