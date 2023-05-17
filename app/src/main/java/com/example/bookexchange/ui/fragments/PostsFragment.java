@@ -1,5 +1,7 @@
 package com.example.bookexchange.ui.fragments;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -7,6 +9,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -66,6 +69,7 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
         recyclerView.setHasFixedSize(true);
 
         daoPost.get().addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -74,22 +78,39 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
 
                     Post post = postsnap.getValue(Post.class);
 
-
-                    postList.add(post);
-                    myadapter = new PostAdapter(requireContext(), postList, new SelectPostItemListener() {
-                        @Override
-                        public void onItemClicked(Post post) {
+//TODO convert requiredContext()
 
 
-                            Intent intent = new Intent(getContext(), ViewPostActivity.class);
-                            intent.putExtra("post", post);
-                            startActivity(intent);
 
 
-                        }
-                    });
+
+                    FragmentActivity activity = getActivity();
+                    if (activity != null) {
+                        // Use the activity instance
+                        Context applicationContext = activity.getApplicationContext();
+                        // Continue with your code
+                        postList.add(post);
+                        myadapter = new PostAdapter(applicationContext, postList, new SelectPostItemListener() {
+                            @Override
+                            public void onItemClicked(Post post) {
+
+
+                                Intent intent = new Intent(getContext(), ViewPostActivity.class);
+                                intent.putExtra("post", post);
+                                startActivity(intent);
+
+
+                            }
+                        });
+                    }
+
+
+
                     recyclerView.setAdapter(myadapter);
-                    myadapter.notifyDataSetChanged();
+                    if (myadapter != null){
+                        myadapter.notifyDataSetChanged();
+                    }
+
 
 
                 }
