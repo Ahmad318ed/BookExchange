@@ -32,7 +32,7 @@ public class ViewPostActivity extends AppCompatActivity {
 
 
 
-         String username=post.getBookSeller();
+         String username=post.getBookSellerName();
          String userEmail=post.getBookSellerEmail();
          String userId=post.getBookSellerId();
 
@@ -43,8 +43,8 @@ public class ViewPostActivity extends AppCompatActivity {
         tv_book_edition.setText(post.getBookEdition());
         tv_book_collage.setText(post.getBookCollege());
         tv_book_price.setText(post.getBookPrice());
-        tv_book_states.setText(post.getStates());
-        tv_book_details.setText(post.getDetails());
+        tv_book_states.setText(post.getBookStates());
+        tv_book_details.setText(post.getBookDetails());
 
 
 

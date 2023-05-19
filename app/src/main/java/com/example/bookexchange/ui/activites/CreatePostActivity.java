@@ -100,12 +100,11 @@ public class CreatePostActivity extends AppCompatActivity {
                 selectedValue1 = parent.getItemAtPosition(position).toString(); // Get the selected item from the spinner and store it in the selectedValue variable
 
 
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                selectedValue1=parent.getItemAtPosition(0).toString();
+                selectedValue1 = parent.getItemAtPosition(0).toString();
             }
         });
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -116,7 +115,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                selectedValue2=parent.getItemAtPosition(0).toString();
+                selectedValue2 = parent.getItemAtPosition(0).toString();
             }
         });
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -127,7 +126,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                selectedValue3=parent.getItemAtPosition(0).toString();
+                selectedValue3 = parent.getItemAtPosition(0).toString();
             }
         });
 
@@ -156,13 +155,13 @@ public class CreatePostActivity extends AppCompatActivity {
 
                         if (!(selectedImageUri == null)) {
 
-                            if(!(spinner1.getSelectedItem().toString()=="None")) {
+                            if (!(spinner1.getSelectedItem().toString() == "None")) {
 
 
-                                if(!(spinner2.getSelectedItem().toString()=="None")){
+                                if (!(spinner2.getSelectedItem().toString() == "None")) {
 
 
-                                    if(!(spinner3.getSelectedItem().toString()=="None")) {
+                                    if (!(spinner3.getSelectedItem().toString() == "None")) {
 
 
                                         Toast.makeText(CreatePostActivity.this, "Loading ..", Toast.LENGTH_SHORT).show();
@@ -195,7 +194,7 @@ public class CreatePostActivity extends AppCompatActivity {
                                                         String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
 
 
-                                                        Post post = new Post(imageSelectedURl, bookName, username, userEmail, username_Id, spinner1Value, spinner2Value, "3", bookEdition, spinner3Value, detailsText, dateFormat);
+                                                        Post post = new Post(imageSelectedURl, username, userEmail, username_Id, bookName, bookEdition, spinner1Value, spinner2Value, spinner3Value, detailsText, dateFormat);
 
                                                         onBackPressed();
 
@@ -231,21 +230,21 @@ public class CreatePostActivity extends AppCompatActivity {
                                             }
                                         });
 
-                                    }else{
+                                    } else {
 
                                         Toast.makeText(getApplicationContext(), "Plz put a States for the Book !", Toast.LENGTH_LONG).show();
 
 
                                     }
 
-                                }else{
+                                } else {
 
                                     Toast.makeText(getApplicationContext(), "Plz put a Price for the Book !", Toast.LENGTH_LONG).show();
 
 
                                 }
 
-                            }else{
+                            } else {
 
                                 Toast.makeText(getApplicationContext(), "Plz put a Collage for the Book !", Toast.LENGTH_LONG).show();
 
@@ -253,29 +252,26 @@ public class CreatePostActivity extends AppCompatActivity {
                             }
 
 
-                        }else{
+                        } else {
 
                             Toast.makeText(getApplicationContext(), "Plz put a image for the Book !", Toast.LENGTH_LONG).show();
 
                         }
 
-                    }else{
+                    } else {
 
                         ed_book_edition.setError("Plz put a Edition for the Book !");
 
                     }
 
-                }else{
+                } else {
 
                     ed_book_name.setError("Plz set a name for the Book !");
 
                 }
 
 
-
-
                 ///////////////////////////END OF SUBMIT
-
 
 
             }
@@ -325,14 +321,14 @@ public class CreatePostActivity extends AppCompatActivity {
         spinner1.setSelection(0);
 
 
-        String[] value2 = {"None","Free", "0.5", "1", "1.5"};
+        String[] value2 = {"None", "Free", "0.5", "1", "1.5"};
         ArrayList<String> arrayList2 = new ArrayList<>(Arrays.asList(value2));
         ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<>(this, R.layout.style_spinn, arrayList2);
         spinner2.setAdapter(arrayAdapter2);
         spinner2.setSelection(0);
 
 
-        String[] value3 = {"None","Used", "New"};
+        String[] value3 = {"None", "Used", "New"};
         ArrayList<String> arrayList3 = new ArrayList<>(Arrays.asList(value3));
         ArrayAdapter<String> arrayAdapter3 = new ArrayAdapter<>(this, R.layout.style_spinn, arrayList3);
         spinner3.setAdapter(arrayAdapter3);
@@ -401,6 +397,6 @@ public class CreatePostActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this,HomeActivity.class));
+        startActivity(new Intent(this, HomeActivity.class));
     }
 }
