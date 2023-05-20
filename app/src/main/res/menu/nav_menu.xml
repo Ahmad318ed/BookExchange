@@ -5,9 +5,6 @@
 
 <group  >
 
-    <item android:id="@+id/home"
-        android:title="Home"
-        android:icon="@drawable/home"/>
     <item
         android:id="@+id/nav_my_profile"
         android:title="@string/my_profile"
@@ -16,26 +13,17 @@
     <item
         android:id="@+id/nav_my_posts"
         android:title="@string/my_posts"
-        android:icon="@drawable/ic_articale"/>
+        android:icon="@drawable/posts"/>
 
     <item
         android:id="@+id/nav_my_requests"
         android:title="@string/my_requests"
-        android:icon="@drawable/ic_article2"/>
+        android:icon="@drawable/request"/>
 
     <item
         android:id="@+id/nav_my_editable_profile"
         android:title="@string/edit_profile"
         android:icon="@drawable/ic_edit"/>
-
-    <item
-        android:id="@+id/received_notification_fragment"
-        android:icon="@drawable/baseline_notifications"
-        android:title="Responses Notifications" />
-    <item
-        android:id="@+id/notification_fragment"
-        android:icon="@drawable/baseline_notifications"
-        android:title="Requests Notifications" />
 
 
     <item

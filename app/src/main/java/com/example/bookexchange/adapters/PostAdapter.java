@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
@@ -17,9 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.bookexchange.R;
 import com.example.bookexchange.models.Post;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -43,8 +39,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         this.selectPostItemListener=selectPostItemListener;
     }
 
-
-
     public void setfilteredlist(List<Post> filteredList){
 
         this.myPostArray=filteredList;
@@ -67,34 +61,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
 
         final Post myPostList = myPostArray.get(position);
+        Log.i(TAG, "onBindViewHolder: "+myPostList);
 
 
 
-        holder.tv_book_name.setText(myPostList.getBookName());
+        holder.tv_name.setText(myPostList.getBookName());
+        holder.tv_presons_num.setText(myPostList.getPerson_num());
         Glide.with(context).load(myPostList.getImg()).fitCenter().centerCrop().into(holder.img);
-        holder.tv_book_college.setText(myPostList.getBookCollege());
-        holder.tv_book_price.setText(myPostList.getBookPrice());
-        holder.tv_seller_name.setText(myPostList.getBookSellerName());
-        holder.tv_post_date.setText(myPostList.getPostDate());
+        holder.tv_college.setText(myPostList.getBookCollege());
+        holder.tv_price.setText(myPostList.getBookPrice());
+        holder.tv_seller.setText(myPostList.getBookSeller());
+        holder.tv_date.setText(myPostList.getPostDate());
 
         holder.btn_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                selectPostItemListener.onItemViewClicked(myPostArray.get(position));
-
-            }
-        });
-
-        holder.btn_take.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                FirebaseAuth auth=FirebaseAuth.getInstance();
-                FirebaseUser user=auth.getCurrentUser();
-                selectPostItemListener.onItemTakeClicked(myPostArray.get(position),user);
-
+                selectPostItemListener.onItemClicked(myPostArray.get(position));
 
             }
         });
@@ -111,7 +94,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public class PostViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView tv_book_name,tv_book_college,tv_book_price,tv_seller_name,tv_post_date;
+        TextView tv_name,tv_college,tv_price,tv_seller,tv_presons_num,tv_date;
         ImageView img;
         AppCompatButton btn_take,btn_view;
 
@@ -119,14 +102,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tv_book_name=itemView.findViewById(R.id.book_name);
+            tv_name=itemView.findViewById(R.id.book_name);
             img=itemView.findViewById(R.id.book_img);
-            tv_book_college=itemView.findViewById(R.id.tv_book_college);
-            tv_book_price=itemView.findViewById(R.id.tv_price);
-            tv_seller_name=itemView.findViewById(R.id.book_seller);
-            tv_post_date=itemView.findViewById(R.id.tv_date);
+            tv_college=itemView.findViewById(R.id.tv_book_college);
+            tv_price=itemView.findViewById(R.id.tv_price);
+            tv_seller=itemView.findViewById(R.id.book_seller);
+            tv_presons_num=itemView.findViewById(R.id.tv_people_requests_num);
+            tv_date=itemView.findViewById(R.id.tv_date);
             btn_view=itemView.findViewById(R.id.btn_view);
             btn_take=itemView.findViewById(R.id.btn_take);
+
+
+
+
+
+
+
 
         }
 
