@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activites.Profile">
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgCard"
+                android:layout_gravity="center"
+                app:cardCornerRadius="100dp"
+                android:layout_marginTop="100dp"
+                >
+                <ImageView
+                    android:id="@+id/img_profile"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/default_profile_img"
+                    />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/username_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/hellix_medium"
+                android:text="Abdelhadi Alothman"
+                android:textColor="@color/fog_dark"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/profile_design"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/hellix_medium"
+                    android:text="Education"
+                    android:textColor="@color/fog_3"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/hellix_medium"
+                    android:text="Collage:"
+                    android:textColor="@color/fog_3" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/collage_profile"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/hellix_medium"
+                    android:text="IT Collage"
+                    android:textColor="@color/fog_4"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/hellix_medium"
+                    android:text="Major:"
+                    android:textColor="@color/fog_3" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/major_profile"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/hellix_medium"
+                    android:text="Software Engineering"
+                    android:textColor="@color/fog_4"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/hellix_medium"
+                    android:text="Contact info"
+                    android:layout_gravity="center"
+                    android:textColor="@color/fog_3"
+                    android:textSize="17sp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:id="@+id/btn_imgFacebook"
+                        android:layout_margin="20dp"
+                        android:alpha="0.8"
+                        android:src="@drawable/facebook2"
+                        />
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:id="@+id/btn_imgInstagram"
+                        android:layout_margin="20dp"
+                        android:alpha="0.8"
+                        android:src="@drawable/instagram2"
+                        />
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:id="@+id/btn_imgWhatsApp"
+                        android:layout_margin="20dp"
+                        android:alpha="0.8"
+                        android:src="@drawable/whatsapp2"
+                        />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+
+</LinearLayout>

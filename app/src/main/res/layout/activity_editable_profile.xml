@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activites.EditableProfile">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="20dp"
+            >
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/imgCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:cardCornerRadius="100dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/img_profile"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/default_profile_img" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="70dp"
+                app:cardBackgroundColor="@color/orange_dark"
+                app:cardCornerRadius="100dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imgCard"
+                app:layout_constraintEnd_toEndOf="@+id/imgCard"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/btn_selector_img_editableProfile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/baseline_photo_camera_24"
+                    app:backgroundTint="@color/orange_dark"
+                    app:rippleColor="@color/orange_light" />
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/hellix_regular"
+                android:text="Your information"
+                android:textAlignment="center"
+                android:textColor="@color/fog_4"
+                android:textSize="19sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/hellix_medium"
+                android:text=" Your name"
+                android:textColor="@color/fog_4" />
+
+            <EditText
+                android:id="@+id/edt_name_EditableProfile"
+                style="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:hint="Full Name"
+                android:inputType="textPersonName"
+                android:paddingEnd="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/hellix_medium"
+                android:text=" Your Collage"
+                android:textColor="@color/fog_4" />
+
+            <Spinner
+                android:id="@+id/spinner1_editable_profile"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+
+                android:background="@drawable/style_spinner" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/hellix_medium"
+                android:text=" Your major"
+                android:textColor="@color/fog_4" />
+
+            <EditText
+                android:id="@+id/edt_major_EditableProfile"
+                style="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:hint="Major"
+                android:inputType="text"
+                android:paddingEnd="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/hellix_regular"
+                android:text="Your Contact info"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="5dp"
+                android:textAlignment="center"
+                android:textColor="@color/fog_4"
+                android:textSize="19sp" />
+
+
+            <EditText
+                android:id="@+id/edt_facebook_EditableProfile"
+                style="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:drawableStart="@drawable/facebook"
+                android:drawablePadding="10dp"
+                android:hint="Facebook link"
+                android:inputType="textUri"
+                android:paddingEnd="20dp" />
+
+            <EditText
+                android:id="@+id/edt_instagram_EditableProfile"
+                style="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:drawableStart="@drawable/instagram"
+                android:drawablePadding="10dp"
+                android:hint="Instagram link"
+                android:inputType="textUri"
+                android:paddingEnd="20dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="start|center_vertical">
+
+                    <EditText
+                        android:id="@+id/edt_country_num_EditableProfile"
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/edittext_background"
+                        android:alpha="0.6"
+                        android:enabled="false"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:text="962"
+
+                        android:textColor="@color/fog_3" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_editCountryNum"
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/gradient_button"
+                        android:text="Edit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"/>
+
+                </LinearLayout>
+
+
+                <EditText
+                    android:id="@+id/edt_whatsup_EditableProfile"
+                    style="@style/MyEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_gravity="start|center_vertical"
+                    android:hint="WhatsApp Number"
+                    android:textSize="16sp"
+                    android:inputType="number"
+                    android:drawableStart="@drawable/whatsapp"
+                    android:drawablePadding="10dp"
+                    android:paddingEnd="10dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/hellix_regular"
+                android:text="Fill in one contact at least to complete your profile."
+                android:textAlignment="center"
+                android:textColor="@color/fog_3"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="90dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
+            android:id="@+id/btn_save_EditProfile"
+            android:background="@drawable/gradient_button"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            />
+
+
+
+    </LinearLayout>
+
+
+
+</ScrollView>
