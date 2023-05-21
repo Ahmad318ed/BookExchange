@@ -21,7 +21,6 @@ import com.example.bookexchange.adapters.PostAdapter;
 import com.example.bookexchange.dao.DAONotification;
 import com.example.bookexchange.models.Notification;
 import com.example.bookexchange.models.Post;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
