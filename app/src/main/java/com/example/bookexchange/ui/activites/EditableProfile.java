@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -49,6 +50,7 @@ public class EditableProfile extends AppCompatActivity {
     String selectedValue1 = ""; // Initialize a variable to store the selected value
     EditText edt_country_num;
     Button btn_edit_country_num;
+    FirebaseUser user;
     EditText edt_name, edtFacebook, edtInstagram, edtWhatsApp, edtMajor;
     Button btnSave;
     FirebaseUser currentUser;
@@ -140,6 +142,17 @@ public class EditableProfile extends AppCompatActivity {
                                                     public void onSuccess(Uri uri) {
 
                                                         str_imageSelectedURl = uri.toString();
+
+                                                        auth = FirebaseAuth.getInstance();
+                                                        user = auth.getCurrentUser();
+
+                                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                                .setPhotoUri(uri)
+                                                                .build();
+                                                        user.updateProfile(profileUpdates);
+
+
+
 
                                                         Profile_info profile = new Profile_info(name, spinner1Value, facebookLink, instagramLink,str_imageSelectedURl, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
 

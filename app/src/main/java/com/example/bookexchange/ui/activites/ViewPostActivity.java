@@ -14,11 +14,16 @@ import com.example.bookexchange.models.User;
 import com.example.bookexchange.ui.fragments.PostsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class ViewPostActivity extends AppCompatActivity {
 
     TextView tv_username,tv_user_email,tv_book_name,tv_book_edition,tv_book_price,tv_book_collage,tv_book_details,tv_book_states;
     ImageView user_image;
+    FirebaseAuth auth;
+    FirebaseUser user;
+
+
 
 
     @Override
@@ -28,23 +33,28 @@ public class ViewPostActivity extends AppCompatActivity {
 
         inflateComponents();
 
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
+
         Post post=(Post) getIntent().getSerializableExtra("post");
 
 
 
-         String username=post.getBookSeller();
+         String username=post.getBookSellerName();
          String userEmail=post.getBookSellerEmail();
          String userId=post.getBookSellerId();
 
 
+         user_image.setImageURI(user.getPhotoUrl());
         tv_username.setText(username);
         tv_user_email.setText(userEmail);
         tv_book_name.setText(post.getBookName());
         tv_book_edition.setText(post.getBookEdition());
         tv_book_collage.setText(post.getBookCollege());
         tv_book_price.setText(post.getBookPrice());
-        tv_book_states.setText(post.getStates());
-        tv_book_details.setText(post.getDetails());
+        tv_book_states.setText(post.getBookStates());
+        tv_book_details.setText(post.getBookDetails());
 
 
 
