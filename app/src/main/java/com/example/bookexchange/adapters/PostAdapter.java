@@ -1,5 +1,6 @@
 package com.example.bookexchange.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
@@ -16,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.bookexchange.R;
 import com.example.bookexchange.models.Post;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -77,7 +82,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             @Override
             public void onClick(View v) {
 
-                selectPostItemListener.onItemClicked(myPostArray.get(position));
+                selectPostItemListener.onItemViewClicked(myPostArray.get(position));
+
+            }
+        });
+
+        holder.btn_take.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                FirebaseAuth auth=FirebaseAuth.getInstance();
+                FirebaseUser user=auth.getCurrentUser();
+                selectPostItemListener.onItemTakeClicked(myPostArray.get(position),user);
+
 
             }
         });
