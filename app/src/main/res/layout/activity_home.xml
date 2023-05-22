@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
+    tools:openDrawer="start"
     tools:context=".ui.activites.HomeActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -42,7 +43,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="16dp"
-                app:itemTextAppearanceActive="@style/nav_style"
                 android:background="@drawable/transparent_background"
                 app:menu="@menu/bottom_bar_menu"
 
@@ -70,6 +70,7 @@
         android:layout_gravity="start"
         app:itemTextAppearance="@style/nav_style"
         app:itemTextColor="@color/fog_dark"
+
         app:headerLayout="@layout/nav_hedar"
         app:menu="@menu/nav_menu"/>
 

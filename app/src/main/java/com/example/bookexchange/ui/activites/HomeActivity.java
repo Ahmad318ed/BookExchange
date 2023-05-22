@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -36,24 +37,21 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.bookexchange.R;
-import com.example.bookexchange.dao.DAOProfileInfo;
+import com.example.bookexchange.dao.DAOPost;
 import com.example.bookexchange.models.Post;
-import com.example.bookexchange.models.Profile_info;
+import com.example.bookexchange.ui.fragments.NotificationFragment;
 import com.example.bookexchange.ui.fragments.PostsFragment;
+import com.example.bookexchange.ui.fragments.ReceivedNotificationFragment;
 import com.example.bookexchange.ui.fragments.RequestsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,26 +67,10 @@ public class HomeActivity extends AppCompatActivity {
     NavigationView nav_view;
 
 
-    FirebaseUser currentUser;
-    DAOProfileInfo daoProfile;
-
-    public FirebaseAuth auth;
-
-    public static String username, username_Id;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        auth = FirebaseAuth.getInstance();
-        daoProfile = new DAOProfileInfo();
-        currentUser = auth.getCurrentUser();
-
-
-        username = currentUser.getDisplayName();
-        username_Id = currentUser.getUid();
 
 
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -107,8 +89,13 @@ public class HomeActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.nav_my_profile:
-                        Intent intent = new Intent(HomeActivity.this, Profile.class);
-                        startActivity(intent);
+
+                        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("posts_images");
+                        StorageReference imgfilePath = storageRef.child("images/stars.jpg");
+
+                        imgfilePath.putFile(Uri.parse(String.valueOf(R.drawable.data_structure)));
+
+
                         break;
                     case R.id.nav_my_posts:
                         Toast.makeText(HomeActivity.this, "My Posts", Toast.LENGTH_SHORT).show();
@@ -117,35 +104,33 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(HomeActivity.this, "My Requests", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_my_editable_profile:
-                        Intent intent2 = new Intent(HomeActivity.this, EditableProfile.class);
-                        startActivity(intent2);
+                        Toast.makeText(HomeActivity.this, "Edit Profile", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_logout:
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent3 = new Intent(HomeActivity.this, LoginActivity.class);
+                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         finish();
-                        startActivity(intent3);
-
+                        startActivity(intent);
+                        break;
+                    case R.id.notification_fragment:
+                        replaceFragment(new NotificationFragment());
+                        break;
+                    case R.id.received_notification_fragment:
+                        replaceFragment(new ReceivedNotificationFragment());
+                        break;
+                    case R.id.home:
+                        replaceFragment(new PostsFragment());
                         break;
                     default:
                         break;
                 }
 
 
-//                drawerLayout.closeDrawer(GravityCompat.START);
+//                drawerLayout.close();
                 return true;
             }
         });
-
-        //here we how assign the name and the img of user that in nav header
-        // and i do it in ( setDataToNavHeader ) method.
-
-
-//        View navheader = nav_view.getHeaderView(0);
-//
-//        TextView usernameHeader = navheader.findViewById(R.id.username_nav_header);
-//        usernameHeader.setText("Abd");
 
 
         //////////////////////////////////////////////////////
@@ -198,7 +183,6 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        setDataToNavHeader();
     }
 
 
@@ -339,50 +323,11 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
-
-    private void setDataToNavHeader() {
-        daoProfile.get().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
-                for (DataSnapshot profilesnap : snapshot.getChildren()) {
-
-                    Profile_info profile = profilesnap.getValue(Profile_info.class);
-
-                    if (username_Id.equals(profile.getUserId())) {
-
-                        View navheader = nav_view.getHeaderView(0);
-
-                        TextView usernameHeader = navheader.findViewById(R.id.username_nav_header);
-                        usernameHeader.setText(profile.getName());
-
-                        ImageView imageView = navheader.findViewById(R.id.img_nav_header);
-                        if (!isDestroyed()){
-                            Glide.with(HomeActivity.this).load(profile.getImg()).fitCenter().centerCrop().into(imageView);
-
-                        }
-
-                    }
-
-
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
     @Override
-    public void onBackPressed () {
+    public void onBackPressed() {
         // Call finish() to exit the app when back button is pressed
         finish();
     }
+
 }
 
