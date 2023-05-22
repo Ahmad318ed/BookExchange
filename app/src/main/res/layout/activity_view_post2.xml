@@ -50,11 +50,11 @@
 
                 <ImageView
                     android:id="@+id/user_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/profile_none" />
+                    android:src="@drawable/profile" />
 
                 <TextView
                     android:id="@+id/username_view"

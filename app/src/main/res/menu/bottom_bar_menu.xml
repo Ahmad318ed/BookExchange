@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/post"
-        android:icon="@drawable/post_book"
+        android:icon="@drawable/posts"
         android:title="Posts"/>
 
     <item
         android:id="@+id/request"
-        android:icon="@drawable/education_book"
+        android:icon="@drawable/request"
         android:title="Requests"/>
 
 

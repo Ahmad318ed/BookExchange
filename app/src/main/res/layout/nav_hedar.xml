@@ -21,27 +21,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imgCard"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="50dp"
             >
             <ImageView
-                android:id="@+id/img_profile_post"
+                android:id="@+id/img_nav_header"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
-                android:src="@color/fog_dark"
+                android:src="@drawable/default_profile_img"
                 />
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:id="@+id/username_post"
+            android:id="@+id/username_nav_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="9dp"
+            android:layout_marginStart="12dp"
             android:layout_toEndOf="@+id/imgCard"
             android:layout_gravity="center"
             android:fontFamily="@font/hellix_medium"
             android:text="Abdelhadi Alothman"
             android:textColor="@color/fog_dark"
-            android:textSize="18sp" />
+            android:textSize="19sp" />
 
 
 
