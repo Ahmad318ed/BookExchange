@@ -42,6 +42,7 @@ import android.widget.Toast;
 import com.example.bookexchange.R;
 import com.example.bookexchange.dao.DAOPost;
 import com.example.bookexchange.models.Post;
+import com.example.bookexchange.ui.fragments.MyPostsFragment;
 import com.example.bookexchange.ui.fragments.NotificationFragment;
 import com.example.bookexchange.ui.fragments.PostsFragment;
 import com.example.bookexchange.ui.fragments.ReceivedNotificationFragment;
@@ -98,7 +99,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         break;
                     case R.id.nav_my_posts:
-                        Toast.makeText(HomeActivity.this, "My Posts", Toast.LENGTH_SHORT).show();
+                        replaceFragment(new MyPostsFragment());
                         break;
                     case R.id.nav_my_requests:
                         Toast.makeText(HomeActivity.this, "My Requests", Toast.LENGTH_SHORT).show();

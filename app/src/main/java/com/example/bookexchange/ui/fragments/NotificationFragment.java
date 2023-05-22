@@ -107,25 +107,6 @@ public class NotificationFragment extends Fragment {
                 }
 
 
-//                for (DataSnapshot idSnapshot : snapshot.getChildren()) {
-//                    String id = idSnapshot.getKey(); // Get the ID (child key) under the "Notification" node
-//
-//                    for (DataSnapshot pushSnapshot : idSnapshot.getChildren()) {
-//                        String pushKey = pushSnapshot.getKey(); // Get the dynamically generated push key
-//
-//                        // Access the child node data using the push key
-//                        Notification notification = pushSnapshot.getValue(Notification.class);
-//
-//
-//
-//                        notificationList.add(notification);
-//                        myadapter.notifyDataSetChanged();
-//
-//
-//                    }
-//
-//
-//                }.
 
             }
 

@@ -176,7 +176,6 @@ public class CreatePostActivity extends AppCompatActivity {
                                         imgfilePath.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                             @Override
                                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                Toast.makeText(CreatePostActivity.this, "tests", Toast.LENGTH_SHORT).show();
 
                                                 Handler handler = new Handler();
                                                 handler.postDelayed(new Runnable() {
@@ -205,7 +204,7 @@ public class CreatePostActivity extends AppCompatActivity {
                                                             @Override
                                                             public void onSuccess(Void unused) {
 
-                                                                Toast.makeText(CreatePostActivity.this, "good db", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(CreatePostActivity.this, "The book has been added", Toast.LENGTH_SHORT).show();
 
                                                                 onBackPressed();
                                                             }
@@ -214,10 +213,9 @@ public class CreatePostActivity extends AppCompatActivity {
                                                             public void onFailure(@NonNull Exception e) {
                                                                 onBackPressed();
 
-                                                                Toast.makeText(CreatePostActivity.this, "wrong db", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(CreatePostActivity.this, "Something Wrong ):", Toast.LENGTH_SHORT).show();
                                                             }
                                                         });
-                                                        onBackPressed();
 
 
 

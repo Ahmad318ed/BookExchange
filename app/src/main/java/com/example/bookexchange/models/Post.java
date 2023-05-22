@@ -8,6 +8,7 @@ public class Post implements Serializable {
             , bookCollege, bookPrice
             , bookDetails, bookEdition, bookStates;
     String postDate;
+    String postID;
     String img;
 
     public Post() {
@@ -36,6 +37,14 @@ public class Post implements Serializable {
         this.bookCollege = bookCollege;
         this.bookPrice = bookPrice;
         this.bookSellerName = bookSellerName;
+    }
+
+    public String getPostID() {
+        return postID;
+    }
+
+    public void setPostID(String postID) {
+        this.postID = postID;
     }
 
     public String getBookSellerName() {

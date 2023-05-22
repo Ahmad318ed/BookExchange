@@ -1,6 +1,7 @@
 package com.example.bookexchange.adapters;
 
 import android.content.Context;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     Context context;
     List<Post> myPostArray;
+
     SelectPostItemListener selectPostItemListener;
 
     public PostAdapter() {

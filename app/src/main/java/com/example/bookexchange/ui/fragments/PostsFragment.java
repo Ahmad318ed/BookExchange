@@ -58,19 +58,20 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
     public static PostAdapter myadapter;
     FirebaseAuth auth;
     FirebaseUser user;
+
+    String currentUserID;
     public static List<Post> postList = new ArrayList<>();
 
     DAOPost daoPost;
     DAONotification daoNotification;
     DatabaseReference databaseReference;
-    SwipeRefreshLayout swipeRefreshLayout;
-    private boolean fabShouldBeHidden = false; // Flag to keep track of FAB visibility
+    private boolean fabShouldBeHidden = false;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.from(getContext()).inflate(R.layout.fragment_posts, container, false);
-        
+
         fabShouldBeHidden = false;
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -82,7 +83,8 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
         });
 
 
-
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
         daoPost = new DAOPost();
         daoNotification = new DAONotification();
         postList.clear();
@@ -91,6 +93,7 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
         recyclerView = view.findViewById(R.id.rv_post);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
+        currentUserID = user.getUid();
 
         daoPost.get().addValueEventListener(new ValueEventListener() {
             @Override
@@ -98,16 +101,26 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
 
 
                 for (DataSnapshot postsnap : snapshot.getChildren()) {
+                    String pushKey = postsnap.getKey(); // Get the dynamically generated push key
 
                     Post post = postsnap.getValue(Post.class);
 
 
-                    postList.add(post);
 
-                    myadapter.notifyDataSetChanged();
+                    if (!(post.getBookSellerId().equals(currentUserID))) {
+
+
+
+                        postList.add(post);
+
+
+
+                    }
+
 
 
                 }
+                myadapter.notifyDataSetChanged();
 
             }
 
@@ -121,40 +134,48 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
         myadapter = new PostAdapter(requireContext(), postList, this);
         recyclerView.setAdapter(myadapter);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
-                        .findLastVisibleItemPosition();
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && !(lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1)) {
-                    HomeActivity.fab.show();
-                }
-                super.onScrollStateChanged(recyclerView, newState);
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
+//                        .findLastVisibleItemPosition();
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE && !(lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1)) {
+//                    HomeActivity.fab.show();
+//                }
+//                super.onScrollStateChanged(recyclerView, newState);
+//
+//            }
+//
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                // Get the last visible item position
+//                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
+//                        .findLastVisibleItemPosition();
+//
+//                // Check if the last visible item is the last item in the RecyclerView
+//                if (lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
+//                    // Hide the FAB and set flag to true
+//                    HomeActivity.fab.hide();
+//                    fabShouldBeHidden = true;
+//                } else {
+//                    // Set flag to false and show the FAB
+//                    fabShouldBeHidden = false;
+//                    HomeActivity.fab.show();
+//                }
+//
+//            }
+//        });
 
-            }
 
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                // Get the last visible item position
-                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
-                        .findLastVisibleItemPosition();
 
-                // Check if the last visible item is the last item in the RecyclerView
-                if (lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
-                    // Hide the FAB and set flag to true
-                    HomeActivity.fab.hide();
-                    fabShouldBeHidden = true;
-                } else {
-                    // Set flag to false and show the FAB
-                    fabShouldBeHidden = false;
-                    HomeActivity.fab.show();
-                }
-
-            }
-        });
 
         return view;
     }
+
+
+
+
+
 
     // Declare the launcher at the top of your Activity/Fragment:
     private final ActivityResultLauncher<String> requestPermissionLauncher =
@@ -165,24 +186,6 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
                     // TODO: Inform user that that your app will not show notifications.
                 }
             });
-
-    private void askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.POST_NOTIFICATIONS) ==
-                    PackageManager.PERMISSION_GRANTED) {
-                // FCM SDK (and your app) can post notifications.
-            } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
-                // TODO: display an educational UI explaining to the user the features that will be enabled
-                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
-                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-                //       If the user selects "No thanks," allow the user to continue without notifications.
-            } else {
-                // Directly ask for the permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
-            }
-        }
-    }
 
 
     @Override
@@ -248,6 +251,7 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
                             for (DataSnapshot pushSnapshot : idSnapshot.getChildren()) {
                                 Notification notification = pushSnapshot.getValue(Notification.class);
 
+
                                 if (notification.getUserName().equals(user.getDisplayName()) && notification.getBookName().equals(post.getBookName())) {
                                     // Notification already exists
                                     notificationExists = true;
@@ -285,6 +289,11 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
             Toast.makeText(requireContext(), "You Can not Press Take to your Own Book !", Toast.LENGTH_LONG).show();
         }
 
+
+    }
+
+    @Override
+    public void onItemDeleteClicked(Post post, FirebaseUser currentUser) {
 
     }
 
