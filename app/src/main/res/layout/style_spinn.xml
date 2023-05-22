@@ -6,7 +6,7 @@
     android:paddingEnd="40dp"
     android:padding="10dp"
     android:textColor="@color/fog_dark"
-    android:fontFamily="@font/arabic"
+    android:fontFamily="@font/hellix_medium"
     android:text="Test"
     >
 
