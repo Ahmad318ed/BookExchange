@@ -42,21 +42,6 @@ public class Profile_info {
         SelectedItem = selectedItem;
     }
 
-//    public Profile_info(String name, String collage, String facebook_link, String instagram_link, String phoneNum, String countryNum, String whatsAppNum, String username, String userId, String major, int selectedItem) {
-//        this.name = name;
-//        this.collage = collage;
-//        this.facebook_link = facebook_link;
-//        this.instagram_link = instagram_link;
-//        this.phoneNum = phoneNum;
-//        this.countryNum = countryNum;
-//        this.whatsAppNum = whatsAppNum;
-//        this.username = username;
-//        this.userId = userId;
-//        this.major = major;
-//        SelectedItem = selectedItem;
-//    }
-
-
     public String getName() {
         return name;
     }

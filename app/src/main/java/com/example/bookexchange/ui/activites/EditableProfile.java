@@ -116,6 +116,7 @@ public class EditableProfile extends AppCompatActivity {
                 String major = edtMajor.getText().toString().trim();
 
 
+
                 if (!name.isEmpty()) {
 
                     if (!(spinner1.getSelectedItem().toString().equals("Collage"))) {
@@ -146,7 +147,7 @@ public class EditableProfile extends AppCompatActivity {
 
                                                         str_imageSelectedURl = uri.toString();
 
-                                                        Profile_info profile = new Profile_info(name, spinner1Value, facebookLink, instagramLink, str_imageSelectedURl, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
+                                                        Profile_info profile = new Profile_info(name, spinner1Value, facebookLink, instagramLink,str_imageSelectedURl, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
 
 
                                                         daoProfile.add(profile).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -177,7 +178,7 @@ public class EditableProfile extends AppCompatActivity {
                                     } else {
 
 
-                                        Profile_info profile = new Profile_info(name, spinner1Value, facebookLink, instagramLink,str_imageSelectedURl, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
+                                        Profile_info profile = new Profile_info(name, spinner1Value, facebookLink, instagramLink, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
 
 
                                         daoProfile.add(profile).addOnSuccessListener(new OnSuccessListener<Void>() {
