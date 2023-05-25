@@ -53,17 +53,6 @@
                 android:src="@drawable/book_name" />
 
 
-            <EditText
-                android:id="@+id/ed_username_request"
-                style="@style/MyEditText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_margin="10dp"
-                android:drawableLeft="@drawable/person"
-                android:drawablePadding="10dp"
-                android:hint="Your name"
-                android:inputType="text"
-                android:paddingEnd="20dp" />
 
             <EditText
                 android:id="@+id/ed_book_name_request"
@@ -80,7 +69,7 @@
 
 
             <EditText
-                android:id="@+id/ed_book_collage_request"
+                android:id="@+id/ed_book_edition_request"
                 style="@style/MyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -157,13 +146,22 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="20dp"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890أبتثجحخدذرزسشصضطظعغفقكلمنهـويَؤأئء.,)(*%$ّآلآ\n "
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890أبتثجحخدذرزسشصضطظعغفقكلمنهـويَؤاأئ ةء.,)(*%$ّآلآ\n "
                 android:gravity="top"
                 android:hint="Details.."
                 android:inputType="text"
                 android:maxLines="4"
                 android:padding="5dp"
                 android:paddingEnd="20dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar_request"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -209,10 +207,10 @@
     </androidx.core.widget.NestedScrollView>
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_camera_request"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/img_camera_request"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="35dp"
@@ -221,6 +219,5 @@
         android:src="@drawable/baseline_photo_camera_24"
         app:backgroundTint="@color/orange_dark"
         app:rippleColor="@color/orange_light" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

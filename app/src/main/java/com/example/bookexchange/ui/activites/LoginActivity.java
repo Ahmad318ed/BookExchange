@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookexchange.R;
+import com.example.bookexchange.dao.DAOProfileInfo;
 import com.example.bookexchange.dao.DAOUser;
 import com.example.bookexchange.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,8 +32,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -66,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
 
             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-            if (firebaseAuth.getCurrentUser() != null) {
+            if (firebaseAuth.getCurrentUser() != null && firebaseAuth.getCurrentUser().isEmailVerified()) {
                 Intent intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
                 finish();
@@ -86,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         auth = FirebaseAuth.getInstance();
+
         email_t = findViewById(R.id.ed_email_log);
         password = findViewById(R.id.ed_pass_log);
         btn_login = findViewById(R.id.btn_take);
@@ -94,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 //
         //Database Class : it contain all the methods that u want from real time data base .
         DAOUser daoUser = new DAOUser();
+        DAOProfileInfo daoProfileInfo=new DAOProfileInfo();
         //Dialog For loading time
         dialog = new ProgressDialog(LoginActivity.this);
         dialog.setTitle("Loading");
@@ -127,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                                     FirebaseUser user1 = authResult.getUser();
                                     String name = user1.getDisplayName();
                                     String id = user1.getUid();
-                                    String emaill=user1.getEmail();
+                                    String emaill = user1.getEmail();
 
 
 
@@ -144,9 +152,48 @@ public class LoginActivity extends AppCompatActivity {
                                             }
                                         });
 
-                                        Toast.makeText(LoginActivity.this, "Welcome " +name, Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                                        finish();
+                                        Toast.makeText(LoginActivity.this, "Welcome " + name, Toast.LENGTH_LONG).show();
+                                        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+                                        daoProfileInfo.get().addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                                for (DataSnapshot data:snapshot.getChildren()) {
+
+
+
+                                                    if(Objects.equals(data.getKey(), user1.getUid())){
+
+
+                                                        Toast.makeText(LoginActivity.this, "Exist", Toast.LENGTH_SHORT).show();
+                                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                                        finish();
+
+
+
+                                                    }else{
+                                                        Toast.makeText(LoginActivity.this, "Not Exist", Toast.LENGTH_SHORT).show();
+                                                        startActivity(new Intent(LoginActivity.this, EditableProfile.class));
+                                                        finish();
+
+                                                    }
+
+
+
+                                                }
+
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
+
+
 
                                     } else {
 

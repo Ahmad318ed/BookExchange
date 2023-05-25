@@ -170,7 +170,6 @@ public class CreatePostActivity extends AppCompatActivity {
                                         Toast.makeText(CreatePostActivity.this, "Please wait ..", Toast.LENGTH_SHORT).show();
 
 
-
                                         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("posts_images");
                                         StorageReference imgfilePath = storageRef.child(selectedImageUri.getLastPathSegment());
                                         imgfilePath.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -199,7 +198,7 @@ public class CreatePostActivity extends AppCompatActivity {
                                                         String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
 
 
-                                                         post = new Post(imageSelectedURl, username, userEmail, username_Id, bookName, bookEdition, spinner1Value, spinner2Value, spinner3Value, detailsText, dateFormat);
+                                                        post = new Post(imageSelectedURl, username, userEmail, username_Id, bookName, bookEdition, spinner1Value, spinner2Value, spinner3Value, detailsText, dateFormat);
                                                         daoPost.add(post).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void unused) {
@@ -218,8 +217,6 @@ public class CreatePostActivity extends AppCompatActivity {
                                                         });
 
 
-
-
                                                     }
                                                 });
 
@@ -236,7 +233,6 @@ public class CreatePostActivity extends AppCompatActivity {
 
 
                                         ////
-
 
 
                                     } else {

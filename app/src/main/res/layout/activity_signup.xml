@@ -43,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="35dp"
                 android:paddingEnd="35dp"
-                android:text="Fill out all Information\n   to create a new account"
+                android:layout_marginTop="8dp"
+                android:text="Fill out all Information\nto create a new account"
                 android:textAlignment="textStart"
                 android:fontFamily="@font/hellix_regular"
                 android:textColor="@color/fog_4"
@@ -64,6 +65,7 @@
                     android:layout_height="50dp"
                     style="@style/MyEditText"
                     android:layout_marginTop="10dp"
+                    android:paddingEnd="20dp"
                     android:ems="14"
                     android:hint="Name"
                     android:inputType="textPersonName"
@@ -76,6 +78,7 @@
                     style="@style/MyEditText"
                     android:layout_marginTop="10dp"
                     android:hint="Email"
+                    android:paddingEnd="20dp"
                     android:ems="14"
                     android:inputType="textEmailAddress"
                     />
@@ -87,6 +90,7 @@
                     style="@style/MyEditText"
                     android:layout_marginTop="10dp"
                     android:hint="Password"
+                    android:paddingEnd="20dp"
                     android:ems="14"
                     android:inputType="textPassword"
                     />

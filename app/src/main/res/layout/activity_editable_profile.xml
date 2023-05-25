@@ -76,27 +76,21 @@
                 android:textColor="@color/fog_4"
                 android:textSize="19sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/hellix_medium"
-                android:text=" Your name"
-                android:textColor="@color/fog_4" />
 
-            <EditText
-                android:id="@+id/edt_name_EditableProfile"
-                style="@style/MyEditText"
+
+            <TextView
+                android:id="@+id/tv_name_EditableProfile"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_gravity="start"
+                android:gravity="center"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="20dp"
-                android:hint="Full Name"
-                android:inputType="textPersonName"
-                android:paddingEnd="20dp" />
+                android:text="Name"
+                android:fontFamily="@font/hellix_regular"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                 />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -110,12 +104,11 @@
             <Spinner
                 android:id="@+id/spinner1_editable_profile"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="7dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
-
                 android:background="@drawable/style_spinner" />
 
             <TextView

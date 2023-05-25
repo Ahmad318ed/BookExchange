@@ -3,33 +3,33 @@ package com.example.bookexchange.ui.activites;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.bookexchange.R;
 import com.example.bookexchange.models.Post;
-import com.example.bookexchange.models.User;
-import com.example.bookexchange.ui.fragments.PostsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
+import com.makeramen.roundedimageview.RoundedImageView;
+
+import java.net.URI;
+import java.net.URL;
 
 public class ViewPostActivity extends AppCompatActivity {
 
-    TextView tv_username,tv_user_email,tv_book_name,tv_book_edition,tv_book_price,tv_book_collage,tv_book_details,tv_book_states;
-    ImageView user_image;
+    TextView tv_username, tv_user_email, tv_book_name, tv_book_edition, tv_book_price, tv_book_collage, tv_book_details, tv_book_states;
+    RoundedImageView user_image;
     FirebaseAuth auth;
     FirebaseUser user;
-
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_post2);
+        setContentView(R.layout.activity_view_post);
 
         inflateComponents();
 
@@ -37,16 +37,16 @@ public class ViewPostActivity extends AppCompatActivity {
         user = auth.getCurrentUser();
 
 
-        Post post=(Post) getIntent().getSerializableExtra("post");
+        Post post = (Post) getIntent().getSerializableExtra("post");
+
+
+        String username = post.getBookSellerName();
+        String userEmail = post.getBookSellerEmail();
+        String userId = post.getBookSellerId();
 
 
 
-         String username=post.getBookSellerName();
-         String userEmail=post.getBookSellerEmail();
-         String userId=post.getBookSellerId();
-
-
-         user_image.setImageURI(user.getPhotoUrl());
+//        Glide.with(ViewPostActivity.this).load(user.getPhotoUrl()).fitCenter().centerCrop().into(user_image);
         tv_username.setText(username);
         tv_user_email.setText(userEmail);
         tv_book_name.setText(post.getBookName());
@@ -57,24 +57,19 @@ public class ViewPostActivity extends AppCompatActivity {
         tv_book_details.setText(post.getBookDetails());
 
 
-
-
-
-
     }
 
     private void inflateComponents() {
 
-        user_image=findViewById(R.id.user_image);
-        tv_username=findViewById(R.id.username_view);
-        tv_user_email=findViewById(R.id.user_email_view);
-        tv_book_name=findViewById(R.id.book_name_view);
-        tv_book_collage=findViewById(R.id.book_collage_view);
-        tv_book_details=findViewById(R.id.book_details_view);
-        tv_book_edition=findViewById(R.id.book_edition_view);
-        tv_book_states=findViewById(R.id.book_states_view);
-        tv_book_price=findViewById(R.id.book_price_view);
-
+        user_image = findViewById(R.id.user_image);
+        tv_username = findViewById(R.id.username_view);
+        tv_user_email = findViewById(R.id.user_email_view);
+        tv_book_name = findViewById(R.id.book_name_view);
+        tv_book_collage = findViewById(R.id.book_collage_view);
+        tv_book_details = findViewById(R.id.book_details_view);
+        tv_book_edition = findViewById(R.id.book_edition_view);
+        tv_book_states = findViewById(R.id.book_states_view);
+        tv_book_price = findViewById(R.id.book_price_view);
 
 
     }
@@ -82,7 +77,7 @@ public class ViewPostActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this,HomeActivity.class));
+        startActivity(new Intent(this, HomeActivity.class));
         finish();
     }
 }
