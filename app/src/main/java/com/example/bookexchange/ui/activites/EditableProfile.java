@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -48,10 +49,15 @@ public class EditableProfile extends AppCompatActivity {
     public FirebaseAuth auth;
     Spinner spinner1;
     String selectedValue1 = ""; // Initialize a variable to store the selected value
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int MAX_IMAGE_SIZE = 500; // Maximum image size in pixels
+    public static Uri selectedImageUri;
+
     EditText edt_country_num;
     Button btn_edit_country_num;
     FirebaseUser user;
-    EditText edt_name, edtFacebook, edtInstagram, edtWhatsApp, edtMajor;
+    EditText edtFacebook, edtInstagram, edtWhatsApp, edtMajor;
+    TextView edt_name;
     Button btnSave;
     FirebaseUser currentUser;
     DAOProfileInfo daoProfile;
@@ -65,9 +71,7 @@ public class EditableProfile extends AppCompatActivity {
     int SELECT_PICTURE = 200;
 
     // image as URI and as a string
-    Uri uri_selectedImageUri;
     String str_imageSelectedURl;
-
 
 
     @Override
@@ -83,24 +87,26 @@ public class EditableProfile extends AppCompatActivity {
         currentUser = auth.getCurrentUser();
 
 
-
         username = currentUser.getDisplayName();
         username_Id = currentUser.getUid();
-
 
         loadSpinners();
         getSpinnerSelectedItem();
 
 
+        //to select the photo from gallery
+        btn_img_selector.setOnClickListener(v -> pickImageFromGallery());
+
+
+        //to save all the data
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                Toast.makeText(EditableProfile.this, "wait...", Toast.LENGTH_LONG).show();
+                Toast.makeText(EditableProfile.this, "Loading ..", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditableProfile.this, "Please wait ..", Toast.LENGTH_SHORT).show();
 
-
-                String name = edt_name.getText().toString().trim();
                 String facebookLink = edtFacebook.getText().toString().trim();
                 String instagramLink = edtInstagram.getText().toString().trim();
                 String number = edtWhatsApp.getText().toString().trim();
@@ -112,175 +118,164 @@ public class EditableProfile extends AppCompatActivity {
                 String major = edtMajor.getText().toString().trim();
 
 
+                if (!(spinner1.getSelectedItem().toString().equals("Collage"))) {
 
-                if (!name.isEmpty()) {
+                    if (!major.isEmpty()) {
 
-                    if (!(spinner1.getSelectedItem().toString().equals("Collage"))) {
+                        if (!countryNum.isEmpty()) {
 
-                        if (!major.isEmpty()) {
-
-                            if (!countryNum.isEmpty()) {
-
-                                if (facebookLink.isEmpty() && instagramLink.isEmpty() && number.isEmpty()) {
-                                    Toast.makeText(getApplicationContext(), "Please enter at least one contact", Toast.LENGTH_LONG).show();
-
-                                } else {
+                            if (!(facebookLink.isEmpty() && instagramLink.isEmpty() && number.isEmpty())) {
+                                ///////////////
 
 
-                                    StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profile_images");
-                                    if (uri_selectedImageUri != null) {
-                                        StorageReference imgfilePath = storageRef.child(uri_selectedImageUri.getLastPathSegment());
+                                StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profile_images");
+                                StorageReference imgfilePath = storageRef.child(selectedImageUri.getLastPathSegment());
 
 
-                                        imgfilePath.putFile(uri_selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                imgfilePath.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+                                        imgfilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                             @Override
-                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            public void onSuccess(Uri uri) {
+
+                                                str_imageSelectedURl = uri.toString();
 
 
-                                                imgfilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                auth = FirebaseAuth.getInstance();
+                                                user = auth.getCurrentUser();
+
+                                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                        .setPhotoUri(uri)
+                                                        .build();
+                                                user.updateProfile(profileUpdates);
+
+
+                                                Profile_info profile = new Profile_info(username, spinner1Value, facebookLink, instagramLink, str_imageSelectedURl, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
+
+
+                                                daoProfile.add(profile).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
-                                                    public void onSuccess(Uri uri) {
+                                                    public void onSuccess(Void unused) {
 
-                                                        str_imageSelectedURl = uri.toString();
+                                                        Toast.makeText(EditableProfile.this, "The Information has been added", Toast.LENGTH_SHORT).show();
 
-                                                        auth = FirebaseAuth.getInstance();
-                                                        user = auth.getCurrentUser();
+                                                        startActivity(new Intent(getApplicationContext(),CollageActivity.class));
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
 
-                                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                                                .setPhotoUri(uri)
-                                                                .build();
-                                                        user.updateProfile(profileUpdates);
-
-
-
-
-                                                        Profile_info profile = new Profile_info(name, spinner1Value, facebookLink, instagramLink,str_imageSelectedURl, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
-
-
-                                                        daoProfile.add(profile).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void unused) {
-
-                                                                Toast.makeText(EditableProfile.this, "good db", Toast.LENGTH_SHORT).show();
-//                                                                setDataToProfile();
-                                                                onBackPressed();
-                                                            }
-                                                        }).addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                onBackPressed();
-
-                                                                Toast.makeText(EditableProfile.this, "wrong db", Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        });
-
-
+                                                        startActivity(new Intent(getApplicationContext(),CollageActivity.class));
+                                                        Toast.makeText(EditableProfile.this, "Something Wrong ):", Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
 
+
                                             }
                                         });
-
-
-                                    } else {
-
-
-                                        Profile_info profile = new Profile_info(name, spinner1Value, facebookLink, instagramLink, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
-
-
-                                        daoProfile.add(profile).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-
-                                                Toast.makeText(EditableProfile.this, "good db", Toast.LENGTH_SHORT).show();
-                                                // setDataToProfile();
-                                                //onBackPressed();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                // onBackPressed();
-
-                                                Toast.makeText(EditableProfile.this, "wrong db", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-
-
-                                        Toast.makeText(EditableProfile.this, "no image selected.", Toast.LENGTH_SHORT).show();
 
                                     }
+                                });
 
 
-                                } // end of last else{}
-
+                                ///////////////
                             } else {
-                                Toast.makeText(getApplicationContext(), "Please enter your country code", Toast.LENGTH_LONG).show();
+
+                                Toast.makeText(getApplicationContext(), "Please enter at least one contact", Toast.LENGTH_LONG).show();
+
+
                             }
 
-
                         } else {
-                            Toast.makeText(EditableProfile.this, "Please enter your major", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Please enter your country code", Toast.LENGTH_LONG).show();
                         }
 
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "Please Select your collage", Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditableProfile.this, "Please enter your major", Toast.LENGTH_LONG).show();
                     }
 
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "Please enter your full name.", Toast.LENGTH_LONG).show();
+
+                    Toast.makeText(getApplicationContext(), "Please Select your collage", Toast.LENGTH_LONG).show();
                 }
-            }
-        });
 
 
-        //to select the photo from gallery
-        btn_img_selector.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageChooser();
             }
         });
 
 
         setDataToProfile();
+
+
     }
 
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        InputStream input = getContentResolver().openInputStream(uri);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(input, null, options);
+        input.close();
+
+        int width = options.outWidth;
+        int height = options.outHeight;
+        int scale = 1;
+        while (width / 2 >= MAX_IMAGE_SIZE && height / 2 >= MAX_IMAGE_SIZE) {
+            width /= 2;
+            height /= 2;
+            scale *= 2;
+        }
+
+        options = new BitmapFactory.Options();
+        options.inSampleSize = scale;
+        input = getContentResolver().openInputStream(uri);
+        Bitmap bitmap = BitmapFactory.decodeStream(input, null, options);
+        input.close();
+        return bitmap;
+    }
+
+    private void pickImageFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    private Bitmap scaleBitmap(Bitmap bitmap, int maxSize) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        float scale = Math.min((float) maxSize / width, (float) maxSize / height);
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+        return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+    }
 
     // start methods for the Profile image
     /////////////////////////////////
 
-
-    private void imageChooser() {
-
-        // create an instance of the
-        // intent of the type image
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-
-        // pass the constant to compare it
-        // with the returned requestCode
-        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
-    }
 
     // this function is triggered when user
     // selects the image from the imageChooser
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            selectedImageUri = data.getData();
 
-            // compare the resultCode with the
-            // SELECT_PICTURE constant
-            if (requestCode == SELECT_PICTURE) {
-                // Get the url of the image from data
-                uri_selectedImageUri = data.getData();
-                if (null != uri_selectedImageUri) {
-                    // update the preview image in the layout
-                    img_profile.setImageURI(uri_selectedImageUri);
+
+            try {
+                Bitmap bitmap = getBitmapFromUri(selectedImageUri);
+                if (bitmap != null) {
+                    // Scale the bitmap if it is larger than the maximum size
+                    if (bitmap.getWidth() > MAX_IMAGE_SIZE || bitmap.getHeight() > MAX_IMAGE_SIZE) {
+                        bitmap = scaleBitmap(bitmap, MAX_IMAGE_SIZE);
+                    }
+                    btn_img_selector.setImageBitmap(bitmap);
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -326,7 +321,7 @@ public class EditableProfile extends AppCompatActivity {
     }
 
     private void initialData() {
-        edt_name = findViewById(R.id.edt_name_EditableProfile);
+        edt_name = findViewById(R.id.tv_name_EditableProfile);
         edtFacebook = findViewById(R.id.edt_facebook_EditableProfile);
         edtInstagram = findViewById(R.id.edt_instagram_EditableProfile);
         edtWhatsApp = findViewById(R.id.edt_whatsup_EditableProfile);
@@ -395,5 +390,11 @@ public class EditableProfile extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

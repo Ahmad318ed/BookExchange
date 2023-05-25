@@ -1,17 +1,17 @@
 package com.example.bookexchange.models;
 
 
-public class Notification {
+public class NotificationRequest {
 
     public String userID,userName;
     public String notificationDate,notificationID;
 
     public String bookName;
 
-    public Notification() {
+    public NotificationRequest() {
     }
 
-    public Notification(String userID, String userName, String bookName,String notificationDate) {
+    public NotificationRequest(String userID, String userName, String bookName, String notificationDate) {
         this.userID = userID;
         this.userName = userName;
         this.bookName = bookName;

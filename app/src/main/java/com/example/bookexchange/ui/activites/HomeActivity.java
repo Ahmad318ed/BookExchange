@@ -46,6 +46,7 @@ import com.example.bookexchange.dao.DAOProfileInfo;
 import com.example.bookexchange.models.Post;
 import com.example.bookexchange.models.Profile_info;
 import com.example.bookexchange.ui.fragments.MyPostsFragment;
+import com.example.bookexchange.ui.fragments.MyRequestFragment;
 import com.example.bookexchange.ui.fragments.NotificationFragment;
 import com.example.bookexchange.ui.fragments.PostsFragment;
 import com.example.bookexchange.ui.fragments.ReceivedNotificationFragment;
@@ -115,10 +116,10 @@ public class HomeActivity extends AppCompatActivity {
                         replaceFragment(new MyPostsFragment());
                         break;
                     case R.id.nav_my_requests:
-                        Toast.makeText(HomeActivity.this, "My Requests", Toast.LENGTH_SHORT).show();
+                        replaceFragment(new MyRequestFragment());
                         break;
                     case R.id.nav_my_editable_profile:
-                        startActivity(new Intent(HomeActivity.this,EditableProfile.class));
+                        startActivity(new Intent(HomeActivity.this, EditableProfile.class));
 
                         break;
                     case R.id.nav_logout:
@@ -350,41 +351,52 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void setDataToNavHeader() {
-        daoProfile.get().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
 
-                for (DataSnapshot profilesnap : snapshot.getChildren()) {
+        View navheader = nav_view.getHeaderView(0);
 
-                    Profile_info profile = profilesnap.getValue(Profile_info.class);
+        TextView usernameHeader = navheader.findViewById(R.id.username_nav_header);
+        usernameHeader.setText(username);
 
-                    if (username_Id.equals(profile.getUserId())) {
-
-                        View navheader = nav_view.getHeaderView(0);
-
-                        TextView usernameHeader = navheader.findViewById(R.id.username_nav_header);
-                        usernameHeader.setText(profile.getName());
-
-                        ImageView imageView = navheader.findViewById(R.id.img_nav_header);
-                        if (!isDestroyed()){
-                            Glide.with(HomeActivity.this).load(profile.getImg()).fitCenter().centerCrop().into(imageView);
-
-                        }
-
-                    }
+        ImageView imageView = navheader.findViewById(R.id.img_nav_header);
+        Glide.with(HomeActivity.this).load(currentUser.getPhotoUrl()).fitCenter().centerCrop().into(imageView);
 
 
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+//        daoProfile.get().addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//
+//                for (DataSnapshot profilesnap : snapshot.getChildren()) {
+//
+//                    Profile_info profile = profilesnap.getValue(Profile_info.class);
+//
+//                    if (username_Id.equals(profile.getUserId())) {
+//
+//                        View navheader = nav_view.getHeaderView(0);
+//
+//                        TextView usernameHeader = navheader.findViewById(R.id.username_nav_header);
+//                        usernameHeader.setText(profile.getName());
+//
+//                        ImageView imageView = navheader.findViewById(R.id.img_nav_header);
+//                        if (!isDestroyed()){
+//                            Glide.with(HomeActivity.this).load(profile.getImg()).fitCenter().centerCrop().into(imageView);
+//
+//                        }
+//
+//                    }
+//
+//
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
     }
 

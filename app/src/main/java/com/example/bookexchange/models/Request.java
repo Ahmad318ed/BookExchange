@@ -1,20 +1,74 @@
 package com.example.bookexchange.models;
 
-public class Request {
+import java.io.Serializable;
 
-    String bookName,bookSeller,bookCollege,bookPrice;
-    int img;
+public class Request implements Serializable {
+
+    String bookSellerName, bookSellerId, bookSellerEmail, bookName
+            , bookCollege, bookPrice
+            , bookDetails, bookEdition, bookStates;
+    String postDate;
+    String postID;
+    String img;
 
     public Request() {
     }
 
-    public Request(String bookName, String bookSeller,int img,String bookCollege,String bookPrice) {
+    public Request(String img, String bookSellerName, String bookSellerEmail, String bookSellerId
+            , String bookName, String bookEdition, String bookCollege, String bookPrice, String bookStates, String bookDetails, String postDate) {
         this.bookName = bookName;
-        this.img=img;
-        this.bookCollege=bookCollege;
-        this.bookPrice=bookPrice;
-        this.bookSeller=bookSeller;
+        this.bookCollege = bookCollege;
+        this.bookPrice = bookPrice;
+        this.bookSellerName = bookSellerName;
+        this.img = img;
+        this.bookEdition = bookEdition;
+        this.bookStates = bookStates;
+        this.bookDetails = bookDetails;
+        this.bookSellerId = bookSellerId;
+        this.bookSellerEmail = bookSellerEmail;
+        this.postDate = postDate;
 
+
+    }
+
+    public Request(String bookName, String bookSellerName, String bookCollege, String bookPrice, String takersNumbers) {
+        this.bookName = bookName;
+        this.bookCollege = bookCollege;
+        this.bookPrice = bookPrice;
+        this.bookSellerName = bookSellerName;
+    }
+
+
+    public String getBookSellerName() {
+        return bookSellerName;
+    }
+
+    public void setBookSellerName(String bookSellerName) {
+        this.bookSellerName = bookSellerName;
+    }
+
+    public String getBookSellerId() {
+        return bookSellerId;
+    }
+
+    public void setBookSellerId(String bookSellerId) {
+        this.bookSellerId = bookSellerId;
+    }
+
+    public String getBookSellerEmail() {
+        return bookSellerEmail;
+    }
+
+    public void setBookSellerEmail(String bookSellerEmail) {
+        this.bookSellerEmail = bookSellerEmail;
+    }
+
+    public String getBookName() {
+        return bookName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
     }
 
     public String getBookCollege() {
@@ -33,29 +87,51 @@ public class Request {
         this.bookPrice = bookPrice;
     }
 
-    public String getBookSeller() {
-        return bookSeller;
+    public String getBookDetails() {
+        return bookDetails;
     }
 
-    public void setBookSeller(String bookSeller) {
-        this.bookSeller = bookSeller;
+    public void setBookDetails(String bookDetails) {
+        this.bookDetails = bookDetails;
     }
 
-    public String getBookName() {
-        return bookName;
+    public String getBookEdition() {
+        return bookEdition;
     }
 
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
+    public void setBookEdition(String bookEdition) {
+        this.bookEdition = bookEdition;
     }
 
+    public String getBookStates() {
+        return bookStates;
+    }
 
+    public void setBookStates(String bookStates) {
+        this.bookStates = bookStates;
+    }
 
-    public int getImg() {
+    public String getPostDate() {
+        return postDate;
+    }
+
+    public void setPostDate(String postDate) {
+        this.postDate = postDate;
+    }
+
+    public String getPostID() {
+        return postID;
+    }
+
+    public void setPostID(String postID) {
+        this.postID = postID;
+    }
+
+    public String getImg() {
         return img;
     }
 
-    public void setImg(int img) {
+    public void setImg(String img) {
         this.img = img;
     }
 }

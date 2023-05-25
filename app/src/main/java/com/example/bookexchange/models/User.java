@@ -4,6 +4,8 @@ public class User {
 
     String email,name,id;
 
+    String image;
+
 
     public User() {
     }
@@ -14,6 +16,14 @@ public class User {
         this.name=name;
         this.id=id;
 
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getId() {

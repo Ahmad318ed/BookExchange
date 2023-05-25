@@ -21,28 +21,26 @@
         android:theme="@style/Theme.BookExchange"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activites.CollageActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.activites.EditableProfile"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".ui.activites.CreatePostActivity"
-            android:exported="true"/>
-
-
-
+            android:exported="true" />
+        <activity
+            android:name=".ui.activites.CreateRequestActivity"
+            android:exported="true" />
         <activity
             android:name=".ui.activites.MainActivity"
-            android:exported="true" >
-
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
-
-
         <activity
             android:name=".ui.activites.Profile"
             android:exported="true" />
@@ -53,13 +51,14 @@
             android:name=".ui.activites.ViewPostActivity"
             android:exported="true" />
         <activity
+            android:name=".ui.activites.ViewRequestActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.activites.SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activites.LoginActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

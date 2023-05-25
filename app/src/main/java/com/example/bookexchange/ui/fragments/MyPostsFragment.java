@@ -20,8 +20,6 @@ import android.widget.Toast;
 
 import com.example.bookexchange.R;
 import com.example.bookexchange.adapters.MyPostAdapter;
-import com.example.bookexchange.adapters.NotificationAdapter;
-import com.example.bookexchange.adapters.PostAdapter;
 import com.example.bookexchange.adapters.SelectPostItemListener;
 import com.example.bookexchange.dao.DAOPost;
 import com.example.bookexchange.models.Post;

@@ -8,32 +8,78 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bookexchange.R;
+import com.example.bookexchange.dao.DAOPost;
+import com.example.bookexchange.dao.DAORequest;
+import com.example.bookexchange.models.Post;
+import com.example.bookexchange.models.Request;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CreateRequestActivity extends AppCompatActivity {
     Spinner spinner1, spinner2, spinner3;
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int MAX_IMAGE_SIZE = 500; // Maximum image size in pixels
 
+    public static String username, userEmail, username_Id;
+
+    Request request;
+
+    Button btn_submit;
+    String selectedValue1 = ""; // Initialize a variable to store the selected value
+    String selectedValue2 = ""; // Initialize a variable to store the selected value
+    String selectedValue3 = ""; // Initialize a variable to store the selected value
 
     ImageView imageView, imagepicker;
+    FirebaseUser currentUser;
+    DAORequest daoRequest;
+
+    public FirebaseAuth auth;
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
+
+    public static Uri selectedImageUri;
+    String imageSelectedURl;
+
+
+    ImageButton imagePicker;
+    EditText ed_name, ed_book_name, ed_book_edition, details;
+    private ProgressBar mProgressBar;
 
 
     @Override
@@ -42,24 +88,208 @@ public class CreateRequestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_request);
 
 
+        auth = FirebaseAuth.getInstance();
+        daoRequest = new DAORequest();
+        currentUser = auth.getCurrentUser();
+        btn_submit = findViewById(R.id.btn_submit_request);
+        mProgressBar = findViewById(R.id.progressBar_request);
+        ed_book_name = findViewById(R.id.ed_book_name_request);
+        ed_book_edition = findViewById(R.id.ed_book_edition_request);
+        details = findViewById(R.id.ed_details_request);
+        loadSpinners();
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedValue1 = parent.getItemAtPosition(position).toString(); // Get the selected item from the spinner and store it in the selectedValue variable
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedValue1 = parent.getItemAtPosition(0).toString();
+            }
+        });
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedValue2 = parent.getItemAtPosition(position).toString(); // Get the selected item from the spinner and store it in the selectedValue variable
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedValue2 = parent.getItemAtPosition(0).toString();
+            }
+        });
+        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedValue3 = parent.getItemAtPosition(position).toString(); // Get the selected item from the spinner and store it in the selectedValue variable
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedValue3 = parent.getItemAtPosition(0).toString();
+            }
+        });
+
+
         imageView = findViewById(R.id.book_imageView_request);
-        imagepicker = findViewById(R.id.fab_camera_request);
-        imagepicker.setOnClickListener(new View.OnClickListener() {
+        imagePicker = findViewById(R.id.img_camera_request);
+        imagePicker.setOnClickListener(v -> pickImageFromGallery());
+
+
+
+
+        btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                username = currentUser.getDisplayName();
+                userEmail = currentUser.getEmail();
+                username_Id = currentUser.getUid();
+                String bookName = ed_book_name.getText().toString().trim();
+                String bookEdition = ed_book_edition.getText().toString().trim();
+                String detailsText = details.getText().toString().trim();
+                String spinner1Value = selectedValue1;
+                String spinner2Value = selectedValue2;
+                String spinner3Value = selectedValue3;
 
-                pickImageFromGallery();
+                if (!bookName.isEmpty()) {
+
+                    if (!bookEdition.isEmpty()) {
+
+                        if (!(selectedImageUri == null)) {
+
+                            if (!(spinner1.getSelectedItem().toString() == "None")) {
+
+
+                                if (!(spinner2.getSelectedItem().toString() == "None")) {
+
+
+                                    if (!(spinner3.getSelectedItem().toString() == "None")) {
+
+
+                                        Toast.makeText(CreateRequestActivity.this, "Loading ..", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(CreateRequestActivity.this, "Please wait ..", Toast.LENGTH_SHORT).show();
+
+
+                                        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("request_images");
+                                        StorageReference imgfilePath = storageRef.child(selectedImageUri.getLastPathSegment());
+                                        imgfilePath.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                                Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+
+                                                        mProgressBar.setProgress(0);
+                                                    }
+                                                }, 500);
+
+
+                                                imgfilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                    @Override
+                                                    public void onSuccess(Uri uri) {
+
+
+                                                        imageSelectedURl = uri.toString();
+
+
+                                                        Date date = Calendar.getInstance().getTime();
+                                                        String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
+
+
+                                                        request = new Request(imageSelectedURl, username, userEmail, username_Id, bookName, bookEdition, spinner1Value, spinner2Value, spinner3Value, detailsText, dateFormat);
+                                                        daoRequest.add(request).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void unused) {
+
+                                                                Toast.makeText(CreateRequestActivity.this, "The book has been added", Toast.LENGTH_SHORT).show();
+
+                                                                onBackPressed();
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                onBackPressed();
+
+                                                                Toast.makeText(CreateRequestActivity.this, "Something Wrong ):", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+
+
+                                                    }
+                                                });
+
+                                            }
+                                        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+
+                                                double progress = 100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount();
+
+                                                mProgressBar.setProgress((int) progress);
+                                            }
+                                        });
+
+
+                                        ////
+
+
+                                    } else {
+
+                                        Toast.makeText(getApplicationContext(), "Plz put a States for the Book !", Toast.LENGTH_LONG).show();
+
+
+                                    }
+
+                                } else {
+
+                                    Toast.makeText(getApplicationContext(), "Plz put a Price for the Book !", Toast.LENGTH_LONG).show();
+
+
+                                }
+
+                            } else {
+
+                                Toast.makeText(getApplicationContext(), "Plz put a Collage for the Book !", Toast.LENGTH_LONG).show();
+
+
+                            }
+
+
+                        } else {
+
+                            Toast.makeText(getApplicationContext(), "Plz put a image for the Book !", Toast.LENGTH_LONG).show();
+
+                        }
+
+                    } else {
+
+                        ed_book_edition.setError("Plz put a Edition for the Book !");
+
+                    }
+
+                } else {
+
+                    ed_book_name.setError("Plz set a name for the Book !");
+
+                }
+
+
+                ///////////////////////////END OF SUBMIT
 
 
             }
         });
 
 
-        loadSpinners();
 
-
-    }
+    }//End of OnCreate
 
 
     @Override
@@ -67,7 +297,9 @@ public class CreateRequestActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri selectedImageUri = data.getData();
+            selectedImageUri = data.getData();
+
+
             try {
                 Bitmap bitmap = getBitmapFromUri(selectedImageUri);
                 if (bitmap != null) {
@@ -173,5 +405,11 @@ public class CreateRequestActivity extends AppCompatActivity {
         return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
+    }
 }

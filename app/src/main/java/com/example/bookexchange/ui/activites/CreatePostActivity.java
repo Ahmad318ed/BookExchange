@@ -170,7 +170,6 @@ public class CreatePostActivity extends AppCompatActivity {
                                         Toast.makeText(CreatePostActivity.this, "Please wait ..", Toast.LENGTH_SHORT).show();
 
 
-
                                         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("posts_images");
                                         StorageReference imgfilePath = storageRef.child(selectedImageUri.getLastPathSegment());
                                         imgfilePath.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -199,7 +198,7 @@ public class CreatePostActivity extends AppCompatActivity {
                                                         String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
 
 
-                                                         post = new Post(imageSelectedURl, username, userEmail, username_Id, bookName, bookEdition, spinner1Value, spinner2Value, spinner3Value, detailsText, dateFormat);
+                                                        post = new Post(imageSelectedURl, username, userEmail, username_Id, bookName, bookEdition, spinner1Value, spinner2Value, spinner3Value, detailsText, dateFormat);
                                                         daoPost.add(post).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void unused) {
@@ -218,8 +217,6 @@ public class CreatePostActivity extends AppCompatActivity {
                                                         });
 
 
-
-
                                                     }
                                                 });
 
@@ -236,7 +233,6 @@ public class CreatePostActivity extends AppCompatActivity {
 
 
                                         ////
-
 
 
                                     } else {
@@ -322,15 +318,15 @@ public class CreatePostActivity extends AppCompatActivity {
         spinner3 = findViewById(R.id.spinner3_post);
 
         String[] value1 = {"None", "Information  technology  collage", "College  of  Arts  and  Sciences", "College  of  Da'wah  and  Fundamentals  of  Religion", "Sheikh  Noah  College  of  Sharia  and  Law"
-                , "Faculty  of  Educational  Sciences", "College  of  arts  and  sciences", "College  of  Arts  and  Islamic  Architecture", "College  Money  and  Business", "Faculty  of  Al  Maliki  Jurisprudence"
-                , "Faculty  of  Al  Hanafi  Jurisprudence", "Faculty  of  Al  Shafi'i  Jurisprudence ", "College  Graduate  Studies"};
+                , "Faculty  of  Educational  Sciences", "College  of  Arts  and  Islamic  Architecture", "College  Money  and  Business"
+                , "Faculty  of  Al  Hanafi Maliki Shafi'i Jurisprudence", "College  Graduate  Studies"};
         ArrayList<String> arrayList1 = new ArrayList<>(Arrays.asList(value1));
         ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<>(this, R.layout.style_spinn, arrayList1);
         spinner1.setAdapter(arrayAdapter1);
         spinner1.setSelection(0);
 
 
-        String[] value2 = {"None", "Free", "0.5", "1", "1.5"};
+        String[] value2 = {"None", "Free", "0.5 JD", "1 JD", "1.5 JD","2.0 JD"};
         ArrayList<String> arrayList2 = new ArrayList<>(Arrays.asList(value2));
         ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<>(this, R.layout.style_spinn, arrayList2);
         spinner2.setAdapter(arrayAdapter2);

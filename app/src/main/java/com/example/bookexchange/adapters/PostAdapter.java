@@ -64,7 +64,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return viewHolder;
     }
 
-    private static final String TAG = "PostAdapter";
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
 
