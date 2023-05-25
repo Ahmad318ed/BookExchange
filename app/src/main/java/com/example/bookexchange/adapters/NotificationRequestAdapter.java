@@ -3,20 +3,19 @@ package com.example.bookexchange.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookexchange.R;
-import com.example.bookexchange.dao.DAONotification;
-import com.example.bookexchange.models.Notification;
+import com.example.bookexchange.dao.DAONotificationPosts;
+import com.example.bookexchange.models.NotificationPost;
+import com.example.bookexchange.models.NotificationRequest;
 import com.example.bookexchange.models.ReceivedNotification;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,19 +27,18 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
+public class NotificationRequestAdapter extends RecyclerView.Adapter<NotificationRequestAdapter.NotificationViewHolder> {
 
     Context context;
-    List<Notification> myNotificationArray;
-    DAONotification daoNotification;
+    List<NotificationRequest> myNotificationArray;
+    DAONotificationPosts daoNotificationPosts;
     DatabaseReference databaseReference;
 
     FirebaseAuth auth;
     FirebaseUser user;
 
-    public NotificationAdapter(Context context, List<Notification> myNotificationArray) {
+    public NotificationRequestAdapter(Context context, List<NotificationRequest> myNotificationArray) {
         this.context = context;
         this.myNotificationArray = myNotificationArray;
 
@@ -53,16 +51,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public NotificationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.notification_item, parent, false);
-        NotificationAdapter.NotificationViewHolder viewHolder = new NotificationAdapter.NotificationViewHolder(view);
+        NotificationRequestAdapter.NotificationViewHolder viewHolder = new NotificationRequestAdapter.NotificationViewHolder(view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NotificationAdapter.NotificationViewHolder holder, int position) {
-        final Notification myNotiList = myNotificationArray.get(position);
+    public void onBindViewHolder(@NonNull NotificationRequestAdapter.NotificationViewHolder holder, int position) {
+        final NotificationRequest myNotiList = myNotificationArray.get(position);
 
-        daoNotification = new DAONotification();
+        daoNotificationPosts = new DAONotificationPosts();
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -80,9 +78,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            Notification notification = myNotificationArray.get(position);
+                            NotificationRequest notification = myNotificationArray.get(position);
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            databaseReference = database.getReference(Notification.class.getSimpleName());
+                            databaseReference = database.getReference(NotificationPost.class.getSimpleName());
 
                             databaseReference.child(user.getUid())
                                     .child(notification.notificationID)
@@ -104,8 +102,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
 
 
-                            NotificationAdapter.this.notifyItemRemoved(position);
-                            NotificationAdapter.this.notifyItemRangeChanged(0,getItemCount()-position);
+                            NotificationRequestAdapter.this.notifyItemRemoved(position);
+                            NotificationRequestAdapter.this.notifyItemRangeChanged(0,getItemCount()-position);
 
 
 
@@ -136,11 +134,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Notification notification = myNotificationArray.get(position);
+                            NotificationRequest notification = myNotificationArray.get(position);
 
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            databaseReference = database.getReference(Notification.class.getSimpleName());
+                            databaseReference = database.getReference(NotificationRequest.class.getSimpleName());
 
 
                             databaseReference.child(user.getUid())
@@ -159,8 +157,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             databaseReference = database2.getReference(ReceivedNotification.class.getSimpleName());
                             databaseReference.child(myNotificationArray.get(position).userID).push().setValue(receivedNotification);
 
-                            NotificationAdapter.this.notifyItemRemoved(position);
-                            NotificationAdapter.this.notifyItemRangeChanged(position,getItemCount()-position);
+                            NotificationRequestAdapter.this.notifyItemRemoved(position);
+                            NotificationRequestAdapter.this.notifyItemRangeChanged(position,getItemCount()-position);
 
 
                         }

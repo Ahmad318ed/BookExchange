@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
             if (firebaseAuth.getCurrentUser() != null && firebaseAuth.getCurrentUser().isEmailVerified()) {
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent = new Intent(this, CollageActivity.class);
                 startActivity(intent);
                 finish();
 
@@ -334,4 +334,5 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
 }

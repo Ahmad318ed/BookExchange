@@ -46,6 +46,7 @@ import com.example.bookexchange.dao.DAOProfileInfo;
 import com.example.bookexchange.models.Post;
 import com.example.bookexchange.models.Profile_info;
 import com.example.bookexchange.ui.fragments.MyPostsFragment;
+import com.example.bookexchange.ui.fragments.MyRequestFragment;
 import com.example.bookexchange.ui.fragments.NotificationFragment;
 import com.example.bookexchange.ui.fragments.PostsFragment;
 import com.example.bookexchange.ui.fragments.ReceivedNotificationFragment;
@@ -115,7 +116,7 @@ public class HomeActivity extends AppCompatActivity {
                         replaceFragment(new MyPostsFragment());
                         break;
                     case R.id.nav_my_requests:
-                        Toast.makeText(HomeActivity.this, "My Requests", Toast.LENGTH_SHORT).show();
+                        replaceFragment(new MyRequestFragment());
                         break;
                     case R.id.nav_my_editable_profile:
                         startActivity(new Intent(HomeActivity.this, EditableProfile.class));

@@ -39,6 +39,7 @@
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/it_collage"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
                 android:layout_margin="10dp"
@@ -71,6 +72,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/Arts_and_Sciences_collage"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
                 android:layout_margin="10dp"
@@ -103,6 +105,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/Da_wah_collage"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
                 android:layout_margin="10dp"
@@ -135,6 +138,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/sheikh_noah_college"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
                 android:layout_margin="10dp"
@@ -167,6 +171,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/Educational_Sciences_college"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
                 android:layout_margin="10dp"
@@ -198,39 +203,9 @@
 
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="110dp"
-                android:layout_margin="10dp"
-                android:backgroundTint="@color/light"
-                android:clickable="true"
-                android:focusable="true"
-                android:elevation="20dp"
-                app:cardCornerRadius="25dp">
-
-                <View
-                    android:layout_width="40dp"
-                    android:layout_height="3dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@color/black"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/hellix_regular"
-                    android:gravity="center"
-                    android:background="@drawable/back_collage"
-                    android:text="College  of  arts  and  sciences"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
-
-
-
-            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/Arts_and_Islamic_Architecture"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
                 android:layout_margin="10dp"
@@ -263,6 +238,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/Money_and_Business"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
                 android:layout_margin="10dp"
@@ -295,6 +271,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/Malik_Hanafi_Shafi"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
                 android:layout_margin="10dp"
@@ -327,6 +304,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/Graduate_Studies"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
                 android:layout_margin="10dp"

@@ -11,28 +11,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.bookexchange.R;
 import com.example.bookexchange.adapters.RequestAdapter;
-import com.example.bookexchange.adapters.SelectPostItemListener;
 import com.example.bookexchange.adapters.SelectRequestItemListener;
-import com.example.bookexchange.dao.DAONotification;
-import com.example.bookexchange.dao.DAOPost;
+import com.example.bookexchange.dao.DAONotificationRequest;
 import com.example.bookexchange.dao.DAORequest;
-import com.example.bookexchange.models.Post;
+import com.example.bookexchange.models.NotificationRequest;
 import com.example.bookexchange.models.Request;
 import com.example.bookexchange.ui.activites.HomeActivity;
-import com.example.bookexchange.ui.activites.ViewPostActivity;
 import com.example.bookexchange.ui.activites.ViewRequestActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -44,7 +48,7 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
     FirebaseUser user;
     String currentUserID;
     DAORequest daoRequest;
-    DAONotification daoNotification;
+    DAONotificationRequest daoNotificationrequest;
     DatabaseReference databaseReference;
     public static List<Request> requestList = new ArrayList<>();
     private boolean fabShouldBeHidden = false; // Flag to keep track of FAB visibility
@@ -60,7 +64,7 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         daoRequest = new DAORequest();
-        daoNotification = new DAONotification();
+        daoNotificationrequest = new DAONotificationRequest();
         requestList.clear();
 
 
@@ -169,6 +173,73 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
 
     @Override
     public void onItemGiveClicked(Request request, FirebaseUser currentUser) {
+
+        Date date = Calendar.getInstance().getTime();
+        String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference(NotificationRequest.class.getSimpleName());
+        String currentUserID = user.getUid();
+
+
+        if (!(request.getBookSellerId().equals(currentUser.getUid()))) {
+
+
+            NotificationRequest notification2 = new NotificationRequest(currentUser.getUid(), currentUser.getDisplayName(), request.getBookName(), dateFormat);
+
+
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    boolean notificationExists = false;
+
+
+                    for (DataSnapshot idSnapshot : snapshot.getChildren()) {
+                        if (idSnapshot.getKey().equals(request.getBookSellerId())) {
+                            for (DataSnapshot pushSnapshot : idSnapshot.getChildren()) {
+                                NotificationRequest notification = pushSnapshot.getValue(NotificationRequest.class);
+
+
+                                if (notification.getUserName().equals(user.getDisplayName()) && notification.getBookName().equals(request.getBookName())) {
+                                    // NotificationPost already exists
+                                    notificationExists = true;
+                                    Toast.makeText(requireContext(), "You have already sent this notification before!", Toast.LENGTH_SHORT).show();
+                                    break;
+                                }
+                            }
+                            break; // Exit the loop once the specific ID is found
+                        }
+                    }
+
+                    if (!notificationExists) {
+                        daoNotificationrequest.add(notification2, request).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(requireContext(), "NotificationPost added to DB", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Handle onCancelled if needed
+                }
+            });
+
+
+        }
+
+        else {
+            Toast.makeText(requireContext(), "You Can not Press Take to your Own Book !", Toast.LENGTH_LONG).show();
+        }
+
 
     }
 

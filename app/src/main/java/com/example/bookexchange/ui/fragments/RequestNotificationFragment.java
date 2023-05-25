@@ -13,8 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.bookexchange.R;
-import com.example.bookexchange.adapters.ReceivedNotificationAdapter;
-import com.example.bookexchange.models.ReceivedNotification;
+import com.example.bookexchange.adapters.NotificationRequestAdapter;
+import com.example.bookexchange.dao.DAONotificationRequest;
+import com.example.bookexchange.models.NotificationRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,26 +27,26 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class ReceivedNotificationFragment extends Fragment {
+public class RequestNotificationFragment extends Fragment {
 
     View inflate;
     RecyclerView recyclerView;
-    ReceivedNotificationAdapter myadapter;
-    public static List<ReceivedNotification> notificationList = new ArrayList<>();
-
+    NotificationRequestAdapter myadapter;
+    public static List<NotificationRequest> notificationList = new ArrayList<>();
+    public static ArrayList<String> pushKeysList = new ArrayList<>();
     DatabaseReference databaseReference;
+    DAONotificationRequest daoNotification;
     FirebaseAuth auth;
     FirebaseUser user;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        inflate = inflater.inflate(R.layout.fragment_received_notification, container, false);
+        // Inflate the layout for this fragment
+        inflate = inflater.inflate(R.layout.fragment_request_notification, container, false);
         return inflate;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -56,15 +57,18 @@ public class ReceivedNotificationFragment extends Fragment {
 
         notificationList.clear();
 
-        recyclerView = view.findViewById(R.id.notificationReceivedRecyclerView);
+        daoNotification = new DAONotificationRequest();
+        recyclerView = view.findViewById(R.id.notificationRecyclerView_request);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference(ReceivedNotification.class.getSimpleName());
+        databaseReference = database.getReference(NotificationRequest.class.getSimpleName());
+
 
         String currentUserID = user.getUid();
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        daoNotification.get().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -78,10 +82,10 @@ public class ReceivedNotificationFragment extends Fragment {
                                 String pushKey = pushSnapshot.getKey(); // Get the dynamically generated push key
 
 
-
                                 // Access the child node data using the push key
-                                ReceivedNotification notification = pushSnapshot.getValue(ReceivedNotification.class);
-                                notification.setNotificationID(pushKey);
+                                NotificationRequest notification = pushSnapshot.getValue(NotificationRequest.class);
+                                if (!(notification == null))
+                                    notification.notificationID = pushKey;
 
 
                                 notificationList.add(notification);
@@ -105,8 +109,8 @@ public class ReceivedNotificationFragment extends Fragment {
         });
 
 
-
-        myadapter = new ReceivedNotificationAdapter(requireContext(), notificationList);
+        myadapter = new NotificationRequestAdapter(requireContext(), notificationList);
         recyclerView.setAdapter(myadapter);
+
     }
 }

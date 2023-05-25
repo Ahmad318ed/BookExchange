@@ -132,7 +132,6 @@ public class EditableProfile extends AppCompatActivity {
                                 StorageReference imgfilePath = storageRef.child(selectedImageUri.getLastPathSegment());
 
 
-
                                 imgfilePath.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -162,13 +161,14 @@ public class EditableProfile extends AppCompatActivity {
                                                     public void onSuccess(Void unused) {
 
                                                         Toast.makeText(EditableProfile.this, "The Information has been added", Toast.LENGTH_SHORT).show();
-                                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
 
+                                                        startActivity(new Intent(getApplicationContext(),CollageActivity.class));
                                                     }
                                                 }).addOnFailureListener(new OnFailureListener() {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
 
+                                                        startActivity(new Intent(getApplicationContext(),CollageActivity.class));
                                                         Toast.makeText(EditableProfile.this, "Something Wrong ):", Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
@@ -390,5 +390,11 @@ public class EditableProfile extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

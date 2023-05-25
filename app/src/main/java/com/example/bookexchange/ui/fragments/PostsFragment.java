@@ -1,22 +1,17 @@
 package com.example.bookexchange.ui.fragments;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,16 +20,14 @@ import android.widget.Toast;
 import com.example.bookexchange.adapters.PostAdapter;
 import com.example.bookexchange.R;
 import com.example.bookexchange.adapters.SelectPostItemListener;
-import com.example.bookexchange.dao.DAONotification;
+import com.example.bookexchange.dao.DAONotificationPosts;
 import com.example.bookexchange.dao.DAOPost;
-import com.example.bookexchange.models.Notification;
+import com.example.bookexchange.models.NotificationPost;
 import com.example.bookexchange.models.Post;
 import com.example.bookexchange.ui.activites.HomeActivity;
 import com.example.bookexchange.ui.activites.ViewPostActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -63,7 +56,7 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
     public static List<Post> postList = new ArrayList<>();
 
     DAOPost daoPost;
-    DAONotification daoNotification;
+    DAONotificationPosts daoNotificationPosts;
     DatabaseReference databaseReference;
     private boolean fabShouldBeHidden = false;
 
@@ -86,7 +79,7 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         daoPost = new DAOPost();
-        daoNotification = new DAONotification();
+        daoNotificationPosts = new DAONotificationPosts();
         postList.clear();
 
 
@@ -106,17 +99,13 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
                     Post post = postsnap.getValue(Post.class);
 
 
-
                     if (!(post.getBookSellerId().equals(currentUserID))) {
-
 
 
                         postList.add(post);
 
 
-
                     }
-
 
 
                 }
@@ -167,14 +156,8 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
 //        });
 
 
-
-
         return view;
     }
-
-
-
-
 
 
     // Declare the launcher at the top of your Activity/Fragment:
@@ -230,14 +213,14 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference(Notification.class.getSimpleName());
+        databaseReference = database.getReference(NotificationPost.class.getSimpleName());
         String currentUserID = user.getUid();
 
 
         if (!(post.getBookSellerId().equals(currentUser.getUid()))) {
 
 
-            Notification notification2 = new Notification(currentUser.getUid(), currentUser.getDisplayName(), post.getBookName(), dateFormat);
+            NotificationPost notificationPost2 = new NotificationPost(currentUser.getUid(), currentUser.getDisplayName(), post.getBookName(), dateFormat);
 
 
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -249,13 +232,13 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
                     for (DataSnapshot idSnapshot : snapshot.getChildren()) {
                         if (idSnapshot.getKey().equals(post.getBookSellerId())) {
                             for (DataSnapshot pushSnapshot : idSnapshot.getChildren()) {
-                                Notification notification = pushSnapshot.getValue(Notification.class);
+                                NotificationPost notificationPost = pushSnapshot.getValue(NotificationPost.class);
 
 
-                                if (notification.getUserName().equals(user.getDisplayName()) && notification.getBookName().equals(post.getBookName())) {
-                                    // Notification already exists
+                                if (notificationPost.getUserName().equals(user.getDisplayName()) && notificationPost.getBookName().equals(post.getBookName())) {
+                                    // NotificationPost already exists
                                     notificationExists = true;
-                                    Toast.makeText(requireContext(), "You have already sent this notification before!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(requireContext(), "You have already sent this notificationPost before!", Toast.LENGTH_SHORT).show();
                                     break;
                                 }
                             }
@@ -264,10 +247,10 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
                     }
 
                     if (!notificationExists) {
-                        daoNotification.add(notification2, post).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        daoNotificationPosts.add(notificationPost2, post).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-                                Toast.makeText(requireContext(), "Notification added to DB", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(requireContext(), "NotificationPost added to DB", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -285,7 +268,9 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
             });
 
 
-        } else {
+        }
+
+        else {
             Toast.makeText(requireContext(), "You Can not Press Take to your Own Book !", Toast.LENGTH_LONG).show();
         }
 
@@ -296,6 +281,7 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
     public void onItemDeleteClicked(Post post, FirebaseUser currentUser) {
 
     }
+
 
 
 }

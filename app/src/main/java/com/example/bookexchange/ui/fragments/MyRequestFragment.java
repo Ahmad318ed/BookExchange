@@ -4,6 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,17 +17,17 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.example.bookexchange.R;
 import com.example.bookexchange.adapters.MyPostAdapter;
+import com.example.bookexchange.adapters.MyRequestAdapter;
 import com.example.bookexchange.adapters.SelectPostItemListener;
+import com.example.bookexchange.adapters.SelectRequestItemListener;
 import com.example.bookexchange.dao.DAOPost;
+import com.example.bookexchange.dao.DAORequest;
 import com.example.bookexchange.models.Post;
+import com.example.bookexchange.models.Request;
 import com.example.bookexchange.ui.activites.ViewPostActivity;
+import com.example.bookexchange.ui.activites.ViewRequestActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,16 +39,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPostsFragment extends Fragment implements SelectPostItemListener {
+public class MyRequestFragment extends Fragment implements SelectRequestItemListener{
 
     View view;
-    DAOPost daoPost;
+    DAORequest daoRequest;
     FirebaseAuth auth;
     FirebaseUser user;
     String currentUserID;
-    public static List<Post> myPostList = new ArrayList<>();
+    public static List<Request> myPostList = new ArrayList<>();
     DatabaseReference databaseReference;
-    public static MyPostAdapter myadapter;
+    public static MyRequestAdapter myadapter;
     RecyclerView recyclerView;
 
 
@@ -52,7 +56,7 @@ public class MyPostsFragment extends Fragment implements SelectPostItemListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-         view = inflater.from(getContext()).inflate(R.layout.fragment_my_posts, container, false);
+         view = inflater.from(getContext()).inflate(R.layout.fragment_my_request, container, false);
         return view;
     }
 
@@ -60,16 +64,16 @@ public class MyPostsFragment extends Fragment implements SelectPostItemListener 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        daoPost = new DAOPost();
+        daoRequest = new DAORequest();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         myPostList.clear();
-        recyclerView = view.findViewById(R.id.rv_post_myPosts);
+        recyclerView = view.findViewById(R.id.rv_post_myRequest);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         currentUserID = user.getUid();
 
-        daoPost.get().addValueEventListener(new ValueEventListener() {
+        daoRequest.get().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -77,14 +81,14 @@ public class MyPostsFragment extends Fragment implements SelectPostItemListener 
                 for (DataSnapshot postsnap : snapshot.getChildren()) {
                     String pushKey = postsnap.getKey(); // Get the dynamically generated push key
 
-                    Post post = postsnap.getValue(Post.class);
+                    Request request = postsnap.getValue(Request.class);
 
-                    if (post.getBookSellerId().equals(currentUserID)) {
+                    if (request.getBookSellerId().equals(currentUserID)) {
 
-                        if (!(post == null))
-                            post.setPostID(pushKey);
+                        if (!(request == null))
+                            request.setPostID(pushKey);
 
-                        myPostList.add(post);
+                        myPostList.add(request);
                     }
 
 
@@ -103,28 +107,30 @@ public class MyPostsFragment extends Fragment implements SelectPostItemListener 
         });
 
 
-        myadapter = new MyPostAdapter(requireContext(), myPostList,this);
+        myadapter = new MyRequestAdapter(requireContext(), myPostList,(SelectRequestItemListener) this);
         recyclerView.setAdapter(myadapter);
 
     }
 
-    @Override
-    public void onItemViewClicked(Post post) {
 
-        Intent intent = new Intent(getContext(), ViewPostActivity.class);
-        intent.putExtra("post", post);
+
+
+
+
+    @Override
+    public void onItemViewClicked(Request request) {
+        Intent intent = new Intent(getContext(), ViewRequestActivity.class);
+        intent.putExtra("request", request);
         startActivity(intent);
+    }
 
+    @Override
+    public void onItemGiveClicked(Request request, FirebaseUser currentUser) {
 
     }
 
     @Override
-    public void onItemTakeClicked(Post post, FirebaseUser currentUser) {
-
-    }
-
-    @Override
-    public void onItemDeleteClicked(Post post, FirebaseUser currentUser) {
+    public void onItemDeleteClicked(Request request, FirebaseUser currentUser) {
 
         AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(requireContext());
         alertDialog2.setTitle("Confirm");
@@ -134,7 +140,7 @@ public class MyPostsFragment extends Fragment implements SelectPostItemListener 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        daoPost.remove(post.getPostID()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        daoRequest.remove(request.getPostID()).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
 
@@ -142,7 +148,7 @@ public class MyPostsFragment extends Fragment implements SelectPostItemListener 
 
                             }
                         });
-                        MyPostsFragment fragment = new MyPostsFragment();
+                        MyRequestFragment fragment = new MyRequestFragment();
 
                         FragmentManager fragmentManager = getParentFragmentManager(); // Replace with the appropriate FragmentManager method if needed
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -161,6 +167,7 @@ public class MyPostsFragment extends Fragment implements SelectPostItemListener 
                 });
 
         alertDialog2.create().show();
+
 
 
     }

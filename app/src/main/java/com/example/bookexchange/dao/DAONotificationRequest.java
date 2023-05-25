@@ -1,25 +1,15 @@
 package com.example.bookexchange.dao;
 
-import android.content.Context;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-
-import com.example.bookexchange.models.Notification;
-import com.example.bookexchange.models.Post;
+import com.example.bookexchange.models.NotificationRequest;
+import com.example.bookexchange.models.Request;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class DAONotification {
+public class DAONotificationRequest {
 
     DatabaseReference databaseReference;
     public static String pushKey;
@@ -27,20 +17,20 @@ public class DAONotification {
 
 
 
-    public DAONotification() {
+    public DAONotificationRequest() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference(Notification.class.getSimpleName());
+        databaseReference = database.getReference(NotificationRequest.class.getSimpleName());
 
     }
 
 
-    public Task<Void> add(com.example.bookexchange.models.Notification notification, Post post) {
+    public Task<Void> add(NotificationRequest notification, Request request) {
 
 
 
 
-        return databaseReference.child(post.getBookSellerId()).push().setValue(notification);
+        return databaseReference.child(request.getBookSellerId()).push().setValue(notification);
 
 
     }
