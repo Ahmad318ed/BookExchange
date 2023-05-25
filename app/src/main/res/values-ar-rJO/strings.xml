@@ -13,5 +13,8 @@
     <string name="navigation_drawer_open">oper</string>
     <string name="navigation_drawer_close">close</string>
     <string name="submit">Submit\n</string>
+    <string name="skip">تخطي</string>
+    <string name="wise_desc">The World Islamic Sciences and Education University is a prestigious educational institution located in Jordan. It is dedicated to promoting Islamic sciences and providing high-quality education to students. Led by its president, Dr. Jafar Al Fatanseh, the university offers programs and courses in various disciplines, including Islamic studies, Arabic language, IT majors, and social sciences. The university aims to foster a strong understanding of Islamic principles, support academic growth, and prepare students to make valuable contributions to society as knowledgeable and well-rounded individuals. </string>
+    <string name="wise">جامعة العلوم الإسلامية العالمية</string>
 
 </resources>
