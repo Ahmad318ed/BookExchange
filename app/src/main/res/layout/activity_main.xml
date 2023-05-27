@@ -8,11 +8,51 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.activites.MainActivity" >
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/btnSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+
+        android:layout_margin="30dp"
+
+        android:visibility="gone"
+        app:cardCornerRadius="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/fog_4"
+        app:strokeWidth="1dp">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/hellix_medium"
+            android:gravity="center_vertical"
+            android:text="@string/skip"
+            android:textColor="@color/fog_dark"
+            android:textSize="17sp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+
     <LinearLayout
         android:id="@+id/splashLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+
+
+        android:visibility="visible"
+
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/hellix_medium"
-            android:text="Wise Exchange"
+            android:text="Book Exchange"
             android:textAlignment="center"
             android:textColor="@color/fog_dark"
             android:textSize="30sp" />
@@ -63,6 +103,50 @@
 
 
     </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/slidesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+
+
+        android:visibility="gone"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+
+            android:layout_centerInParent="true" />
+
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_below="@id/viewPager"
+            android:layout_centerHorizontal="true"
+            app:ci_drawable="@color/orange_dark"
+            app:ci_gravity="center"
+            app:ci_height="7dp"
+            app:ci_margin="5dp"
+            app:ci_orientation="horizontal"
+            app:ci_width="7dp"/>
+
+
+
+    </RelativeLayout>
+
+
 
 
 

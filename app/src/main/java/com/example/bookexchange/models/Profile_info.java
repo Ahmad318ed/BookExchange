@@ -13,6 +13,10 @@ public class Profile_info {
     public Profile_info() {
     }
 
+    public Profile_info(String name) {
+        this.name = name;
+    }
+
     public Profile_info(String name, String collage, String facebook_link, String instagram_link, String phoneNum, String countryNum, String whatsAppNum, String username, String userId, String major, int selectedItem) {
         this.name = name;
         this.collage = collage;
