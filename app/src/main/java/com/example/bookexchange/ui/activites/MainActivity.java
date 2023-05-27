@@ -100,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         slides.add(new Slides(R.drawable.wise_logo,getString(R.string.wise),getString(R.string.wise_desc)));
-        slides.add(new Slides(R.drawable.it_logo,"IT collage","A sticker is a small piece of paper or plastic, with writing or a picture on one side, which you can stick onto a surface. "));
-        slides.add(new Slides(R.drawable.app_logo,"Book Exchange","A poster is a large sheet that is placed either on a public space to promote something or on a wall as decoration."));
+        slides.add(new Slides(R.drawable.it_logo,getString(R.string.it_collage_slides),getString(R.string.it_desc)));
+        slides.add(new Slides(R.drawable.app_logo,getString(R.string.app_name),getString(R.string.app_desc)));
 
 
 

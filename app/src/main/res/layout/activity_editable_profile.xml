@@ -15,8 +15,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
             android:padding="10dp"
+            android:layout_margin="20dp"
             >
 
             <com.google.android.material.card.MaterialCardView
@@ -76,21 +76,27 @@
                 android:textColor="@color/fog_4"
                 android:textSize="19sp" />
 
-
-
             <TextView
-                android:id="@+id/tv_name_EditableProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/hellix_medium"
+                android:text=" Your name"
+                android:textColor="@color/fog_4" />
+
+            <EditText
+                android:id="@+id/edt_name_EditableProfile"
+                style="@style/MyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:gravity="center"
+                android:layout_gravity="start"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
-                android:text="Name"
-                android:fontFamily="@font/hellix_regular"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                 />
+                android:hint="Full Name"
+                android:inputType="textPersonName"
+                android:paddingEnd="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -104,11 +110,12 @@
             <Spinner
                 android:id="@+id/spinner1_editable_profile"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
+
                 android:background="@drawable/style_spinner" />
 
             <TextView
@@ -136,10 +143,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/hellix_regular"
                 android:text="Your Contact info"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="5dp"
                 android:textAlignment="center"
                 android:textColor="@color/fog_4"
                 android:textSize="19sp" />
@@ -194,8 +201,8 @@
                         android:layout_height="30dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="10dp"
-                        android:alpha="0.6"
                         android:background="@drawable/edittext_background"
+                        android:alpha="0.6"
                         android:enabled="false"
                         android:gravity="center"
                         android:inputType="number"
@@ -222,14 +229,14 @@
                     style="@style/MyEditText"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_gravity="start|center_vertical"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:drawableStart="@drawable/whatsapp"
-                    android:drawablePadding="10dp"
+                    android:layout_gravity="start|center_vertical"
                     android:hint="WhatsApp Number"
                     android:inputType="number"
                     android:paddingEnd="10dp"
+                    android:drawableStart="@drawable/whatsapp"
+                    android:drawablePadding="10dp"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -248,17 +255,31 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_save_EditProfile"
             android:layout_width="90dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:id="@+id/btn_save_EditProfile"
+            android:layout_gravity="center"
+            android:layout_marginBottom="9dp"
             android:background="@drawable/gradient_button"
             android:text="Save"
-            android:textAllCaps="false"
             android:textColor="@color/white"
+            android:textAllCaps="false"
             />
+
+        <TextView
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/hellix_medium"
+            android:text="Cancel"
+            android:textColor="@color/fog_4"
+            android:textSize="18sp"
+            android:visibility="gone"
+            />
+
 
 
 

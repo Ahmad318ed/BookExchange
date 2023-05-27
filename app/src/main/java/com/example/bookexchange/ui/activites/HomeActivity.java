@@ -120,14 +120,15 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_my_editable_profile:
                         startActivity(new Intent(HomeActivity.this, EditableProfile.class));
-
+                        finish();
                         break;
                     case R.id.nav_logout:
                         FirebaseAuth.getInstance().signOut();
                         Intent intent2 = new Intent(HomeActivity.this, LoginActivity.class);
                         drawerLayout.closeDrawer(GravityCompat.START);
-                        finish();
+                        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent2);
+                        finish();
                         break;
                     case R.id.notification_fragment:
                         replaceFragment(new NotificationFragment());
@@ -359,7 +360,11 @@ public class HomeActivity extends AppCompatActivity {
         usernameHeader.setText(username);
 
         ImageView imageView = navheader.findViewById(R.id.img_nav_header);
-        Glide.with(HomeActivity.this).load(currentUser.getPhotoUrl()).fitCenter().centerCrop().into(imageView);
+
+        if (!isDestroyed()){
+            Glide.with(HomeActivity.this).load(currentUser.getPhotoUrl()).fitCenter().centerCrop().into(imageView);
+
+        }
 
 
 //        daoProfile.get().addValueEventListener(new ValueEventListener() {

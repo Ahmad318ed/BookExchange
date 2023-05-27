@@ -53,11 +53,16 @@ public class EditableProfile extends AppCompatActivity {
     private static final int MAX_IMAGE_SIZE = 500; // Maximum image size in pixels
     public static Uri selectedImageUri;
 
+
+    String whatsAppNumber;
+    Profile_info upload_profile_info;
+
+
     EditText edt_country_num;
     Button btn_edit_country_num;
     FirebaseUser user;
     EditText edtFacebook, edtInstagram, edtWhatsApp, edtMajor;
-    TextView edt_name;
+    EditText edt_name;
     Button btnSave;
     FirebaseUser currentUser;
     DAOProfileInfo daoProfile;
@@ -73,6 +78,8 @@ public class EditableProfile extends AppCompatActivity {
     // image as URI and as a string
     String str_imageSelectedURl;
 
+    TextView btnCancel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +88,7 @@ public class EditableProfile extends AppCompatActivity {
 
         editCountryNum();
         initialData();
+
 
         auth = FirebaseAuth.getInstance();
         daoProfile = new DAOProfileInfo();
@@ -107,109 +115,204 @@ public class EditableProfile extends AppCompatActivity {
                 Toast.makeText(EditableProfile.this, "Loading ..", Toast.LENGTH_SHORT).show();
                 Toast.makeText(EditableProfile.this, "Please wait ..", Toast.LENGTH_SHORT).show();
 
+                String person_name = edt_name.getText().toString().trim();
                 String facebookLink = edtFacebook.getText().toString().trim();
                 String instagramLink = edtInstagram.getText().toString().trim();
                 String number = edtWhatsApp.getText().toString().trim();
                 String countryNum = edt_country_num.getText().toString().trim();
 
+
+//
+//                // To
+                auth = FirebaseAuth.getInstance();
+                user = auth.getCurrentUser();
+
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(person_name)
+                        .build();
+                user.updateProfile(profileUpdates);
+
+
                 //ToDo : make the https and country code on the setData method and retreve just the number.
-                String whatsAppNumber = "https://wa.me/" + countryNum + number;
+
+                if ((!edtWhatsApp.getText().toString().trim().equals("")) && edtWhatsApp.getText().toString().trim().length() >= 9) {
+                    whatsAppNumber = "https://wa.me/" + countryNum + number;
+                } else {
+                    whatsAppNumber = "";
+                }
+
                 String spinner1Value = selectedValue1;
                 String major = edtMajor.getText().toString().trim();
 
 
-                if (!(spinner1.getSelectedItem().toString().equals("Collage"))) {
+//
+                if (!person_name.isEmpty()) {
 
-                    if (!major.isEmpty()) {
+                    if (!(spinner1.getSelectedItem().toString().equals("Collage"))) {
 
-                        if (!countryNum.isEmpty()) {
+                        if (!major.isEmpty()) {
 
-                            if (!(facebookLink.isEmpty() && instagramLink.isEmpty() && number.isEmpty())) {
-                                ///////////////
+                            if (!countryNum.isEmpty()) {
 
-
-                                StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profile_images");
-                                StorageReference imgfilePath = storageRef.child(selectedImageUri.getLastPathSegment());
-
-
-                                imgfilePath.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                if (validFacebook() || validInstagram() || validWhatsApp()) {
+                                    ///////////////
 
 
-                                        imgfilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                                    if (selectedImageUri == null && img_profile.getDrawable() != null) {
+
+
+                                        //to set username from edtName
+                                        username = person_name;
+
+                                        upload_profile_info = new Profile_info(username, spinner1Value, facebookLink, instagramLink, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
+
+
+                                        daoProfile.add(upload_profile_info).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
-                                            public void onSuccess(Uri uri) {
+                                            public void onSuccess(Void unused) {
 
-                                                str_imageSelectedURl = uri.toString();
+                                                Toast.makeText(EditableProfile.this, "The Information has been added", Toast.LENGTH_SHORT).show();
 
+                                                startActivity(new Intent(getApplicationContext(), CollageActivity.class));
+                                                finish();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
 
-                                                auth = FirebaseAuth.getInstance();
-                                                user = auth.getCurrentUser();
-
-                                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                                        .setPhotoUri(uri)
-                                                        .build();
-                                                user.updateProfile(profileUpdates);
-
-
-                                                Profile_info profile = new Profile_info(username, spinner1Value, facebookLink, instagramLink, str_imageSelectedURl, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
-
-
-                                                daoProfile.add(profile).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void unused) {
-
-                                                        Toast.makeText(EditableProfile.this, "The Information has been added", Toast.LENGTH_SHORT).show();
-
-                                                        startActivity(new Intent(getApplicationContext(),CollageActivity.class));
-                                                    }
-                                                }).addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-
-                                                        startActivity(new Intent(getApplicationContext(),CollageActivity.class));
-                                                        Toast.makeText(EditableProfile.this, "Something Wrong ):", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-
-
+                                                startActivity(new Intent(getApplicationContext(), CollageActivity.class));
+                                                Toast.makeText(EditableProfile.this, "Something Wrong ):", Toast.LENGTH_SHORT).show();
+                                                finish();
                                             }
                                         });
 
+
                                     }
-                                });
 
 
-                                ///////////////
+                                    if (selectedImageUri != null && !img_profile.getDrawable().equals(getDrawable(R.drawable.default_profile_img))) {
+
+                                        Toast.makeText(EditableProfile.this, "hiiiiiiiiiiiiiii", Toast.LENGTH_SHORT).show();
+
+
+                                        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profile_images");
+                                        StorageReference imgfilePath = storageRef.child(selectedImageUri.getLastPathSegment());
+
+
+                                        try {
+                                            imgfilePath.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+                                                    imgfilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                        @Override
+                                                        public void onSuccess(Uri uri) {
+
+                                                            str_imageSelectedURl = uri.toString();
+
+
+                                                            // to set user image
+                                                            auth = FirebaseAuth.getInstance();
+                                                            user = auth.getCurrentUser();
+
+                                                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                                    .setPhotoUri(uri)
+                                                                    .build();
+                                                            user.updateProfile(profileUpdates);
+
+
+                                                            //to set username from edtName
+                                                            username = person_name;
+
+                                                            upload_profile_info = new Profile_info(username, spinner1Value, facebookLink, instagramLink, str_imageSelectedURl, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
+
+
+                                                            daoProfile.add(upload_profile_info).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+
+                                                                    Toast.makeText(EditableProfile.this, "The Information has been added", Toast.LENGTH_SHORT).show();
+
+                                                                    startActivity(new Intent(getApplicationContext(), CollageActivity.class));
+                                                                    finish();
+                                                                }
+                                                            }).addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+
+                                                                    startActivity(new Intent(getApplicationContext(), CollageActivity.class));
+                                                                    Toast.makeText(EditableProfile.this, "Something Wrong ):", Toast.LENGTH_SHORT).show();
+                                                                    finish();
+                                                                }
+                                                            });
+
+
+                                                        }
+                                                    });
+
+                                                }
+                                            });
+                                        }catch (Exception e){
+                                            System.out.println("hellllllllllllllllllo"+e);
+                                        }
+
+
+
+
+
+                                    }
+
+
+                                    ///////////////
+                                } else {
+
+                                    Toast.makeText(getApplicationContext(), "Please enter at least one valid contact", Toast.LENGTH_LONG).show();
+
+
+                                }
+
                             } else {
-
-                                Toast.makeText(getApplicationContext(), "Please enter at least one contact", Toast.LENGTH_LONG).show();
-
-
+                                Toast.makeText(getApplicationContext(), "Please enter your country code", Toast.LENGTH_LONG).show();
                             }
 
+
                         } else {
-                            Toast.makeText(getApplicationContext(), "Please enter your country code", Toast.LENGTH_LONG).show();
+                            Toast.makeText(EditableProfile.this, "Please enter your major", Toast.LENGTH_LONG).show();
                         }
 
 
                     } else {
-                        Toast.makeText(EditableProfile.this, "Please enter your major", Toast.LENGTH_LONG).show();
-                    }
 
+                        Toast.makeText(getApplicationContext(), "Please Select your collage", Toast.LENGTH_LONG).show();
+                    }
 
                 } else {
 
-                    Toast.makeText(getApplicationContext(), "Please Select your collage", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Please enter your name", Toast.LENGTH_LONG).show();
                 }
+
+//
 
 
             }
         });
 
 
+
         setDataToProfile();
+
+
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(EditableProfile.this,CollageActivity.class));
+                finish();
+            }
+        });
+
 
 
     }
@@ -272,7 +375,7 @@ public class EditableProfile extends AppCompatActivity {
                     if (bitmap.getWidth() > MAX_IMAGE_SIZE || bitmap.getHeight() > MAX_IMAGE_SIZE) {
                         bitmap = scaleBitmap(bitmap, MAX_IMAGE_SIZE);
                     }
-                    btn_img_selector.setImageBitmap(bitmap);
+                    img_profile.setImageBitmap(bitmap);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -321,7 +424,7 @@ public class EditableProfile extends AppCompatActivity {
     }
 
     private void initialData() {
-        edt_name = findViewById(R.id.tv_name_EditableProfile);
+        edt_name = findViewById(R.id.edt_name_EditableProfile);
         edtFacebook = findViewById(R.id.edt_facebook_EditableProfile);
         edtInstagram = findViewById(R.id.edt_instagram_EditableProfile);
         edtWhatsApp = findViewById(R.id.edt_whatsup_EditableProfile);
@@ -333,6 +436,8 @@ public class EditableProfile extends AppCompatActivity {
 
         img_profile = findViewById(R.id.img_profile);
         btn_img_selector = findViewById(R.id.btn_selector_img_editableProfile);
+
+        btnCancel = findViewById(R.id.btnCancel);
 
     }
 
@@ -356,6 +461,8 @@ public class EditableProfile extends AppCompatActivity {
     }
 
     private void setDataToProfile() {
+
+
         daoProfile.get().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -365,19 +472,27 @@ public class EditableProfile extends AppCompatActivity {
 
                     Profile_info profile = profilesnap.getValue(Profile_info.class);
 
+                    edt_name.setText(currentUser.getDisplayName());
+
+
                     if (username_Id.equals(profile.getUserId())) {
-                        edt_name.setText(profile.getName());
+
                         edtFacebook.setText(profile.getFacebook_link());
                         edtInstagram.setText(profile.getInstagram_link());
                         edtWhatsApp.setText(profile.getPhoneNum());
                         edtMajor.setText(profile.getMajor());
                         edt_country_num.setText(profile.getCountryNum());
                         spinner1.setSelection(profile.getSelectedItem());
-
                         if (!isDestroyed()) {
-                            Glide.with(EditableProfile.this).load(profile.getImg()).fitCenter().centerCrop().into(img_profile);
+                            Glide.with(EditableProfile.this).load(currentUser.getPhotoUrl()).fitCenter().centerCrop().into(img_profile);
 
                         }
+
+
+                        if (!profile.getName().isEmpty() && !profile.getMajor().isEmpty()){
+                            btnCancel.setVisibility(View.VISIBLE);
+                        }
+
 
                     }
 
@@ -389,6 +504,30 @@ public class EditableProfile extends AppCompatActivity {
 
             }
         });
+
+    }
+
+
+    private boolean validFacebook() {
+        if ((!edtFacebook.getText().toString().trim().contains("https://")) || edtFacebook.getText().toString().trim().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+
+    private boolean validInstagram() {
+        if ((!edtInstagram.getText().toString().trim().contains("https://")) || edtInstagram.getText().toString().trim().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validWhatsApp() {
+        if (edtWhatsApp.getText().toString().trim().equals("") || (!(edtWhatsApp.getText().toString().trim().length() >= 9))) {
+            return false;
+        }
+        return true;
 
     }
 

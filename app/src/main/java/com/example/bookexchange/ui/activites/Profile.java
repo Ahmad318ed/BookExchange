@@ -81,8 +81,10 @@ public class Profile extends AppCompatActivity {
                     //first if to check if the user is the same user that u take his data
                     //Second if to check the contact info if it is empty or not then show it to the users
 
+                    name.setText(username);
+
                     if (username_Id.equals(load_profile_info.getUserId())) {
-                        name.setText(load_profile_info.getName());
+
                         major.setText(load_profile_info.getMajor());
                         collage.setText(load_profile_info.getCollage());
 
@@ -90,8 +92,12 @@ public class Profile extends AppCompatActivity {
                         String Facebook = load_profile_info.getFacebook_link();
                         String Instagram = load_profile_info.getInstagram_link();
 
+
+
+
                         if (!isDestroyed()) {
-                            Glide.with(Profile.this).load(load_profile_info.getImg()).fitCenter().centerCrop().into(img_profile);
+                            Glide.with(Profile.this).load(currentUser.getPhotoUrl()).fitCenter().centerCrop().into(img_profile);
+
                         }
 
 
@@ -196,26 +202,26 @@ public class Profile extends AppCompatActivity {
 
 
     private void GoToURL(String url) {
-//        Uri uri = Uri.parse(url);
-//        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//        startActivity(intent);
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
 
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            intent.setPackage("com.android.chrome"); // Package name of Chrome browser
-
-            // Verify that there's at least one activity that can handle the intent
-            PackageManager packageManager = getPackageManager();
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent);
-            } else {
-                // Handle the case where Chrome is not installed
-                Toast.makeText(getApplicationContext(), "Chrome browser not installed", Toast.LENGTH_SHORT).show();
-            }
-        } catch (ActivityNotFoundException e) {
-            // Handle the case where Chrome is not installed
-            Toast.makeText(getApplicationContext(), "Chrome browser not installed", Toast.LENGTH_SHORT).show();
-        }
+//        try {
+//            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//            intent.setPackage("com.android.chrome"); // Package name of Chrome browser
+//
+//            // Verify that there's at least one activity that can handle the intent
+//            PackageManager packageManager = getPackageManager();
+//            if (intent.resolveActivity(packageManager) != null) {
+//                startActivity(intent);
+//            } else {
+//                // Handle the case where Chrome is not installed
+//                Toast.makeText(getApplicationContext(), "Chrome browser not installed", Toast.LENGTH_SHORT).show();
+//            }
+//        } catch (ActivityNotFoundException e) {
+//            // Handle the case where Chrome is not installed
+//            Toast.makeText(getApplicationContext(), "Chrome browser not installed", Toast.LENGTH_SHORT).show();
+//        }
     }
 
 }
