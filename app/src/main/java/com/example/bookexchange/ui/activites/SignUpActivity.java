@@ -67,6 +67,9 @@ public class SignUpActivity extends AppCompatActivity {
                 dialog.setMessage("Please Wait...");
 
 
+                if (!(name.isEmpty())) {
+
+
                 if (email.isEmpty()) {
                     ed_email.setError("Email can not be empty !");
                 } else if (pass.isEmpty()) {
@@ -74,9 +77,11 @@ public class SignUpActivity extends AppCompatActivity {
 
                 } else {
 
+
                     if (pass.length() < 6) {
                         ed_pass.setError("Password can not be less than (6) Numbers !");
                     } else {
+
 
                         dialog.show();
 
@@ -140,6 +145,14 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                     }
+
+                }////
+
+
+            }else{
+
+                    ed_name.setError("Name can not be empty !");
+
 
                 }
 

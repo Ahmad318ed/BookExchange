@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
             if (firebaseAuth.getCurrentUser() != null && firebaseAuth.getCurrentUser().isEmailVerified()) {
-                Intent intent = new Intent(this, CollageActivity.class);
+                Intent intent = new Intent(this, EditableProfile.class);
                 startActivity(intent);
                 finish();
 
@@ -168,7 +168,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                                         Toast.makeText(LoginActivity.this, "Exist", Toast.LENGTH_SHORT).show();
-                                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                                        startActivity(new Intent(LoginActivity.this, CollageActivity.class));
                                                         finish();
 
 
