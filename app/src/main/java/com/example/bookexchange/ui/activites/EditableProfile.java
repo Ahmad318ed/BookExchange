@@ -158,8 +158,9 @@ public class EditableProfile extends AppCompatActivity {
                                     ///////////////
 
 
+                                    //  && img_profile.getDrawable() != null && !img_profile.getDrawable().getCurrent().equals( getResources().getDrawable(R.drawable.default_profile_img))
 
-                                    if (selectedImageUri == null && img_profile.getDrawable() != null) {
+                                    if (selectedImageUri == null) {
 
 
                                         //to set username from edtName
@@ -191,9 +192,10 @@ public class EditableProfile extends AppCompatActivity {
                                     }
 
 
-                                    if (selectedImageUri != null && !img_profile.getDrawable().equals(getDrawable(R.drawable.default_profile_img))) {
+//                                    if (selectedImageUri != null)
+                                    else {
 
-                                        Toast.makeText(EditableProfile.this, "hiiiiiiiiiiiiiii", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EditableProfile.this, "Wait ...", Toast.LENGTH_SHORT).show();
 
 
                                         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("profile_images");
@@ -228,6 +230,7 @@ public class EditableProfile extends AppCompatActivity {
 
                                                             upload_profile_info = new Profile_info(username, spinner1Value, facebookLink, instagramLink, str_imageSelectedURl, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
 
+                                                            finish();
 
                                                             daoProfile.add(upload_profile_info).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                 @Override
@@ -235,6 +238,7 @@ public class EditableProfile extends AppCompatActivity {
 
                                                                     Toast.makeText(EditableProfile.this, "The Information has been added", Toast.LENGTH_SHORT).show();
 
+                                                                    str_imageSelectedURl = "";
                                                                     startActivity(new Intent(getApplicationContext(), CollageActivity.class));
                                                                     finish();
                                                                 }
@@ -254,12 +258,12 @@ public class EditableProfile extends AppCompatActivity {
 
                                                 }
                                             });
-                                        }catch (Exception e){
-                                            System.out.println("hellllllllllllllllllo"+e);
+                                        } catch (Exception e) {
+                                            System.out.println("hellllllllllllllllllo" + e);
+
+                                            Toast.makeText(EditableProfile.this, "The Information has been added", Toast.LENGTH_SHORT).show();
+                                            finish();
                                         }
-
-
-
 
 
                                     }
@@ -300,19 +304,16 @@ public class EditableProfile extends AppCompatActivity {
         });
 
 
-
         setDataToProfile();
-
 
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(EditableProfile.this,CollageActivity.class));
+                startActivity(new Intent(EditableProfile.this, CollageActivity.class));
                 finish();
             }
         });
-
 
 
     }
@@ -342,7 +343,9 @@ public class EditableProfile extends AppCompatActivity {
     }
 
     private void pickImageFromGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        // Intent.ACTION_PICK
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
@@ -489,7 +492,7 @@ public class EditableProfile extends AppCompatActivity {
                         }
 
 
-                        if (!profile.getName().isEmpty() && !profile.getMajor().isEmpty()){
+                        if (!profile.getName().isEmpty() && !profile.getMajor().isEmpty()) {
                             btnCancel.setVisibility(View.VISIBLE);
                         }
 
