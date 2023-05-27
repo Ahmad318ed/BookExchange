@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/constraint_card"
     android:layout_height="172dp"
     android:layout_marginTop="5dp">
 
     <ImageView
 
-        android:id="@+id/imageView"
+        android:id="@+id/imageView_requests"
         android:layout_width="match_parent"
         android:layout_height="165dp"
         android:layout_marginStart="8dp"
@@ -20,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_date_state"
+        android:id="@+id/tv_date_state_requests"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="7dp"
@@ -28,19 +29,19 @@
         android:text="13/4/2023"
         android:textSize="10sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintEnd_toEndOf="@+id/imageView_requests"
+        app:layout_constraintTop_toTopOf="@+id/imageView_requests" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout_requests"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView">
+        app:layout_constraintEnd_toEndOf="@+id/imageView_requests"
+        app:layout_constraintTop_toTopOf="@+id/imageView_requests">
 
         <HorizontalScrollView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="23dp"
@@ -50,7 +51,7 @@
             android:scrollbars="none">
 
             <TextView
-                android:id="@+id/book_name_received_notification"
+                android:id="@+id/book_name_received_notification_requests"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
@@ -66,7 +67,7 @@
 
 
         <HorizontalScrollView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="16dp"
@@ -75,15 +76,15 @@
             android:scrollbars="none">
 
             <TextView
-                android:id="@+id/tv_owner_user_name"
+                android:id="@+id/tv_owner_user_name_requests"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/hellix_regular"
                 android:padding="2dp"
                 android:text="User Name"
                 android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/book_img"
-                app:layout_constraintTop_toBottomOf="@+id/book_seller" />
+                app:layout_constraintStart_toEndOf="@+id/book_img_requests"
+                app:layout_constraintTop_toBottomOf="@+id/book_seller_requests" />
         </HorizontalScrollView>
 
 
@@ -92,20 +93,20 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/state_color_back"
+        android:id="@+id/state_color_back_requests"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_requests"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_requests"
+        app:layout_constraintStart_toStartOf="@+id/imageView_requests"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_requests">
 
 
         <TextView
-            android:id="@+id/states_text"
+            android:id="@+id/states_text_requests"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/hellix_regular"

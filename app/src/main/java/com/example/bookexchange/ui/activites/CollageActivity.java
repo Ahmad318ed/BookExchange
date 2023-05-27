@@ -23,7 +23,13 @@ public class CollageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+
+
+
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("Collages","it");
+                startActivity(intent);
+
 
             }
         });
@@ -32,64 +38,72 @@ public class CollageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("Collages","Arts_and_Sciences");
+                startActivity(intent);
             }
         });
         Dawah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("Collages","Dawah");
+                startActivity(intent);
             }
         });
         Sheikh_Noah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("Collages","Sheikh_Noah");
+                startActivity(intent);
             }
         });
         Educational_Sciences.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("Collages","Educational_Sciences");
+                startActivity(intent);
             }
         });
         Islamic_Architecture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("Collages","Islamic_Architecture");
+                startActivity(intent);
             }
         });
         Money_and_Business.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("Collages","Money_and_Business");
+                startActivity(intent);
             }
         });
         Maliki_Hanafi_Shafii.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("Collages","Maliki_Hanafi_Shafii");
+                startActivity(intent);
             }
         });
         Graduate_Studies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra("Collages","Graduate_Studies");
+                startActivity(intent);
             }
         });
 
@@ -122,5 +136,9 @@ public class CollageActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
 }

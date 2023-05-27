@@ -18,15 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookexchange.R;
-import com.example.bookexchange.adapters.MyPostAdapter;
 import com.example.bookexchange.adapters.MyRequestAdapter;
-import com.example.bookexchange.adapters.SelectPostItemListener;
 import com.example.bookexchange.adapters.SelectRequestItemListener;
-import com.example.bookexchange.dao.DAOPost;
 import com.example.bookexchange.dao.DAORequest;
-import com.example.bookexchange.models.Post;
 import com.example.bookexchange.models.Request;
-import com.example.bookexchange.ui.activites.ViewPostActivity;
 import com.example.bookexchange.ui.activites.ViewRequestActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,7 +81,7 @@ public class MyRequestFragment extends Fragment implements SelectRequestItemList
                     if (request.getBookSellerId().equals(currentUserID)) {
 
                         if (!(request == null))
-                            request.setPostID(pushKey);
+                            request.setRequestID(pushKey);
 
                         myPostList.add(request);
                     }
@@ -140,7 +135,7 @@ public class MyRequestFragment extends Fragment implements SelectRequestItemList
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        daoRequest.remove(request.getPostID()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        daoRequest.remove(request.getRequestID()).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
 

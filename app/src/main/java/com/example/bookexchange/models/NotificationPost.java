@@ -6,7 +6,7 @@ public class NotificationPost {
     public String userID,userName;
     public String notificationDate,notificationID;
 
-    public String bookName;
+    public String bookName,postID;
 
     public NotificationPost() {
     }
@@ -18,6 +18,14 @@ public class NotificationPost {
         this.notificationDate=notificationDate;
 
 
+    }
+
+    public String getPostID() {
+        return postID;
+    }
+
+    public void setPostID(String postID) {
+        this.postID = postID;
     }
 
     public String getNotificationDate() {

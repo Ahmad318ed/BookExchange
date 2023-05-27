@@ -7,15 +7,15 @@ public class Request implements Serializable {
     String bookSellerName, bookSellerId, bookSellerEmail, bookName
             , bookCollege, bookPrice
             , bookDetails, bookEdition, bookStates;
-    String postDate;
-    String postID;
+    String requestDate;
+    String requestID;
     String img;
 
     public Request() {
     }
 
     public Request(String img, String bookSellerName, String bookSellerEmail, String bookSellerId
-            , String bookName, String bookEdition, String bookCollege, String bookPrice, String bookStates, String bookDetails, String postDate) {
+            , String bookName, String bookEdition, String bookCollege, String bookPrice, String bookStates, String bookDetails, String requestDate) {
         this.bookName = bookName;
         this.bookCollege = bookCollege;
         this.bookPrice = bookPrice;
@@ -26,7 +26,7 @@ public class Request implements Serializable {
         this.bookDetails = bookDetails;
         this.bookSellerId = bookSellerId;
         this.bookSellerEmail = bookSellerEmail;
-        this.postDate = postDate;
+        this.requestDate = requestDate;
 
 
     }
@@ -111,20 +111,20 @@ public class Request implements Serializable {
         this.bookStates = bookStates;
     }
 
-    public String getPostDate() {
-        return postDate;
+    public String getRequestDate() {
+        return requestDate;
     }
 
-    public void setPostDate(String postDate) {
-        this.postDate = postDate;
+    public void setRequestDate(String requestDate) {
+        this.requestDate = requestDate;
     }
 
-    public String getPostID() {
-        return postID;
+    public String getRequestID() {
+        return requestID;
     }
 
-    public void setPostID(String postID) {
-        this.postID = postID;
+    public void setRequestID(String requestID) {
+        this.requestID = requestID;
     }
 
     public String getImg() {

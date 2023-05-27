@@ -48,6 +48,8 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
     FirebaseUser user;
     String currentUserID;
     DAORequest daoRequest;
+    String Collage;
+
     DAONotificationRequest daoNotificationrequest;
     DatabaseReference databaseReference;
     public static List<Request> requestList = new ArrayList<>();
@@ -73,6 +75,40 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
         recyclerView.setHasFixedSize(true);
         currentUserID = user.getUid();
 
+        String collage=getArguments().getString("Collages");//String text
+        switch(collage)
+        {
+            case "it":
+                Collage="Information  technology  collage";
+                break;
+            case "Arts_and_Sciences":
+                Collage="College  of  Arts  and  Sciences";
+                break;
+            case "Dawah":
+                Collage="College  of  Da'wah  and  Fundamentals  of  Religion";
+                break;
+            case "Sheikh_Noah":
+                Collage="Sheikh  Noah  College  of  Sharia  and  Law";
+                break;
+            case "Educational_Sciences":
+                Collage="Faculty  of  Educational  Sciences";
+                break;
+            case "Islamic_Architecture":
+                Collage="College  of  Arts  and  Islamic  Architecture";
+                break;
+            case "Money_and_Business":
+                Collage="College  Money  and  Business";
+                break;
+            case "Maliki_Hanafi_Shafii":
+                Collage="Faculty  of  Al  Hanafi Maliki Shafi'i Jurisprudence";
+                break;
+            case "Graduate_Studies":
+                Collage="College  Graduate  Studies";
+                break;
+
+
+        }
+
         daoRequest.get().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -87,9 +123,12 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
 
                     if (!(request.getBookSellerId().equals(currentUserID))) {
 
+                        if(request.getBookCollege().equals(Collage)){
 
+                            request.setRequestID(pushKey);
+                            requestList.add(request);
+                        }
 
-                        requestList.add(request);
 
 
 
@@ -183,11 +222,12 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
         String currentUserID = user.getUid();
 
 
+
         if (!(request.getBookSellerId().equals(currentUser.getUid()))) {
 
 
             NotificationRequest notification2 = new NotificationRequest(currentUser.getUid(), currentUser.getDisplayName(), request.getBookName(), dateFormat);
-
+            notification2.setRequestID(request.getRequestID());
 
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

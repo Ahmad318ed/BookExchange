@@ -15,6 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.bookexchange.adapters.PostAdapter;
@@ -53,6 +54,7 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
     FirebaseUser user;
 
     String currentUserID;
+    String Collage;
     public static List<Post> postList = new ArrayList<>();
 
     DAOPost daoPost;
@@ -64,6 +66,7 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.from(getContext()).inflate(R.layout.fragment_posts, container, false);
+
 
         fabShouldBeHidden = false;
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe);
@@ -87,6 +90,43 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         currentUserID = user.getUid();
+        String collage=getArguments().getString("Collages");//String text
+
+
+        switch(collage)
+        {
+            case "it":
+                Collage="Information  technology  collage";
+                break;
+            case "Arts_and_Sciences":
+                Collage="College  of  Arts  and  Sciences";
+                break;
+            case "Dawah":
+                Collage="College  of  Da'wah  and  Fundamentals  of  Religion";
+                break;
+            case "Sheikh_Noah":
+                Collage="Sheikh  Noah  College  of  Sharia  and  Law";
+                break;
+            case "Educational_Sciences":
+                Collage="Faculty  of  Educational  Sciences";
+                break;
+            case "Islamic_Architecture":
+                Collage="College  of  Arts  and  Islamic  Architecture";
+                break;
+            case "Money_and_Business":
+                Collage="College  Money  and  Business";
+                break;
+            case "Maliki_Hanafi_Shafii":
+                Collage="Faculty  of  Al  Hanafi Maliki Shafi'i Jurisprudence";
+                break;
+            case "Graduate_Studies":
+                Collage="College  Graduate  Studies";
+                break;
+
+
+        }
+
+
 
         daoPost.get().addValueEventListener(new ValueEventListener() {
             @Override
@@ -101,8 +141,13 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
 
                     if (!(post.getBookSellerId().equals(currentUserID))) {
 
+                        if(post.getBookCollege().equals(Collage)){
+                            post.setPostID(pushKey);
+                            postList.add(post);
 
-                        postList.add(post);
+                        }
+
+
 
 
                     }
@@ -221,6 +266,7 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
 
 
             NotificationPost notificationPost2 = new NotificationPost(currentUser.getUid(), currentUser.getDisplayName(), post.getBookName(), dateFormat);
+            notificationPost2.setPostID(post.getPostID());
 
 
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {

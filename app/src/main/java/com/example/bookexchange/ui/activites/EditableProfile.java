@@ -608,5 +608,6 @@ public class EditableProfile extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+
     }
 }

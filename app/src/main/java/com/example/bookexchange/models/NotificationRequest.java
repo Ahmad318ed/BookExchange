@@ -6,7 +6,7 @@ public class NotificationRequest {
     public String userID,userName;
     public String notificationDate,notificationID;
 
-    public String bookName;
+    public String bookName, requestID;
 
     public NotificationRequest() {
     }
@@ -18,6 +18,14 @@ public class NotificationRequest {
         this.notificationDate=notificationDate;
 
 
+    }
+
+    public String getRequestID() {
+        return requestID;
+    }
+
+    public void setRequestID(String requestID) {
+        this.requestID = requestID;
     }
 
     public String getNotificationDate() {

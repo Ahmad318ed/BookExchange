@@ -8,6 +8,10 @@
     <item android:id="@+id/home"
         android:title="Home"
         android:icon="@drawable/homefragment"/>
+
+    <item android:id="@+id/colleges"
+        android:title="Colleges"
+        android:icon="@drawable/colleges"/>
     <item
         android:id="@+id/nav_my_profile"
         android:title="@string/my_profile"
@@ -29,13 +33,13 @@
         android:icon="@drawable/ic_edit"/>
 
     <item
-        android:id="@+id/received_notification_fragment"
-        android:icon="@drawable/baseline_notifications"
-        android:title="Responses Notifications" />
-    <item
         android:id="@+id/notification_fragment"
         android:icon="@drawable/baseline_notifications"
-        android:title="Requests Notifications" />
+        android:title="Orders Notifications" />
+    <item
+        android:id="@+id/received_notification_fragment"
+        android:icon="@drawable/bell"
+        android:title="Responses Notifications" />
 
 
     <item

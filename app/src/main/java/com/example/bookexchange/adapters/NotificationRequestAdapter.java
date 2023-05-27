@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookexchange.R;
 import com.example.bookexchange.dao.DAONotificationPosts;
-import com.example.bookexchange.models.NotificationPost;
 import com.example.bookexchange.models.NotificationRequest;
-import com.example.bookexchange.models.ReceivedNotification;
+import com.example.bookexchange.models.ReceivedPostsNotification;
+import com.example.bookexchange.models.ReceivedRequestsNotification;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -80,7 +80,7 @@ public class NotificationRequestAdapter extends RecyclerView.Adapter<Notificatio
 
                             NotificationRequest notification = myNotificationArray.get(position);
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            databaseReference = database.getReference(NotificationPost.class.getSimpleName());
+                            databaseReference = database.getReference(NotificationRequest.class.getSimpleName());
 
                             databaseReference.child(user.getUid())
                                     .child(notification.notificationID)
@@ -95,18 +95,23 @@ public class NotificationRequestAdapter extends RecyclerView.Adapter<Notificatio
                             String states = "Accepted";
                             Date date = Calendar.getInstance().getTime();
                             String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
-                            ReceivedNotification receivedNotification = new ReceivedNotification(myNotificationArray.get(position).userID, user.getUid(), user.getDisplayName(), myNotificationArray.get(position).bookName, states.trim(),dateFormat);
+                            ReceivedPostsNotification receivedPostsNotification = new ReceivedPostsNotification(myNotificationArray.get(position).userID, user.getUid(), user.getDisplayName(), myNotificationArray.get(position).bookName, states.trim(),dateFormat);
                             database = FirebaseDatabase.getInstance();
-                            databaseReference = database.getReference(ReceivedNotification.class.getSimpleName());
-                            databaseReference.child(myNotificationArray.get(position).userID).push().setValue(receivedNotification);
+                            databaseReference = database.getReference(ReceivedRequestsNotification.class.getSimpleName());
+                            databaseReference.child(myNotificationArray.get(position).userID).push().setValue(receivedPostsNotification);
+
+                            myNotificationArray.remove(position);
+                            notifyItemRemoved(position);
 
 
+                            DatabaseReference databaseReference2 = database.getReference("Request"); // Replace "Post" with the actual node name where the posts are stored
+                            databaseReference2.child(notification.getRequestID())
+                                    .removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
 
-                            NotificationRequestAdapter.this.notifyItemRemoved(position);
-                            NotificationRequestAdapter.this.notifyItemRangeChanged(0,getItemCount()-position);
-
-
-
+                                        }
+                                    });
 
 
                         }
@@ -152,14 +157,13 @@ public class NotificationRequestAdapter extends RecyclerView.Adapter<Notificatio
                             String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
                             String states = "Canceled";
 
-                            ReceivedNotification receivedNotification = new ReceivedNotification(myNotificationArray.get(position).userID, user.getUid(), user.getDisplayName(), myNotificationArray.get(position).bookName, states.trim(),dateFormat);
+                            ReceivedPostsNotification receivedPostsNotification = new ReceivedPostsNotification(myNotificationArray.get(position).userID, user.getUid(), user.getDisplayName(), myNotificationArray.get(position).bookName, states.trim(),dateFormat);
                             FirebaseDatabase database2 = FirebaseDatabase.getInstance();
-                            databaseReference = database2.getReference(ReceivedNotification.class.getSimpleName());
-                            databaseReference.child(myNotificationArray.get(position).userID).push().setValue(receivedNotification);
+                            databaseReference = database2.getReference(ReceivedPostsNotification.class.getSimpleName());
+                            databaseReference.child(myNotificationArray.get(position).userID).push().setValue(receivedPostsNotification);
 
-                            NotificationRequestAdapter.this.notifyItemRemoved(position);
-                            NotificationRequestAdapter.this.notifyItemRangeChanged(position,getItemCount()-position);
-
+                            myNotificationArray.remove(position);
+                            notifyItemRemoved(position);
 
                         }
                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
