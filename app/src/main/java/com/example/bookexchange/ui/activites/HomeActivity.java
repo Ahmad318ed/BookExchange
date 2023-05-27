@@ -126,7 +126,7 @@ public class HomeActivity extends AppCompatActivity {
                         FirebaseAuth.getInstance().signOut();
                         Intent intent2 = new Intent(HomeActivity.this, LoginActivity.class);
                         drawerLayout.closeDrawer(GravityCompat.START);
-                        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent2);
                         finish();
                         break;

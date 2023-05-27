@@ -24,7 +24,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.bookexchange.R;
 import com.example.bookexchange.dao.DAOProfileInfo;
+import com.example.bookexchange.dao.DAOUser;
 import com.example.bookexchange.models.Profile_info;
+import com.example.bookexchange.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,6 +58,8 @@ public class EditableProfile extends AppCompatActivity {
 
     String whatsAppNumber;
     Profile_info upload_profile_info;
+    
+    String downloadedImage;
 
 
     EditText edt_country_num;
@@ -166,7 +170,7 @@ public class EditableProfile extends AppCompatActivity {
                                         //to set username from edtName
                                         username = person_name;
 
-                                        upload_profile_info = new Profile_info(username, spinner1Value, facebookLink, instagramLink, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
+                                        upload_profile_info = new Profile_info(username, spinner1Value, facebookLink, instagramLink,downloadedImage, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
 
 
                                         daoProfile.add(upload_profile_info).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -174,15 +178,17 @@ public class EditableProfile extends AppCompatActivity {
                                             public void onSuccess(Void unused) {
 
                                                 Toast.makeText(EditableProfile.this, "The Information has been added", Toast.LENGTH_SHORT).show();
-
-                                                startActivity(new Intent(getApplicationContext(), CollageActivity.class));
+                                                Intent intent = new Intent(EditableProfile.this,CollageActivity.class);
                                                 finish();
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(intent);
+
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
 
-                                                startActivity(new Intent(getApplicationContext(), CollageActivity.class));
+                                               // startActivity(new Intent(getApplicationContext(), CollageActivity.class));
                                                 Toast.makeText(EditableProfile.this, "Something Wrong ):", Toast.LENGTH_SHORT).show();
                                                 finish();
                                             }
@@ -230,23 +236,27 @@ public class EditableProfile extends AppCompatActivity {
 
                                                             upload_profile_info = new Profile_info(username, spinner1Value, facebookLink, instagramLink, str_imageSelectedURl, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
 
-                                                            finish();
+
+
 
                                                             daoProfile.add(upload_profile_info).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                 @Override
                                                                 public void onSuccess(Void unused) {
 
-                                                                    Toast.makeText(EditableProfile.this, "The Information has been added", Toast.LENGTH_SHORT).show();
+                                                                    Toast.makeText(EditableProfile.this, "1. The Information has been added", Toast.LENGTH_SHORT).show();
 
                                                                     str_imageSelectedURl = "";
-                                                                    startActivity(new Intent(getApplicationContext(), CollageActivity.class));
+                                                                    Intent intent = new Intent(EditableProfile.this,CollageActivity.class);
                                                                     finish();
+                                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                    startActivity(intent);
+
                                                                 }
                                                             }).addOnFailureListener(new OnFailureListener() {
                                                                 @Override
                                                                 public void onFailure(@NonNull Exception e) {
 
-                                                                    startActivity(new Intent(getApplicationContext(), CollageActivity.class));
+                                                                  //  startActivity(new Intent(getApplicationContext(), CollageActivity.class));
                                                                     Toast.makeText(EditableProfile.this, "Something Wrong ):", Toast.LENGTH_SHORT).show();
                                                                     finish();
                                                                 }
@@ -261,8 +271,20 @@ public class EditableProfile extends AppCompatActivity {
                                         } catch (Exception e) {
                                             System.out.println("hellllllllllllllllllo" + e);
 
-                                            Toast.makeText(EditableProfile.this, "The Information has been added", Toast.LENGTH_SHORT).show();
+                                            //to set username from edtName
+                                            username = person_name;
+
+                                            upload_profile_info = new Profile_info(username, spinner1Value, facebookLink, instagramLink, downloadedImage, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
+
+                                            daoProfile.add(upload_profile_info);
+
+                                            Toast.makeText(EditableProfile.this, "2. The Information has been added", Toast.LENGTH_SHORT).show();
+
+                                            Intent intent = new Intent(EditableProfile.this,CollageActivity.class);
                                             finish();
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+
                                         }
 
 
@@ -486,6 +508,9 @@ public class EditableProfile extends AppCompatActivity {
                         edtMajor.setText(profile.getMajor());
                         edt_country_num.setText(profile.getCountryNum());
                         spinner1.setSelection(profile.getSelectedItem());
+
+                        downloadedImage = profile.getImg();
+
                         if (!isDestroyed()) {
                             Glide.with(EditableProfile.this).load(currentUser.getPhotoUrl()).fitCenter().centerCrop().into(img_profile);
 
@@ -532,6 +557,51 @@ public class EditableProfile extends AppCompatActivity {
         }
         return true;
 
+    }
+
+
+
+    private void addNameToUser(){
+
+        DAOUser daoUser = new DAOUser();
+        daoUser.get().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                for (DataSnapshot User : snapshot.getChildren()) {
+
+                    User user = User.getValue(com.example.bookexchange.models.User.class);
+
+                    if (username_Id.equals(user.getId())) {
+
+                        String name = username;
+                        String id = currentUser.getUid();
+                        String email = currentUser.getEmail();
+
+                        user.setEmail(email);
+                        user.setName(name);
+                        user.setId(id);
+
+
+                        daoUser.add(user);
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        }
+
+    @Override
+    protected void onDestroy() {
+        addNameToUser();
+        super.onDestroy();
     }
 
     @Override
