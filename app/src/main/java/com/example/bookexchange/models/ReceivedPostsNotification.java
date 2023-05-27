@@ -1,14 +1,14 @@
 package com.example.bookexchange.models;
 
-public class ReceivedNotification {
+public class ReceivedPostsNotification {
 
     String notificationID, userSenderID, owner_userID, owner_Username, bookName, states,date;
 
 
-    public ReceivedNotification() {
+    public ReceivedPostsNotification() {
     }
 
-    public ReceivedNotification(String userSenderID, String owner_userID, String owner_Username, String bookName, String states,String date) {
+    public ReceivedPostsNotification(String userSenderID, String owner_userID, String owner_Username, String bookName, String states, String date) {
         this.owner_userID = owner_userID;
         this.bookName = bookName;
         this.states = states;

@@ -8,19 +8,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookexchange.R;
 import com.example.bookexchange.dao.DAONotificationPosts;
+import com.example.bookexchange.dao.DAOPost;
 import com.example.bookexchange.models.NotificationPost;
-import com.example.bookexchange.models.ReceivedNotification;
+import com.example.bookexchange.models.Post;
+import com.example.bookexchange.models.ReceivedPostsNotification;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -33,6 +39,9 @@ public class NotificationPostsAdapter extends RecyclerView.Adapter<NotificationP
     List<NotificationPost> myNotificationArrayPost;
     DAONotificationPosts daoNotificationPosts;
     DatabaseReference databaseReference;
+    Post post;
+    Post post2;
+    DAOPost daoPost;
 
     FirebaseAuth auth;
     FirebaseUser user;
@@ -60,6 +69,7 @@ public class NotificationPostsAdapter extends RecyclerView.Adapter<NotificationP
         final NotificationPost myNotiList = myNotificationArrayPost.get(position);
 
         daoNotificationPosts = new DAONotificationPosts();
+        daoPost = new DAOPost();
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -94,17 +104,23 @@ public class NotificationPostsAdapter extends RecyclerView.Adapter<NotificationP
                             String states = "Accepted";
                             Date date = Calendar.getInstance().getTime();
                             String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
-                            ReceivedNotification receivedNotification = new ReceivedNotification(myNotificationArrayPost.get(position).userID, user.getUid(), user.getDisplayName(), myNotificationArrayPost.get(position).bookName, states.trim(),dateFormat);
+                            ReceivedPostsNotification receivedPostsNotification = new ReceivedPostsNotification(myNotificationArrayPost.get(position).userID, user.getUid(), user.getDisplayName(), myNotificationArrayPost.get(position).bookName, states.trim(), dateFormat);
                             database = FirebaseDatabase.getInstance();
-                            databaseReference = database.getReference(ReceivedNotification.class.getSimpleName());
-                            databaseReference.child(myNotificationArrayPost.get(position).userID).push().setValue(receivedNotification);
+                            databaseReference = database.getReference(ReceivedPostsNotification.class.getSimpleName());
+                            databaseReference.child(myNotificationArrayPost.get(position).userID).push().setValue(receivedPostsNotification);
 
+                            myNotificationArrayPost.remove(position);
+                            notifyItemRemoved(position);
 
-
-                            NotificationPostsAdapter.this.notifyItemRemoved(position);
-                            NotificationPostsAdapter.this.notifyItemRangeChanged(0,getItemCount()-position);
-
-
+                           DatabaseReference databaseReference2 = database.getReference("Post"); // Replace "Post" with the actual node name where the posts are stored
+                            databaseReference2.child(notificationPost.getPostID())
+                                    .removeValue()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            // Post removed successfully
+                                        }
+                                    });
 
 
 
@@ -115,7 +131,6 @@ public class NotificationPostsAdapter extends RecyclerView.Adapter<NotificationP
                             dialog.cancel();
                         }
                     });
-
 
 
             alertDialog2.create().show();
@@ -145,19 +160,18 @@ public class NotificationPostsAdapter extends RecyclerView.Adapter<NotificationP
                                     .removeValue().addOnSuccessListener(command -> {
 
 
-
                                     });
                             Date date = Calendar.getInstance().getTime();
                             String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
                             String states = "Canceled";
 
-                            ReceivedNotification receivedNotification = new ReceivedNotification(myNotificationArrayPost.get(position).userID, user.getUid(), user.getDisplayName(), myNotificationArrayPost.get(position).bookName, states.trim(),dateFormat);
+                            ReceivedPostsNotification receivedPostsNotification = new ReceivedPostsNotification(myNotificationArrayPost.get(position).userID, user.getUid(), user.getDisplayName(), myNotificationArrayPost.get(position).bookName, states.trim(), dateFormat);
                             FirebaseDatabase database2 = FirebaseDatabase.getInstance();
-                            databaseReference = database2.getReference(ReceivedNotification.class.getSimpleName());
-                            databaseReference.child(myNotificationArrayPost.get(position).userID).push().setValue(receivedNotification);
+                            databaseReference = database2.getReference(ReceivedPostsNotification.class.getSimpleName());
+                            databaseReference.child(myNotificationArrayPost.get(position).userID).push().setValue(receivedPostsNotification);
 
-                            NotificationPostsAdapter.this.notifyItemRemoved(position);
-                            NotificationPostsAdapter.this.notifyItemRangeChanged(position,getItemCount()-position);
+                            myNotificationArrayPost.remove(position);
+                            notifyItemRemoved(position);
 
 
                         }

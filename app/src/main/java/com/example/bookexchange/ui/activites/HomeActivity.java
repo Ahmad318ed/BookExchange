@@ -84,6 +84,16 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Intent intent= getIntent();
+
+        String Collages =intent.getStringExtra("Collages");
+        Bundle bundle = new Bundle();
+        bundle.putString("Collages", Collages);
+
+
+
+
+
         auth = FirebaseAuth.getInstance();
         daoProfile = new DAOProfileInfo();
         currentUser = auth.getCurrentUser();
@@ -136,7 +146,11 @@ public class HomeActivity extends AppCompatActivity {
                         replaceFragment(new ReceivedNotificationFragment());
                         break;
                     case R.id.home:
-                        replaceFragment(new PostsFragment());
+                        replaceFragment2(new PostsFragment(),bundle);
+                        break;
+                    case R.id.colleges:
+                       startActivity(new Intent(getApplicationContext(),CollageActivity.class));
+                       finish();
                         break;
                     default:
                         break;
@@ -180,15 +194,16 @@ public class HomeActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
 
 
-        replaceFragment(new PostsFragment());
+        replaceFragment2(new PostsFragment(),bundle);
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.post:
-                    replaceFragment(new PostsFragment());
+                    replaceFragment2(new PostsFragment(),bundle);
+
                     break;
                 case R.id.request:
-                    replaceFragment(new RequestsFragment());
+                    replaceFragment2(new RequestsFragment(),bundle);
                     break;
 
 
@@ -213,6 +228,15 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void replaceFragment(Fragment fragment) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void replaceFragment2(Fragment fragment,Bundle bundle) {
+        fragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);

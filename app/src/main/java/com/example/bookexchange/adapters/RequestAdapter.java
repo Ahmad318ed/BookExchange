@@ -1,7 +1,6 @@
 package com.example.bookexchange.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.bookexchange.R;
-import com.example.bookexchange.models.Post;
 import com.example.bookexchange.models.Request;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,7 +63,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         holder.tv_book_college.setText(myRequestList.getBookCollege());
         holder.tv_book_price.setText(myRequestList.getBookPrice());
         holder.tv_seller_name.setText(myRequestList.getBookSellerName());
-        holder.tv_post_date.setText(myRequestList.getPostDate());
+        holder.tv_post_date.setText(myRequestList.getRequestDate());
 
 
         holder.btn_view.setOnClickListener(new View.OnClickListener() {

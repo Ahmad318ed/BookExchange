@@ -13,9 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.bookexchange.R;
-import com.example.bookexchange.dao.DAOPost;
 import com.example.bookexchange.dao.DAORequest;
-import com.example.bookexchange.models.Post;
 import com.example.bookexchange.models.Request;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -72,7 +70,7 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.MyPo
         holder.tv_book_college.setText(myPostList.getBookCollege());
         holder.tv_book_price.setText(myPostList.getBookPrice());
         holder.tv_seller_name.setText(myPostList.getBookSellerName());
-        holder.tv_post_date.setText(myPostList.getPostDate());
+        holder.tv_post_date.setText(myPostList.getRequestDate());
 
         holder.btn_view.setOnClickListener(new View.OnClickListener() {
             @Override

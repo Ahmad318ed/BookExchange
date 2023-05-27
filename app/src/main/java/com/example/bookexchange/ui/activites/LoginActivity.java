@@ -148,6 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
 
+                                                startActivity(new Intent(getApplicationContext(),EditableProfile.class));
 
                                             }
                                         });

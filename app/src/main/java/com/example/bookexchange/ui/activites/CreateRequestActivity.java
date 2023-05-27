@@ -409,7 +409,7 @@ public class CreateRequestActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
 
+        finish();
     }
 }

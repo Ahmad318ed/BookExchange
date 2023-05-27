@@ -6,8 +6,8 @@
     <string name="my_profile">My Profile</string>
     <string name="logout">Logout</string>
     <string name="edit_profile">Edit Profile</string>
-    <string name="my_requests">My requests</string>
-    <string name="my_posts">My posts</string>
+    <string name="my_requests">My Requests</string>
+    <string name="my_posts">My Posts</string>
     <string name="navigation_drawer_open">oper</string>
     <string name="navigation_drawer_close">close</string>
     <string name="submit">Submit</string>
