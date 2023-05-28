@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
             if (firebaseAuth.getCurrentUser() != null && firebaseAuth.getCurrentUser().isEmailVerified()) {
-                Intent intent = new Intent(this, EditableProfile.class);
+                Intent intent = new Intent(this, CollageActivity.class);
                 startActivity(intent);
                 finish();
 
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 //
         //Database Class : it contain all the methods that u want from real time data base .
         DAOUser daoUser = new DAOUser();
-        DAOProfileInfo daoProfileInfo=new DAOProfileInfo();
+        DAOProfileInfo daoProfileInfo = new DAOProfileInfo();
         //Dialog For loading time
         dialog = new ProgressDialog(LoginActivity.this);
         dialog.setTitle("Loading");
@@ -138,7 +138,6 @@ public class LoginActivity extends AppCompatActivity {
                                     String emaill = user1.getEmail();
 
 
-
                                     current_User = new User(id, emaill, name);
 
 
@@ -148,10 +147,10 @@ public class LoginActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
 
-                                                startActivity(new Intent(getApplicationContext(),EditableProfile.class));
 
                                             }
                                         });
+
 
                                         Toast.makeText(LoginActivity.this, "Welcome " + name, Toast.LENGTH_LONG).show();
                                         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -159,30 +158,26 @@ public class LoginActivity extends AppCompatActivity {
                                         daoProfileInfo.get().addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot data : snapshot.getChildren()) {
+                                                    String userId = data.getKey();
 
-                                                for (DataSnapshot data:snapshot.getChildren()) {
-
-
-
-                                                    if(Objects.equals(data.getKey(), user1.getUid())){
-
-
-                                                        Toast.makeText(LoginActivity.this, "Exist", Toast.LENGTH_SHORT).show();
-                                                        startActivity(new Intent(LoginActivity.this, CollageActivity.class));
-                                                        finish();
-
-
-
-                                                    }else{
-                                                        Toast.makeText(LoginActivity.this, "Not Exist", Toast.LENGTH_SHORT).show();
-                                                        startActivity(new Intent(LoginActivity.this, EditableProfile.class));
-                                                        finish();
-
+                                                    // Check if the current user matches the specified user
+                                                    if (userId.equals(current_User.getId())) {
+                                                        // User has a profile and has inputted profile information before
+                                                        // Intent the user to the home page directly
+                                                        Intent homeIntent = new Intent(LoginActivity.this, CollageActivity.class);
+                                                        startActivity(homeIntent);
+                                                        finish(); // Optional: close the current activity if needed
+                                                        return; // Exit the loop if the user is found
                                                     }
-
-
-
                                                 }
+
+                                                // User doesn't have a profile or hasn't inputted profile information before
+                                                // Intent the user to the Profile Input activity to insert profile info
+                                                Intent profileInputIntent = new Intent(LoginActivity.this, EditableProfile.class);
+                                                startActivity(profileInputIntent);
+                                                finish(); // Optional: close the current activity if needed
+
 
 
                                             }

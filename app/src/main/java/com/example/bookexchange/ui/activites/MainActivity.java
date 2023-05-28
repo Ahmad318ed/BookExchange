@@ -99,9 +99,9 @@ public class MainActivity extends AppCompatActivity {
         List<Slides> slides = new ArrayList<>();
 
 
-        slides.add(new Slides(R.drawable.wise_logo,getString(R.string.wise),getString(R.string.wise_desc)));
+        slides.add(new Slides(R.drawable.wise_logo_sized,getString(R.string.wise),getString(R.string.wise_desc)));
         slides.add(new Slides(R.drawable.it_logo,getString(R.string.it_collage_slides),getString(R.string.it_desc)));
-        slides.add(new Slides(R.drawable.app_logo,getString(R.string.app_name),getString(R.string.app_desc)));
+        slides.add(new Slides(R.drawable.app_logo_sized,getString(R.string.app_name),getString(R.string.app_desc)));
 
 
 

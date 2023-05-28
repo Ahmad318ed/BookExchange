@@ -8,13 +8,13 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="5dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="4dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="515dp"
             >
 
             <ImageView
@@ -43,10 +43,10 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="9dp"
-                >
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="8dp">
 
                 <TextView
                     android:id="@+id/desc"
@@ -57,11 +57,9 @@
                     android:lineSpacingExtra="3dp"
                     android:paddingBottom="20dp"
                     android:text="Description"
+                    android:textAlignment="textStart"
                     android:textColor="@color/fog_4" />
             </ScrollView>
-
-
-
 
 
         </RelativeLayout>

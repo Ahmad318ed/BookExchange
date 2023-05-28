@@ -21,7 +21,7 @@ import java.net.URL;
 public class ViewPostActivity extends AppCompatActivity {
 
     TextView tv_username, tv_user_email, tv_book_name, tv_book_edition, tv_book_price, tv_book_collage, tv_book_details, tv_book_states;
-    RoundedImageView user_image;
+    ImageView user_image;
     FirebaseAuth auth;
     FirebaseUser user;
 
@@ -46,7 +46,7 @@ public class ViewPostActivity extends AppCompatActivity {
 
 
 
-//        Glide.with(ViewPostActivity.this).load(user.getPhotoUrl()).fitCenter().centerCrop().into(user_image);
+        Glide.with(ViewPostActivity.this).load(user.getPhotoUrl()).fitCenter().centerCrop().into(user_image);
         tv_username.setText(username);
         tv_user_email.setText(userEmail);
         tv_book_name.setText(post.getBookName());

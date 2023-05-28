@@ -48,11 +48,10 @@ public class MyPostsFragment extends Fragment implements SelectPostItemListener 
     RecyclerView recyclerView;
 
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-         view = inflater.from(getContext()).inflate(R.layout.fragment_my_posts, container, false);
+        view = inflater.from(getContext()).inflate(R.layout.fragment_my_posts, container, false);
         return view;
     }
 
@@ -81,13 +80,12 @@ public class MyPostsFragment extends Fragment implements SelectPostItemListener 
 
                     if (post.getBookSellerId().equals(currentUserID)) {
 
-                        if (!(post == null))
+                        if (!(post == null)) {
+                            post.setBookSellerName(user.getDisplayName());
                             post.setPostID(pushKey);
-
-                        myPostList.add(post);
+                            myPostList.add(post);
+                        }
                     }
-
-
 
 
                 }
@@ -103,7 +101,7 @@ public class MyPostsFragment extends Fragment implements SelectPostItemListener 
         });
 
 
-        myadapter = new MyPostAdapter(requireContext(), myPostList,this);
+        myadapter = new MyPostAdapter(requireContext(), myPostList, this);
         recyclerView.setAdapter(myadapter);
 
     }
@@ -124,43 +122,7 @@ public class MyPostsFragment extends Fragment implements SelectPostItemListener 
     }
 
     @Override
-    public void onItemDeleteClicked(Post post, FirebaseUser currentUser) {
-
-        AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(requireContext());
-        alertDialog2.setTitle("Confirm");
-        alertDialog2.setMessage("Do you Want to Accept ?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        daoPost.remove(post.getPostID()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-
-                                Toast.makeText(requireContext(), "The Post has been deleted", Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
-                        MyPostsFragment fragment = new MyPostsFragment();
-
-                        FragmentManager fragmentManager = getParentFragmentManager(); // Replace with the appropriate FragmentManager method if needed
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                        fragmentTransaction.remove(fragment);
-                        fragmentTransaction.add(R.id.fragment_container, fragment); // Replace R.id.fragment_container with the ID of the container where the fragment is hosted
-                        fragmentTransaction.commit();
-
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.cancel();
-                    }
-                });
-
-        alertDialog2.create().show();
+    public void onItemDeleteClicked(Post post, FirebaseUser currentUser, int position) {
 
 
     }

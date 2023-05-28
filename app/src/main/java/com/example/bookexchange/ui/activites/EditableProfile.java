@@ -58,7 +58,7 @@ public class EditableProfile extends AppCompatActivity {
 
     String whatsAppNumber;
     Profile_info upload_profile_info;
-    
+
     String downloadedImage;
 
 
@@ -116,8 +116,6 @@ public class EditableProfile extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                Toast.makeText(EditableProfile.this, "Loading ..", Toast.LENGTH_SHORT).show();
-                Toast.makeText(EditableProfile.this, "Please wait ..", Toast.LENGTH_SHORT).show();
 
                 String person_name = edt_name.getText().toString().trim();
                 String facebookLink = edtFacebook.getText().toString().trim();
@@ -170,7 +168,7 @@ public class EditableProfile extends AppCompatActivity {
                                         //to set username from edtName
                                         username = person_name;
 
-                                        upload_profile_info = new Profile_info(username, spinner1Value, facebookLink, instagramLink,downloadedImage, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
+                                        upload_profile_info = new Profile_info(username, spinner1Value, facebookLink, instagramLink, downloadedImage, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
 
 
                                         daoProfile.add(upload_profile_info).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -178,17 +176,17 @@ public class EditableProfile extends AppCompatActivity {
                                             public void onSuccess(Void unused) {
 
                                                 Toast.makeText(EditableProfile.this, "The Information has been added", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(EditableProfile.this,CollageActivity.class);
-                                                finish();
+                                                Intent intent = new Intent(EditableProfile.this, CollageActivity.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 startActivity(intent);
+                                                finish();
 
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
 
-                                               // startActivity(new Intent(getApplicationContext(), CollageActivity.class));
+                                                // startActivity(new Intent(getApplicationContext(), CollageActivity.class));
                                                 Toast.makeText(EditableProfile.this, "Something Wrong ):", Toast.LENGTH_SHORT).show();
                                                 finish();
                                             }
@@ -220,23 +218,22 @@ public class EditableProfile extends AppCompatActivity {
 
                                                             str_imageSelectedURl = uri.toString();
 
-
+                                                            username = person_name;
                                                             // to set user image
                                                             auth = FirebaseAuth.getInstance();
                                                             user = auth.getCurrentUser();
 
                                                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                                    .setDisplayName(username)
                                                                     .setPhotoUri(uri)
                                                                     .build();
                                                             user.updateProfile(profileUpdates);
 
 
                                                             //to set username from edtName
-                                                            username = person_name;
+
 
                                                             upload_profile_info = new Profile_info(username, spinner1Value, facebookLink, instagramLink, str_imageSelectedURl, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
-
-
 
 
                                                             daoProfile.add(upload_profile_info).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -246,23 +243,21 @@ public class EditableProfile extends AppCompatActivity {
                                                                     Toast.makeText(EditableProfile.this, "1. The Information has been added", Toast.LENGTH_SHORT).show();
 
                                                                     str_imageSelectedURl = "";
-                                                                    Intent intent = new Intent(EditableProfile.this,CollageActivity.class);
-                                                                    finish();
+                                                                    Intent intent = new Intent(EditableProfile.this, CollageActivity.class);
                                                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                                     startActivity(intent);
+                                                                    finish();
 
                                                                 }
                                                             }).addOnFailureListener(new OnFailureListener() {
                                                                 @Override
                                                                 public void onFailure(@NonNull Exception e) {
 
-                                                                  //  startActivity(new Intent(getApplicationContext(), CollageActivity.class));
+                                                                    //  startActivity(new Intent(getApplicationContext(), CollageActivity.class));
                                                                     Toast.makeText(EditableProfile.this, "Something Wrong ):", Toast.LENGTH_SHORT).show();
                                                                     finish();
                                                                 }
                                                             });
-
-
 
 
                                                         }
@@ -282,7 +277,7 @@ public class EditableProfile extends AppCompatActivity {
 
                                             Toast.makeText(EditableProfile.this, "2. The Information has been added", Toast.LENGTH_SHORT).show();
 
-                                            Intent intent = new Intent(EditableProfile.this,CollageActivity.class);
+                                            Intent intent = new Intent(EditableProfile.this, CollageActivity.class);
                                             finish();
                                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
@@ -334,7 +329,6 @@ public class EditableProfile extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(EditableProfile.this, CollageActivity.class));
                 finish();
             }
         });
@@ -409,6 +403,7 @@ public class EditableProfile extends AppCompatActivity {
             }
         }
     }
+
 
 
     private void editCountryNum() {
@@ -562,8 +557,7 @@ public class EditableProfile extends AppCompatActivity {
     }
 
 
-
-    private void addNameToUser(){
+    private void addNameToUser() {
 
         DAOUser daoUser = new DAOUser();
         daoUser.get().addValueEventListener(new ValueEventListener() {
@@ -598,7 +592,7 @@ public class EditableProfile extends AppCompatActivity {
 
             }
         });
-        }
+    }
 
     @Override
     protected void onDestroy() {

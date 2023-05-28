@@ -9,7 +9,7 @@ public interface SelectPostItemListener {
     void onItemViewClicked(Post post);
 
     void onItemTakeClicked(Post post, FirebaseUser currentUser);
-    void onItemDeleteClicked(Post post, FirebaseUser currentUser);
+    void onItemDeleteClicked(Post post, FirebaseUser currentUser,int position);
 
 
 

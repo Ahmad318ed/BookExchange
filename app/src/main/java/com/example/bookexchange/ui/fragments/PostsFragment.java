@@ -324,7 +324,7 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
     }
 
     @Override
-    public void onItemDeleteClicked(Post post, FirebaseUser currentUser) {
+    public void onItemDeleteClicked(Post post, FirebaseUser currentUser,int position) {
 
     }
 

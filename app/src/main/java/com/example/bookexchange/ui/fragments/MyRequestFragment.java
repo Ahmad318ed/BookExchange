@@ -127,41 +127,6 @@ public class MyRequestFragment extends Fragment implements SelectRequestItemList
     @Override
     public void onItemDeleteClicked(Request request, FirebaseUser currentUser) {
 
-        AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(requireContext());
-        alertDialog2.setTitle("Confirm");
-        alertDialog2.setMessage("Do you Want to Accept ?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        daoRequest.remove(request.getRequestID()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-
-                                Toast.makeText(requireContext(), "The Post has been deleted", Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
-                        MyRequestFragment fragment = new MyRequestFragment();
-
-                        FragmentManager fragmentManager = getParentFragmentManager(); // Replace with the appropriate FragmentManager method if needed
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                        fragmentTransaction.remove(fragment);
-                        fragmentTransaction.add(R.id.fragment_container, fragment); // Replace R.id.fragment_container with the ID of the container where the fragment is hosted
-                        fragmentTransaction.commit();
-
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.cancel();
-                    }
-                });
-
-        alertDialog2.create().show();
 
 
 

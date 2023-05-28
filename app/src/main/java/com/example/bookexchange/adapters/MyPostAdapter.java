@@ -12,12 +12,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.bookexchange.R;
 import com.example.bookexchange.dao.DAOPost;
 import com.example.bookexchange.models.Post;
+import com.example.bookexchange.ui.fragments.MyPostsFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -92,7 +95,44 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.MyPostView
 
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 FirebaseUser user = auth.getCurrentUser();
-                selectPostItemListener.onItemDeleteClicked(myPostArray.get(position), user);
+
+                AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(context);
+                alertDialog2.setTitle("Confirm");
+                alertDialog2.setMessage("Do you Want to Accept ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                daoPost.remove(myPostList.getPostID()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+
+                                        Toast.makeText(context, "The Post has been deleted", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+
+                                myPostArray.remove(position);
+                                notifyItemRemoved(position);
+
+
+
+
+
+
+
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                dialog.cancel();
+                            }
+                        });
+
+                alertDialog2.create().show();
+
 
 
 

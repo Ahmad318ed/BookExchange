@@ -332,14 +332,14 @@ public class CreateRequestActivity extends AppCompatActivity {
         spinner1.setSelection(0);
 
 
-        String[] value2 = {"Free", "0.5", "1", "1.5"};
+        String[] value2 = {"None","Free", "0.5", "1", "1.5","2.0"};
         ArrayList<String> arrayList2 = new ArrayList<>(Arrays.asList(value2));
         ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<>(this, R.layout.style_spinn, arrayList2);
         spinner2.setAdapter(arrayAdapter2);
         spinner2.setSelection(0);
 
 
-        String[] value3 = {"Used", "New"};
+        String[] value3 = {"None","Used", "New"};
         ArrayList<String> arrayList3 = new ArrayList<>(Arrays.asList(value3));
         ArrayAdapter<String> arrayAdapter3 = new ArrayAdapter<>(this, R.layout.style_spinn, arrayList3);
         spinner3.setAdapter(arrayAdapter3);

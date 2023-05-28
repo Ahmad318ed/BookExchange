@@ -47,15 +47,25 @@
                     android:layout_height="1dp"
                     android:background="@color/fog_dark"/>
 
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/user_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/imgCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    app:riv_corner_radius="30dp"
                     android:layout_marginTop="20dp"
-                    />
+                    app:cardCornerRadius="100dp"
+                    android:backgroundTint="@color/light"
+                    >
+                    <ImageView
+                        android:id="@+id/user_image"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/default_profile_img"
+                        />
+
+
+                </com.google.android.material.card.MaterialCardView>
+
 
                 <TextView
                     android:id="@+id/username_view"

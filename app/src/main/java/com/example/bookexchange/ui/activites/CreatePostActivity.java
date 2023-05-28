@@ -326,7 +326,7 @@ public class CreatePostActivity extends AppCompatActivity {
         spinner1.setSelection(0);
 
 
-        String[] value2 = {"None", "Free", "0.5 JD", "1 JD", "1.5 JD","2.0 JD"};
+        String[] value2 = {"None", "Free", "0.5", "1.0", "1.5","2.0"};
         ArrayList<String> arrayList2 = new ArrayList<>(Arrays.asList(value2));
         ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<>(this, R.layout.style_spinn, arrayList2);
         spinner2.setAdapter(arrayAdapter2);

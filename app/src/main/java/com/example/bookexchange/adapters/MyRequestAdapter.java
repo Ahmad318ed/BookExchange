@@ -1,20 +1,27 @@
 package com.example.bookexchange.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.bookexchange.R;
 import com.example.bookexchange.dao.DAORequest;
 import com.example.bookexchange.models.Request;
+import com.example.bookexchange.ui.fragments.MyRequestFragment;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -61,16 +68,16 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.MyPo
     @Override
     public void onBindViewHolder(@NonNull MyPostViewHolder holder, int position) {
 
-        final Request myPostList = myRequestArray.get(position);
+        final Request myRequestList = myRequestArray.get(position);
 
 
         daoRequest = new DAORequest();
-        holder.tv_book_name.setText(myPostList.getBookName());
-        Glide.with(context).load(myPostList.getImg()).fitCenter().centerCrop().into(holder.img);
-        holder.tv_book_college.setText(myPostList.getBookCollege());
-        holder.tv_book_price.setText(myPostList.getBookPrice());
-        holder.tv_seller_name.setText(myPostList.getBookSellerName());
-        holder.tv_post_date.setText(myPostList.getRequestDate());
+        holder.tv_book_name.setText(myRequestList.getBookName());
+        Glide.with(context).load(myRequestList.getImg()).fitCenter().centerCrop().into(holder.img);
+        holder.tv_book_college.setText(myRequestList.getBookCollege());
+        holder.tv_book_price.setText(myRequestList.getBookPrice());
+        holder.tv_seller_name.setText(myRequestList.getBookSellerName());
+        holder.tv_post_date.setText(myRequestList.getRequestDate());
 
         holder.btn_view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +95,38 @@ public class MyRequestAdapter extends RecyclerView.Adapter<MyRequestAdapter.MyPo
 
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 FirebaseUser user = auth.getCurrentUser();
-                selectRequestItemListener.onItemDeleteClicked(myRequestArray.get(position), user);
+                AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(context);
+                alertDialog2.setTitle("Confirm");
+                alertDialog2.setMessage("Do you Want to Accept ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                daoRequest.remove(myRequestList.getRequestID()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+
+                                        Toast.makeText(context, "The Post has been deleted", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+
+
+                                myRequestArray.remove(position);
+                                notifyItemRemoved(position);
+
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                dialog.cancel();
+                            }
+                        });
+
+                alertDialog2.create().show();
+
 
 
 
