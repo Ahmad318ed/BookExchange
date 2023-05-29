@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context=".ui.activites.Profile">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/hellix_medium"
-                android:text="Abdelhadi Alothman"
+                android:text="Name"
                 android:textColor="@color/fog_dark"
                 android:textSize="25sp" />
 
@@ -73,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
                     android:fontFamily="@font/hellix_medium"
-                    android:text="IT Collage"
+                    android:text="-----------"
                     android:textColor="@color/fog_4"
                     android:textSize="20sp" />
 
@@ -92,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
                     android:fontFamily="@font/hellix_medium"
-                    android:text="Software Engineering"
+                    android:text="-----------"
                     android:textColor="@color/fog_4"
                     android:textSize="20sp" />
 
