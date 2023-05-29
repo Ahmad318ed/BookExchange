@@ -1,21 +1,17 @@
 package com.example.bookexchange.ui.fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.bookexchange.R;
 import com.example.bookexchange.adapters.MyRequestAdapter;
@@ -23,7 +19,6 @@ import com.example.bookexchange.adapters.SelectRequestItemListener;
 import com.example.bookexchange.dao.DAORequest;
 import com.example.bookexchange.models.Request;
 import com.example.bookexchange.ui.activites.ViewRequestActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,7 +36,7 @@ public class MyRequestFragment extends Fragment implements SelectRequestItemList
     FirebaseAuth auth;
     FirebaseUser user;
     String currentUserID;
-    public static List<Request> myPostList = new ArrayList<>();
+    public static List<Request> myRequestList = new ArrayList<>();
     DatabaseReference databaseReference;
     public static MyRequestAdapter myadapter;
     RecyclerView recyclerView;
@@ -62,7 +57,7 @@ public class MyRequestFragment extends Fragment implements SelectRequestItemList
         daoRequest = new DAORequest();
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        myPostList.clear();
+        myRequestList.clear();
         recyclerView = view.findViewById(R.id.rv_post_myRequest);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -83,7 +78,7 @@ public class MyRequestFragment extends Fragment implements SelectRequestItemList
                         if (!(request == null))
                             request.setRequestID(pushKey);
 
-                        myPostList.add(request);
+                        myRequestList.add(request);
                     }
 
 
@@ -102,14 +97,57 @@ public class MyRequestFragment extends Fragment implements SelectRequestItemList
         });
 
 
-        myadapter = new MyRequestAdapter(requireContext(), myPostList,(SelectRequestItemListener) this);
+        myadapter = new MyRequestAdapter(requireContext(), myRequestList,(SelectRequestItemListener) this);
         recyclerView.setAdapter(myadapter);
+
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_myRequest);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchDataAndUpdateUI();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
     }
 
+    private void fetchDataAndUpdateUI() {
+        myRequestList.clear();
+        daoRequest.get().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                for (DataSnapshot postsnap : snapshot.getChildren()) {
+                    String pushKey = postsnap.getKey(); // Get the dynamically generated push key
+
+                    Request request = postsnap.getValue(Request.class);
+
+                    if (request.getBookSellerId().equals(currentUserID)) {
+
+                        if (!(request == null))
+                            request.setRequestID(pushKey);
+
+                        myRequestList.add(request);
+                    }
 
 
 
+
+                }
+                myadapter.notifyDataSetChanged();
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
 
 
     @Override

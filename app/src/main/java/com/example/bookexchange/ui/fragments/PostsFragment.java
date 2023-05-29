@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
@@ -41,6 +42,8 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -69,14 +72,6 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
 
 
         fabShouldBeHidden = false;
-        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getFragmentManager().beginTransaction().detach(PostsFragment.this).attach(PostsFragment.this).commit();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
 
 
         auth = FirebaseAuth.getInstance();
@@ -165,8 +160,20 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
             }
         });
 
+        Collections.sort(postList,Collections.reverseOrder());
         myadapter = new PostAdapter(requireContext(), postList, this);
         recyclerView.setAdapter(myadapter);
+
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchDataAndUpdateUI();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+
 
 //        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
@@ -204,6 +211,51 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
         return view;
     }
 
+    private void fetchDataAndUpdateUI() {
+        postList.clear();
+
+
+        daoPost.get().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                for (DataSnapshot postsnap : snapshot.getChildren()) {
+                    String pushKey = postsnap.getKey(); // Get the dynamically generated push key
+
+                    Post post = postsnap.getValue(Post.class);
+
+
+                    if (!(post.getBookSellerId().equals(currentUserID))) {
+
+                        if(post.getBookCollege().equals(Collage)){
+                            post.setPostID(pushKey);
+                            postList.add(post);
+
+                        }
+
+
+
+
+                    }
+
+
+                }
+                myadapter.notifyDataSetChanged();
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+    }
+
 
     // Declare the launcher at the top of your Activity/Fragment:
     private final ActivityResultLauncher<String> requestPermissionLauncher =
@@ -238,6 +290,11 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
 
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
+    }
 
     @Override
     public void onItemViewClicked(Post post) {

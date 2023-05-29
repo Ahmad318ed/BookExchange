@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class PostNotificationFragment extends Fragment {
 
     View inflate;
     RecyclerView recyclerView;
+    String currentUserID;
     NotificationPostsAdapter myadapter;
     public static List<NotificationPost> notificationPostList = new ArrayList<>();
     public static ArrayList<String> pushKeysList = new ArrayList<>();
@@ -68,7 +70,7 @@ public class PostNotificationFragment extends Fragment {
         databaseReference = database.getReference(NotificationPost.class.getSimpleName());
 
 
-        String currentUserID = user.getUid();
+         currentUserID = user.getUid();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -112,6 +114,60 @@ public class PostNotificationFragment extends Fragment {
 
         myadapter = new NotificationPostsAdapter(requireContext(), notificationPostList);
         recyclerView.setAdapter(myadapter);
+
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.notification_swippe_post);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchDataAndUpdateUI();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+    }
+
+    private void fetchDataAndUpdateUI() {
+        notificationPostList.clear();
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.exists()) {
+
+                    notificationPostList.clear();
+
+                    for (DataSnapshot idSnapshot : snapshot.getChildren()) {
+                        if (idSnapshot.getKey().equals(currentUserID)) {
+                            for (DataSnapshot pushSnapshot : idSnapshot.getChildren()) {
+                                String pushKey = pushSnapshot.getKey(); // Get the dynamically generated push key
+
+
+                                // Access the child node data using the push key
+                                NotificationPost notificationPost = pushSnapshot.getValue(NotificationPost.class);
+                                if (!(notificationPost == null))
+                                    notificationPost.notificationID = pushKey;
+
+
+                                notificationPostList.add(notificationPost);
+                                myadapter.notifyDataSetChanged();
+
+                                // Do something with the retrieved data
+                            }
+                            break; // Exit the loop once the specific ID is found
+                        }
+                    }
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
     }
 }

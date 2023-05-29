@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class RequestNotificationFragment extends Fragment {
     View inflate;
     RecyclerView recyclerView;
     NotificationRequestAdapter myadapter;
+    String currentUserID;
     public static List<NotificationRequest> notificationList = new ArrayList<>();
     public static ArrayList<String> pushKeysList = new ArrayList<>();
     DatabaseReference databaseReference;
@@ -67,7 +69,7 @@ public class RequestNotificationFragment extends Fragment {
         databaseReference = database.getReference(NotificationRequest.class.getSimpleName());
 
 
-        String currentUserID = user.getUid();
+         currentUserID = user.getUid();
         daoNotification.get().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -111,6 +113,60 @@ public class RequestNotificationFragment extends Fragment {
 
         myadapter = new NotificationRequestAdapter(requireContext(), notificationList);
         recyclerView.setAdapter(myadapter);
+
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.notification_swippe_requests);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchDataAndUpdateUI();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+    }
+
+    private void fetchDataAndUpdateUI() {
+
+        notificationList.clear();
+        daoNotification.get().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.exists()) {
+
+                    notificationList.clear();
+
+                    for (DataSnapshot idSnapshot : snapshot.getChildren()) {
+                        if (idSnapshot.getKey().equals(currentUserID)) {
+                            for (DataSnapshot pushSnapshot : idSnapshot.getChildren()) {
+                                String pushKey = pushSnapshot.getKey(); // Get the dynamically generated push key
+
+
+                                // Access the child node data using the push key
+                                NotificationRequest notification = pushSnapshot.getValue(NotificationRequest.class);
+                                if (!(notification == null))
+                                    notification.notificationID = pushKey;
+
+
+                                notificationList.add(notification);
+                                myadapter.notifyDataSetChanged();
+
+                                // Do something with the retrieved data
+                            }
+                            break; // Exit the loop once the specific ID is found
+                        }
+                    }
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 }

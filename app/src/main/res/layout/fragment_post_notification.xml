@@ -6,11 +6,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragments.PostNotificationFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notificationRecyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/notification_swippe_post"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/notification_item" />
+        android:layout_height="match_parent" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notificationRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/notification_item" />
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 </FrameLayout>

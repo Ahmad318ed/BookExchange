@@ -1,22 +1,24 @@
 package com.example.bookexchange.ui.fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import static com.example.bookexchange.ui.fragments.PostsFragment.postList;
+
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.bookexchange.R;
 import com.example.bookexchange.adapters.MyPostAdapter;
@@ -24,7 +26,6 @@ import com.example.bookexchange.adapters.SelectPostItemListener;
 import com.example.bookexchange.dao.DAOPost;
 import com.example.bookexchange.models.Post;
 import com.example.bookexchange.ui.activites.ViewPostActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -104,6 +105,120 @@ public class MyPostsFragment extends Fragment implements SelectPostItemListener 
         myadapter = new MyPostAdapter(requireContext(), myPostList, this);
         recyclerView.setAdapter(myadapter);
 
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_myPosts);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchDataAndUpdateUI();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+    }
+
+    private void fetchDataAndUpdateUI() {
+        myPostList.clear();
+
+        daoPost.get().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                for (DataSnapshot postsnap : snapshot.getChildren()) {
+                    String pushKey = postsnap.getKey(); // Get the dynamically generated push key
+
+                    Post post = postsnap.getValue(Post.class);
+
+                    if (post.getBookSellerId().equals(currentUserID)) {
+
+                        if (!(post == null)) {
+                            post.setBookSellerName(user.getDisplayName());
+                            post.setPostID(pushKey);
+                            myPostList.add(post);
+                        }
+                    }
+
+
+                }
+                myadapter.notifyDataSetChanged();
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+
+
+    private void filtertext(String text) {
+
+        List<Post> filteredList = new ArrayList<>();
+
+        for (Post post : postList) {
+
+            if (post.getBookName().toLowerCase().contains(text.toLowerCase())) {
+
+                filteredList.add(post);
+
+            }
+
+            if (filteredList.isEmpty()) {
+
+
+            } else {
+
+                myadapter.setfilteredlist(filteredList);
+
+            }
+
+        }
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Here..");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filtertext(newText);
+
+                return true;
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+
+
+
+
+
+
+
+        return true;
     }
 
     @Override

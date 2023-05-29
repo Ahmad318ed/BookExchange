@@ -108,7 +108,7 @@ public class Profile extends AppCompatActivity {
 
 
                         if (!isDestroyed()) {
-                            Glide.with(Profile.this).load(currentUser.getPhotoUrl()).fitCenter().centerCrop().into(img_profile);
+                            Glide.with(Profile.this).load(load_profile_info.getImg()).fitCenter().centerCrop().into(img_profile);
 
                         }
 

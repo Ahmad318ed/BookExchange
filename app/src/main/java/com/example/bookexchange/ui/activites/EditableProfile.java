@@ -509,7 +509,7 @@ public class EditableProfile extends AppCompatActivity {
                         downloadedImage = profile.getImg();
 
                         if (!isDestroyed()) {
-                            Glide.with(EditableProfile.this).load(currentUser.getPhotoUrl()).fitCenter().centerCrop().into(img_profile);
+                            Glide.with(EditableProfile.this).load(profile.getImg()).fitCenter().centerCrop().into(img_profile);
 
                         }
 

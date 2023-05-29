@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,15 +54,21 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
 
     DAONotificationRequest daoNotificationrequest;
     DatabaseReference databaseReference;
+    View view;
     public static List<Request> requestList = new ArrayList<>();
     private boolean fabShouldBeHidden = false; // Flag to keep track of FAB visibility
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.from(getContext()).inflate(R.layout.fragment_requests, container, false);
-        fabShouldBeHidden = false;
+        view = inflater.from(getContext()).inflate(R.layout.fragment_requests, container, false);
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fabShouldBeHidden = false;
 
 
         auth = FirebaseAuth.getInstance();
@@ -75,35 +83,34 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
         recyclerView.setHasFixedSize(true);
         currentUserID = user.getUid();
 
-        String collage=getArguments().getString("Collages");//String text
-        switch(collage)
-        {
+        String collage = getArguments().getString("Collages");//String text
+        switch (collage) {
             case "it":
-                Collage="Information  technology  collage";
+                Collage = "Information  technology  collage";
                 break;
             case "Arts_and_Sciences":
-                Collage="College  of  Arts  and  Sciences";
+                Collage = "College  of  Arts  and  Sciences";
                 break;
             case "Dawah":
-                Collage="College  of  Da'wah  and  Fundamentals  of  Religion";
+                Collage = "College  of  Da'wah  and  Fundamentals  of  Religion";
                 break;
             case "Sheikh_Noah":
-                Collage="Sheikh  Noah  College  of  Sharia  and  Law";
+                Collage = "Sheikh  Noah  College  of  Sharia  and  Law";
                 break;
             case "Educational_Sciences":
-                Collage="Faculty  of  Educational  Sciences";
+                Collage = "Faculty  of  Educational  Sciences";
                 break;
             case "Islamic_Architecture":
-                Collage="College  of  Arts  and  Islamic  Architecture";
+                Collage = "College  of  Arts  and  Islamic  Architecture";
                 break;
             case "Money_and_Business":
-                Collage="College  Money  and  Business";
+                Collage = "College  Money  and  Business";
                 break;
             case "Maliki_Hanafi_Shafii":
-                Collage="Faculty  of  Al  Hanafi Maliki Shafi'i Jurisprudence";
+                Collage = "Faculty  of  Al  Hanafi Maliki Shafi'i Jurisprudence";
                 break;
             case "Graduate_Studies":
-                Collage="College  Graduate  Studies";
+                Collage = "College  Graduate  Studies";
                 break;
 
 
@@ -120,20 +127,16 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
                     Request request = postsnap.getValue(Request.class);
 
 
-
                     if (!(request.getBookSellerId().equals(currentUserID))) {
 
-                        if(request.getBookCollege().equals(Collage)){
+                        if (request.getBookCollege().equals(Collage)) {
 
                             request.setRequestID(pushKey);
                             requestList.add(request);
                         }
 
 
-
-
                     }
-
 
 
                 }
@@ -149,9 +152,17 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
         });
 
 
-
         myadapter = new RequestAdapter(requireContext(), requestList, (SelectRequestItemListener) this);
         recyclerView.setAdapter(myadapter);
+
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_requests);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchDataAndUpdateUI();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
 //        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
@@ -187,8 +198,48 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
 //        });
 
 
-        return view;
     }
+
+    private void fetchDataAndUpdateUI() {
+        requestList.clear();
+
+        daoRequest.get().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                for (DataSnapshot postsnap : snapshot.getChildren()) {
+                    String pushKey = postsnap.getKey(); // Get the dynamically generated push key
+
+                    Request request = postsnap.getValue(Request.class);
+
+
+                    if (!(request.getBookSellerId().equals(currentUserID))) {
+
+                        if (request.getBookCollege().equals(Collage)) {
+
+                            request.setRequestID(pushKey);
+                            requestList.add(request);
+                        }
+
+
+                    }
+
+
+                }
+                myadapter.notifyDataSetChanged();
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
 
     @Override
     public void onResume() {
@@ -220,7 +271,6 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference(NotificationRequest.class.getSimpleName());
         String currentUserID = user.getUid();
-
 
 
         if (!(request.getBookSellerId().equals(currentUser.getUid()))) {
@@ -274,9 +324,7 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
             });
 
 
-        }
-
-        else {
+        } else {
             Toast.makeText(requireContext(), "You Can not Press Take to your Own Book !", Toast.LENGTH_LONG).show();
         }
 

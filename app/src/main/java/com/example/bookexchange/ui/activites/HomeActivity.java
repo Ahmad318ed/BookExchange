@@ -385,47 +385,42 @@ public class HomeActivity extends AppCompatActivity {
 
         ImageView imageView = navheader.findViewById(R.id.img_nav_header);
 
-        if (!isDestroyed()){
-            Glide.with(HomeActivity.this).load(currentUser.getPhotoUrl()).fitCenter().centerCrop().into(imageView);
+        daoProfile.get().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-        }
+
+                for (DataSnapshot profilesnap : snapshot.getChildren()) {
+
+                    Profile_info profile = profilesnap.getValue(Profile_info.class);
 
 
-//        daoProfile.get().addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//
-//                for (DataSnapshot profilesnap : snapshot.getChildren()) {
-//
-//                    Profile_info profile = profilesnap.getValue(Profile_info.class);
-//
-//                    if (username_Id.equals(profile.getUserId())) {
-//
-//                        View navheader = nav_view.getHeaderView(0);
-//
-//                        TextView usernameHeader = navheader.findViewById(R.id.username_nav_header);
-//                        usernameHeader.setText(profile.getName());
-//
-//                        ImageView imageView = navheader.findViewById(R.id.img_nav_header);
-//                        if (!isDestroyed()){
-//                            Glide.with(HomeActivity.this).load(profile.getImg()).fitCenter().centerCrop().into(imageView);
-//
-//                        }
-//
-//                    }
-//
-//
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+
+                    if (currentUser.getUid().equals(profile.getUserId())) {
+
+                        if (profile.getImg() != null){
+                            Glide.with(HomeActivity.this).load(profile.getImg()).fitCenter().centerCrop().into(imageView);
+
+                        }else{
+                            Glide.with(HomeActivity.this).load(getDrawable(R.drawable.default_profile_img)).fitCenter().centerCrop().into(imageView);
+
+                        }
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+
 
     }
 

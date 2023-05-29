@@ -5,10 +5,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.RequestNotificationFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notificationRecyclerView_request"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/notification_swippe_requests"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/notification_item" />
+        android:layout_height="match_parent" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notificationRecyclerView_request"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/notification_item" />
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>
