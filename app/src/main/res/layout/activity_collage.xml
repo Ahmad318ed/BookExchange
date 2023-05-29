@@ -20,7 +20,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:fontFamily="@font/hellix_medium"
-        android:text="Wise Colleges"
+        android:text="@string/wise_colleges"
         android:textAllCaps="false"
         android:textColor="@color/fog_dark"
         android:textSize="40sp"
