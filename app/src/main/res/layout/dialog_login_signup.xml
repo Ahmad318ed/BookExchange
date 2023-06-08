@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:orientation="vertical"
+    android:background="@color/fog_dark"
+    android:padding="10dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="8dp"
+        android:text="Login / Sign Up"
+        android:fontFamily="@font/hellix_regular"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+     />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/signUp_btn"
+            style="@android:style/Widget.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@drawable/button_background"
+            android:fontFamily="@font/hellix_medium"
+            android:text="Sign Up"
+            android:textColor="@color/white"
+            android:textSize="19sp"
+            />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:ems="4"
+        android:layout_margin="15dp"
+        style="@android:style/Widget.Button"
+        android:background="@drawable/gradient_button"
+        android:text="Login"
+        android:textColor="@color/white"
+        android:fontFamily="@font/hellix_medium"
+        android:textSize="19sp"
+       />
+
+
+
+</LinearLayout>
+
+
+</LinearLayout>

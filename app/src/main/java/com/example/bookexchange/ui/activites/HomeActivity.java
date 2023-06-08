@@ -7,6 +7,8 @@ import static com.example.bookexchange.ui.fragments.PostsFragment.postList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -16,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -34,6 +37,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -68,6 +72,7 @@ public class HomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     public static FloatingActionButton fab;
     Toolbar toolbar;
+    AlertDialog.Builder builder;
 
 
     private DrawerLayout drawerLayout;
@@ -84,14 +89,11 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Intent intent= getIntent();
+        Intent intent = getIntent();
 
-        String Collages =intent.getStringExtra("Collages");
+        String Collages = intent.getStringExtra("Collages");
         Bundle bundle = new Bundle();
         bundle.putString("Collages", Collages);
-
-
-
 
 
         auth = FirebaseAuth.getInstance();
@@ -99,72 +101,74 @@ public class HomeActivity extends AppCompatActivity {
         currentUser = auth.getCurrentUser();
 
 
-        username = currentUser.getDisplayName();
-        username_Id = currentUser.getUid();
+        if (currentUser != null) {
+            // User is logged in
+            // Perform necessary actions
+            username = currentUser.getDisplayName();
+            username_Id = currentUser.getUid();
+
+            drawerLayout = findViewById(R.id.drawerLayout);
+            nav_view = findViewById(R.id.nav_view);
+
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,
+                    R.string.navigation_drawer_close);
+
+            drawerLayout.addDrawerListener(toggle);
+            toggle.syncState();
 
 
-        drawerLayout = findViewById(R.id.drawerLayout);
-        nav_view = findViewById(R.id.nav_view);
+            nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                switch (item.getItemId()) {
-                    case R.id.nav_my_profile:
-                        Intent intent = new Intent(HomeActivity.this, Profile.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.nav_my_posts:
-                        replaceFragment(new MyPostsFragment());
-                        break;
-                    case R.id.nav_my_requests:
-                        replaceFragment(new MyRequestFragment());
-                        break;
-                    case R.id.nav_my_editable_profile:
-                        startActivity(new Intent(HomeActivity.this, EditableProfile.class));
-                        finish();
-                        break;
-                    case R.id.nav_logout:
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent2 = new Intent(HomeActivity.this, LoginActivity.class);
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent2);
-                        finish();
-                        break;
-                    case R.id.notification_fragment:
-                        replaceFragment(new NotificationFragment());
-                        break;
-                    case R.id.received_notification_fragment:
-                        replaceFragment(new ReceivedNotificationFragment());
-                        break;
-                    case R.id.home:
-                        replaceFragment2(new PostsFragment(),bundle);
-                        break;
-                    case R.id.colleges:
-                       startActivity(new Intent(getApplicationContext(),CollageActivity.class));
-                       finish();
-                        break;
-                    default:
-                        break;
-                }
+                    switch (item.getItemId()) {
+                        case R.id.nav_my_profile:
+                            Intent intent = new Intent(HomeActivity.this, Profile.class);
+                            startActivity(intent);
+                            break;
+                        case R.id.nav_my_posts:
+                            replaceFragment(new MyPostsFragment());
+                            break;
+                        case R.id.nav_my_requests:
+                            replaceFragment(new MyRequestFragment());
+                            break;
+                        case R.id.nav_my_editable_profile:
+                            startActivity(new Intent(HomeActivity.this, EditableProfile.class));
+                            finish();
+                            break;
+                        case R.id.nav_logout:
+                            FirebaseAuth.getInstance().signOut();
+                            Intent intent2 = new Intent(HomeActivity.this, LoginActivity.class);
+                            drawerLayout.closeDrawer(GravityCompat.START);
+                            intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent2);
+                            finish();
+                            break;
+                        case R.id.notification_fragment:
+                            replaceFragment(new NotificationFragment());
+                            break;
+                        case R.id.received_notification_fragment:
+                            replaceFragment(new ReceivedNotificationFragment());
+                            break;
+                        case R.id.home:
+                            replaceFragment2(new PostsFragment(), bundle);
+                            break;
+                        case R.id.colleges:
+                            startActivity(new Intent(getApplicationContext(), CollageActivity.class));
+                            finish();
+                            break;
+                        default:
+                            break;
+                    }
 
 
 //                drawerLayout.close();
-                return true;
-            }
-        });
+                    return true;
+                }
+            });
 
-        //here we how assign the name and the img of user that in nav header
-        // and i do it in ( setDataToNavHeader ) method.
+            //here we how assign the name and the img of user that in nav header
+            // and i do it in ( setDataToNavHeader ) method.
 
 
 //        View navheader = nav_view.getHeaderView(0);
@@ -173,58 +177,135 @@ public class HomeActivity extends AppCompatActivity {
 //        usernameHeader.setText("Abd");
 
 
-        //////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////
 
 
-        fab = findViewById(R.id.fab);
-        toolbar = findViewById(R.id.toolbar_custom);
-        setSupportActionBar(toolbar);
+            fab = findViewById(R.id.fab);
+            toolbar = findViewById(R.id.toolbar_custom);
+            setSupportActionBar(toolbar);
 
-        //add navigation button and open it
-        toolbar.setNavigationIcon(R.drawable.ic_navigation);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
-
-
-        // * Inflate Components *
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        fab = findViewById(R.id.fab);
+            //add navigation button and open it
+            toolbar.setNavigationIcon(R.drawable.ic_navigation);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    drawerLayout.openDrawer(GravityCompat.START);
+                }
+            });
 
 
-        replaceFragment2(new PostsFragment(),bundle);
-        bottomNavigationView.setBackground(null);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.post:
-                    replaceFragment2(new PostsFragment(),bundle);
-
-                    break;
-                case R.id.request:
-                    replaceFragment2(new RequestsFragment(),bundle);
-                    break;
+            // * Inflate Components *
+            bottomNavigationView = findViewById(R.id.bottomNavigationView);
+            fab = findViewById(R.id.fab);
 
 
-            }
-            return true;
-        });
+            replaceFragment2(new PostsFragment(), bundle);
+            bottomNavigationView.setBackground(null);
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.post:
+                        replaceFragment2(new PostsFragment(), bundle);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                showBottomDialog();
-
-
-            }
-        });
+                        break;
+                    case R.id.request:
+                        replaceFragment2(new RequestsFragment(), bundle);
+                        break;
 
 
-        setDataToNavHeader();
+                }
+                return true;
+            });
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    showBottomDialog();
+
+
+                }
+            });
+
+
+            setDataToNavHeader();
+
+        } else {
+            // User is not logged in
+            // Redirect to login screen or show a login prompt
+            //////////////////////////////////////////////////////
+
+            fab = findViewById(R.id.fab);
+
+            toolbar = findViewById(R.id.toolbar_custom);
+            setSupportActionBar(toolbar);
+
+
+            // * Inflate Components *
+            bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+            builder = new AlertDialog.Builder(this);
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    View dialogView = getLayoutInflater().inflate(R.layout.dialog_login_signup, null);
+                    builder.setView(dialogView);
+                    AlertDialog dialog = builder.create();
+                    dialogView.findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+
+                        }
+                    });
+
+                    dialogView.findViewById(R.id.signUp_btn).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                            startActivity(intent);
+
+                        }
+                    });
+
+
+                    if (dialog.getWindow() != null) {
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                    }
+                    dialog.show();
+
+
+                }
+            });
+
+
+            replaceFragment2(new PostsFragment(), bundle);
+            bottomNavigationView.setBackground(null);
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.post:
+                        replaceFragment2(new PostsFragment(), bundle);
+
+                        break;
+                    case R.id.request:
+                        replaceFragment2(new RequestsFragment(), bundle);
+                        break;
+
+
+                }
+                return true;
+            });
+
+
+        }
+
+
     }
 
 
@@ -236,7 +317,7 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void replaceFragment2(Fragment fragment,Bundle bundle) {
+    private void replaceFragment2(Fragment fragment, Bundle bundle) {
         fragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -351,8 +432,12 @@ public class HomeActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu, menu);
 
 
-        MenuItem menuItem = menu.findItem(R.id.action_search);
+        MenuItem loginItem = menu.findItem(R.id.action_Login_signup);
+        loginItem.setVisible(currentUser == null);
 
+
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Here..");
 
@@ -374,50 +459,131 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_Login_signup) {
+            // Handle login button click
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_login_signup, null);
+            builder.setView(dialogView);
+            AlertDialog dialog = builder.create();
+            dialogView.findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+
+                }
+            });
+
+            dialogView.findViewById(R.id.signUp_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                    startActivity(intent);
+
+                }
+            });
+
+
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+            dialog.show();
+            return true;
+        } else {
+
+
+            item.setVisible(false);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     private void setDataToNavHeader() {
 
 
         View navheader = nav_view.getHeaderView(0);
 
-        TextView usernameHeader = navheader.findViewById(R.id.username_nav_header);
-        usernameHeader.setText(username);
+        if(currentUser !=null){
 
-        ImageView imageView = navheader.findViewById(R.id.img_nav_header);
+            TextView usernameHeader = navheader.findViewById(R.id.username_nav_header);
+            usernameHeader.setText(username);
 
-        daoProfile.get().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            ImageView imageView = navheader.findViewById(R.id.img_nav_header);
 
-
-                for (DataSnapshot profilesnap : snapshot.getChildren()) {
-
-                    Profile_info profile = profilesnap.getValue(Profile_info.class);
+            daoProfile.get().addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
 
+                    for (DataSnapshot profilesnap : snapshot.getChildren()) {
 
-                    if (currentUser.getUid().equals(profile.getUserId())) {
+                        Profile_info profile = profilesnap.getValue(Profile_info.class);
 
-                        if (profile.getImg() != null){
-                            Glide.with(HomeActivity.this).load(profile.getImg()).fitCenter().centerCrop().into(imageView);
 
-                        }else{
-                            Glide.with(HomeActivity.this).load(getDrawable(R.drawable.default_profile_img)).fitCenter().centerCrop().into(imageView);
+                        if (currentUser.getUid().equals(profile.getUserId())) {
+
+                            if (profile.getImg() != null) {
+                                Glide.with(HomeActivity.this).load(profile.getImg()).fitCenter().centerCrop().into(imageView);
+
+                            } else {
+                                Glide.with(HomeActivity.this).load(getDrawable(R.drawable.default_profile_img)).fitCenter().centerCrop().into(imageView);
+
+                            }
 
                         }
 
                     }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
                 }
-            }
+            });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        }else{
 
-            }
-        });
+            TextView usernameHeader = navheader.findViewById(R.id.username_nav_header);
+            usernameHeader.setText("");
+
+            ImageView imageView = navheader.findViewById(R.id.img_nav_header);
+
+            daoProfile.get().addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
 
+                    for (DataSnapshot profilesnap : snapshot.getChildren()) {
+
+                        Profile_info profile = profilesnap.getValue(Profile_info.class);
+
+
+                        if (currentUser.getUid().equals(profile.getUserId())) {
+
+                            if (profile.getImg() != null) {
+                                Glide.with(HomeActivity.this).load(profile.getImg()).fitCenter().centerCrop().into(imageView);
+
+                            } else {
+                                Glide.with(HomeActivity.this).load(getDrawable(R.drawable.default_profile_img)).fitCenter().centerCrop().into(imageView);
+
+                            }
+
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
 
 
 

@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
        btnSkip.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               startActivity(new Intent(MainActivity.this,LoginActivity.class));
+               startActivity(new Intent(MainActivity.this,CollageActivity.class));
                finish();
            }
        });

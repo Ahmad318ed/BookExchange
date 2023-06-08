@@ -1,6 +1,8 @@
 package com.example.bookexchange.ui.fragments;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,8 @@ import com.example.bookexchange.dao.DAORequest;
 import com.example.bookexchange.models.NotificationRequest;
 import com.example.bookexchange.models.Request;
 import com.example.bookexchange.ui.activites.HomeActivity;
+import com.example.bookexchange.ui.activites.LoginActivity;
+import com.example.bookexchange.ui.activites.SignUpActivity;
 import com.example.bookexchange.ui.activites.ViewRequestActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -75,94 +79,96 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
         user = auth.getCurrentUser();
         daoRequest = new DAORequest();
         daoNotificationrequest = new DAONotificationRequest();
-        requestList.clear();
+
+        if (user != null) {
+            // User is logged in
+            // Perform necessary actions
+            requestList.clear();
+            recyclerView = view.findViewById(R.id.rv_request);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setHasFixedSize(true);
+            currentUserID = user.getUid();
+
+            String collage = getArguments().getString("Collages");//String text
+            switch (collage) {
+                case "it":
+                    Collage = "Information  technology  collage";
+                    break;
+                case "Arts_and_Sciences":
+                    Collage = "College  of  Arts  and  Sciences";
+                    break;
+                case "Dawah":
+                    Collage = "College  of  Da'wah  and  Fundamentals  of  Religion";
+                    break;
+                case "Sheikh_Noah":
+                    Collage = "Sheikh  Noah  College  of  Sharia  and  Law";
+                    break;
+                case "Educational_Sciences":
+                    Collage = "Faculty  of  Educational  Sciences";
+                    break;
+                case "Islamic_Architecture":
+                    Collage = "College  of  Arts  and  Islamic  Architecture";
+                    break;
+                case "Money_and_Business":
+                    Collage = "College  Money  and  Business";
+                    break;
+                case "Maliki_Hanafi_Shafii":
+                    Collage = "Faculty  of  Al  Hanafi Maliki Shafi'i Jurisprudence";
+                    break;
+                case "Graduate_Studies":
+                    Collage = "College  Graduate  Studies";
+                    break;
 
 
-        recyclerView = view.findViewById(R.id.rv_request);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
-        currentUserID = user.getUid();
+            }
 
-        String collage = getArguments().getString("Collages");//String text
-        switch (collage) {
-            case "it":
-                Collage = "Information  technology  collage";
-                break;
-            case "Arts_and_Sciences":
-                Collage = "College  of  Arts  and  Sciences";
-                break;
-            case "Dawah":
-                Collage = "College  of  Da'wah  and  Fundamentals  of  Religion";
-                break;
-            case "Sheikh_Noah":
-                Collage = "Sheikh  Noah  College  of  Sharia  and  Law";
-                break;
-            case "Educational_Sciences":
-                Collage = "Faculty  of  Educational  Sciences";
-                break;
-            case "Islamic_Architecture":
-                Collage = "College  of  Arts  and  Islamic  Architecture";
-                break;
-            case "Money_and_Business":
-                Collage = "College  Money  and  Business";
-                break;
-            case "Maliki_Hanafi_Shafii":
-                Collage = "Faculty  of  Al  Hanafi Maliki Shafi'i Jurisprudence";
-                break;
-            case "Graduate_Studies":
-                Collage = "College  Graduate  Studies";
-                break;
+            daoRequest.get().addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
 
-        }
+                    for (DataSnapshot postsnap : snapshot.getChildren()) {
+                        String pushKey = postsnap.getKey(); // Get the dynamically generated push key
 
-        daoRequest.get().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
-                for (DataSnapshot postsnap : snapshot.getChildren()) {
-                    String pushKey = postsnap.getKey(); // Get the dynamically generated push key
-
-                    Request request = postsnap.getValue(Request.class);
+                        Request request = postsnap.getValue(Request.class);
 
 
-                    if (!(request.getBookSellerId().equals(currentUserID))) {
+                        if (!(request.getBookSellerId().equals(currentUserID))) {
 
-                        if (request.getBookCollege().equals(Collage)) {
+                            if (request.getBookCollege().equals(Collage)) {
 
-                            request.setRequestID(pushKey);
-                            requestList.add(request);
+                                request.setRequestID(pushKey);
+                                requestList.add(request);
+                            }
+
+
                         }
 
 
                     }
-
+                    myadapter.notifyDataSetChanged();
 
                 }
-                myadapter.notifyDataSetChanged();
-
-            }
 
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
 
 
-        myadapter = new RequestAdapter(requireContext(), requestList, (SelectRequestItemListener) this);
-        recyclerView.setAdapter(myadapter);
+            myadapter = new RequestAdapter(requireContext(), requestList, (SelectRequestItemListener) this);
+            recyclerView.setAdapter(myadapter);
 
-        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_requests);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                fetchDataAndUpdateUI();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+            SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_requests);
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+//                fetchDataAndUpdateUI();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
 
 //        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
@@ -197,24 +203,58 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
 //            }
 //        });
 
+        } else {
+            // User is not logged in
+            // Redirect to login screen or show a login prompt
 
-    }
+            requestList.clear();
+            recyclerView = view.findViewById(R.id.rv_request);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setHasFixedSize(true);
 
-    private void fetchDataAndUpdateUI() {
-        requestList.clear();
+            String collage = getArguments().getString("Collages");//String text
+            switch (collage) {
+                case "it":
+                    Collage = "Information  technology  collage";
+                    break;
+                case "Arts_and_Sciences":
+                    Collage = "College  of  Arts  and  Sciences";
+                    break;
+                case "Dawah":
+                    Collage = "College  of  Da'wah  and  Fundamentals  of  Religion";
+                    break;
+                case "Sheikh_Noah":
+                    Collage = "Sheikh  Noah  College  of  Sharia  and  Law";
+                    break;
+                case "Educational_Sciences":
+                    Collage = "Faculty  of  Educational  Sciences";
+                    break;
+                case "Islamic_Architecture":
+                    Collage = "College  of  Arts  and  Islamic  Architecture";
+                    break;
+                case "Money_and_Business":
+                    Collage = "College  Money  and  Business";
+                    break;
+                case "Maliki_Hanafi_Shafii":
+                    Collage = "Faculty  of  Al  Hanafi Maliki Shafi'i Jurisprudence";
+                    break;
+                case "Graduate_Studies":
+                    Collage = "College  Graduate  Studies";
+                    break;
 
-        daoRequest.get().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            daoRequest.get().addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
 
-                for (DataSnapshot postsnap : snapshot.getChildren()) {
-                    String pushKey = postsnap.getKey(); // Get the dynamically generated push key
+                    for (DataSnapshot postsnap : snapshot.getChildren()) {
+                        String pushKey = postsnap.getKey(); // Get the dynamically generated push key
 
-                    Request request = postsnap.getValue(Request.class);
+                        Request request = postsnap.getValue(Request.class);
 
-
-                    if (!(request.getBookSellerId().equals(currentUserID))) {
 
                         if (request.getBookCollege().equals(Collage)) {
 
@@ -224,19 +264,144 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
 
 
                     }
-
+                    myadapter.notifyDataSetChanged();
 
                 }
-                myadapter.notifyDataSetChanged();
-
-            }
 
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+
+
+            myadapter = new RequestAdapter(requireContext(), requestList, (SelectRequestItemListener) this);
+            recyclerView.setAdapter(myadapter);
+
+            SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_requests);
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    fetchDataAndUpdateUI();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
+//                        .findLastVisibleItemPosition();
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE && !(lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1)) {
+//                    HomeActivity.fab.show();
+//                }
+//                super.onScrollStateChanged(recyclerView, newState);
+//
+//            }
+//
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                // Get the last visible item position
+//                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
+//                        .findLastVisibleItemPosition();
+//
+//                // Check if the last visible item is the last item in the RecyclerView
+//                if (lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
+//                    // Hide the FAB and set flag to true
+//                    HomeActivity.fab.hide();
+//                    fabShouldBeHidden = true;
+//                } else {
+//                    // Set flag to false and show the FAB
+//                    fabShouldBeHidden = false;
+//                    HomeActivity.fab.show();
+//                }
+//
+//
+//            }
+//        });
+        }
+
+
+    }
+
+    private void fetchDataAndUpdateUI() {
+        if (user != null) {
+            // User is logged in
+            // Perform necessary actions
+            requestList.clear();
+
+            daoRequest.get().addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                    for (DataSnapshot postsnap : snapshot.getChildren()) {
+                        String pushKey = postsnap.getKey(); // Get the dynamically generated push key
+
+                        Request request = postsnap.getValue(Request.class);
+
+
+                        if (!(request.getBookSellerId().equals(currentUserID))) {
+
+                            if (request.getBookCollege().equals(Collage)) {
+
+                                request.setRequestID(pushKey);
+                                requestList.add(request);
+                            }
+
+
+                        }
+
+
+                    }
+                    myadapter.notifyDataSetChanged();
+
+                }
+
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } else {
+            // User is not logged in
+            // Redirect to login screen or show a login prompt
+
+            requestList.clear();
+
+            daoRequest.get().addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                    for (DataSnapshot postsnap : snapshot.getChildren()) {
+                        String pushKey = postsnap.getKey(); // Get the dynamically generated push key
+
+                        Request request = postsnap.getValue(Request.class);
+
+
+                        if (request.getBookCollege().equals(Collage)) {
+
+                            request.setRequestID(pushKey);
+                            requestList.add(request);
+                        }
+
+
+                    }
+                    myadapter.notifyDataSetChanged();
+
+                }
+
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
 
     }
 
@@ -246,86 +411,163 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
         super.onResume();
 
         // Show or hide the FAB based on the flag
-        if (fabShouldBeHidden) {
-            HomeActivity.fab.hide();
-        } else {
-            HomeActivity.fab.show();
-        }
+//        if (fabShouldBeHidden) {
+//            HomeActivity.fab.hide();
+//        } else {
+//            HomeActivity.fab.show();
+//        }
     }
 
 
     @Override
     public void onItemViewClicked(Request request) {
-        Intent intent = new Intent(getContext(), ViewRequestActivity.class);
-        intent.putExtra("request", request);
-        startActivity(intent);
+        if (user != null) {
+
+            Intent intent = new Intent(getContext(), ViewRequestActivity.class);
+            intent.putExtra("request", request);
+            startActivity(intent);
+
+        } else {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_login_signup, null);
+            builder.setView(dialogView);
+            AlertDialog dialog = builder.create();
+            dialogView.findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(requireContext(), LoginActivity.class);
+                    startActivity(intent);
+
+                }
+            });
+
+            dialogView.findViewById(R.id.signUp_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(requireContext(), SignUpActivity.class);
+                    startActivity(intent);
+
+                }
+            });
+
+
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+            dialog.show();
+
+
+        }
+
     }
 
     @Override
     public void onItemGiveClicked(Request request, FirebaseUser currentUser) {
 
-        Date date = Calendar.getInstance().getTime();
-        String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference(NotificationRequest.class.getSimpleName());
-        String currentUserID = user.getUid();
+        if (currentUser != null) {
+            // User is logged in
+            // Perform necessary actions
+            Date date = Calendar.getInstance().getTime();
+            String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
+            auth = FirebaseAuth.getInstance();
+            user = auth.getCurrentUser();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            databaseReference = database.getReference(NotificationRequest.class.getSimpleName());
+            String currentUserID = user.getUid();
 
 
-        if (!(request.getBookSellerId().equals(currentUser.getUid()))) {
+            if (!(request.getBookSellerId().equals(currentUser.getUid()))) {
 
 
-            NotificationRequest notification2 = new NotificationRequest(currentUser.getUid(), currentUser.getDisplayName(), request.getBookName(), dateFormat);
-            notification2.setRequestID(request.getRequestID());
+                NotificationRequest notification2 = new NotificationRequest(currentUser.getUid(), currentUser.getDisplayName(), request.getBookName(), dateFormat);
+                notification2.setRequestID(request.getRequestID());
 
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    boolean notificationExists = false;
-
-
-                    for (DataSnapshot idSnapshot : snapshot.getChildren()) {
-                        if (idSnapshot.getKey().equals(request.getBookSellerId())) {
-                            for (DataSnapshot pushSnapshot : idSnapshot.getChildren()) {
-                                NotificationRequest notification = pushSnapshot.getValue(NotificationRequest.class);
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        boolean notificationExists = false;
 
 
-                                if (notification.getUserName().equals(user.getDisplayName()) && notification.getBookName().equals(request.getBookName())) {
-                                    // NotificationPost already exists
-                                    notificationExists = true;
-                                    Toast.makeText(requireContext(), "You have already sent this notification before!", Toast.LENGTH_SHORT).show();
-                                    break;
+                        for (DataSnapshot idSnapshot : snapshot.getChildren()) {
+                            if (idSnapshot.getKey().equals(request.getBookSellerId())) {
+                                for (DataSnapshot pushSnapshot : idSnapshot.getChildren()) {
+                                    NotificationRequest notification = pushSnapshot.getValue(NotificationRequest.class);
+
+
+                                    if (notification.getUserName().equals(user.getDisplayName()) && notification.getBookName().equals(request.getBookName())) {
+                                        // NotificationPost already exists
+                                        notificationExists = true;
+                                        Toast.makeText(requireContext(), "You have already sent this Notification before!", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    }
                                 }
+                                break; // Exit the loop once the specific ID is found
                             }
-                            break; // Exit the loop once the specific ID is found
+                        }
+
+                        if (!notificationExists) {
+                            daoNotificationrequest.add(notification2, request).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(requireContext(), "NotificationPost has been sent to the user", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
                     }
 
-                    if (!notificationExists) {
-                        daoNotificationrequest.add(notification2, request).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(requireContext(), "NotificationPost added to DB", Toast.LENGTH_SHORT).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle onCancelled if needed
                     }
-                }
+                });
 
+
+            } else {
+                Toast.makeText(requireContext(), "You Can not Press Take to your Own Book !", Toast.LENGTH_LONG).show();
+            }
+
+        } else {
+            // User is not logged in
+            // Redirect to login screen or show a login prompt
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_login_signup, null);
+            builder.setView(dialogView);
+            AlertDialog dialog = builder.create();
+            dialogView.findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    // Handle onCancelled if needed
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(requireContext(), LoginActivity.class);
+                    startActivity(intent);
+
+                }
+            });
+
+            dialogView.findViewById(R.id.signUp_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(requireContext(), SignUpActivity.class);
+                    startActivity(intent);
+
                 }
             });
 
 
-        } else {
-            Toast.makeText(requireContext(), "You Can not Press Take to your Own Book !", Toast.LENGTH_LONG).show();
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+            dialog.show();
+
+
         }
 
 

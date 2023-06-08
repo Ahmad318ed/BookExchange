@@ -39,7 +39,7 @@
             android:layout_toEndOf="@+id/imgCard"
             android:layout_gravity="center"
             android:fontFamily="@font/hellix_medium"
-            android:text="Abdelhadi Alothman"
+            android:text=""
             android:textColor="@color/fog_dark"
             android:textSize="19sp" />
 
