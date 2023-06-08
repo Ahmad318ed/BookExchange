@@ -472,45 +472,11 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
     @Override
     public void onItemViewClicked(Post post) {
 
-        if (user != null) {
+
 
             Intent intent = new Intent(getContext(), ViewPostActivity.class);
             intent.putExtra("post", post);
             startActivity(intent);
-
-        }else{
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-            View dialogView = getLayoutInflater().inflate(R.layout.dialog_login_signup, null);
-            builder.setView(dialogView);
-            AlertDialog dialog = builder.create();
-            dialogView.findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Intent intent = new Intent(requireContext(), LoginActivity.class);
-                    startActivity(intent);
-
-                }
-            });
-
-            dialogView.findViewById(R.id.signUp_btn).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Intent intent = new Intent(requireContext(), SignUpActivity.class);
-                    startActivity(intent);
-
-                }
-            });
-
-
-            if (dialog.getWindow() != null) {
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-            }
-            dialog.show();
-
-        }
 
 
 

@@ -421,46 +421,12 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
 
     @Override
     public void onItemViewClicked(Request request) {
-        if (user != null) {
 
             Intent intent = new Intent(getContext(), ViewRequestActivity.class);
             intent.putExtra("request", request);
             startActivity(intent);
 
-        } else {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-            View dialogView = getLayoutInflater().inflate(R.layout.dialog_login_signup, null);
-            builder.setView(dialogView);
-            AlertDialog dialog = builder.create();
-            dialogView.findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Intent intent = new Intent(requireContext(), LoginActivity.class);
-                    startActivity(intent);
-
-                }
-            });
-
-            dialogView.findViewById(R.id.signUp_btn).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Intent intent = new Intent(requireContext(), SignUpActivity.class);
-                    startActivity(intent);
-
-                }
-            });
-
-
-            if (dialog.getWindow() != null) {
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-            }
-            dialog.show();
-
-
-        }
 
     }
 

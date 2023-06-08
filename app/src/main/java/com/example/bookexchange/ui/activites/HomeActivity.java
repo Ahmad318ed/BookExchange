@@ -437,6 +437,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
+
         MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Here..");
