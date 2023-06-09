@@ -529,11 +529,13 @@ public class HomeActivity extends AppCompatActivity {
                         if (currentUser.getUid().equals(profile.getUserId())) {
 
                             if (profile.getImg() != null) {
-                                Glide.with(HomeActivity.this).load(profile.getImg()).fitCenter().centerCrop().into(imageView);
-
+                                if (!isDestroyed()) {
+                                    Glide.with(HomeActivity.this).load(profile.getImg()).fitCenter().centerCrop().into(imageView);
+                                }
                             } else {
-                                Glide.with(HomeActivity.this).load(getDrawable(R.drawable.default_profile_img)).fitCenter().centerCrop().into(imageView);
-
+                                if (!isDestroyed()) {
+                                    Glide.with(HomeActivity.this).load(getDrawable(R.drawable.default_profile_img)).fitCenter().centerCrop().into(imageView);
+                                }
                             }
 
                         }
@@ -564,17 +566,22 @@ public class HomeActivity extends AppCompatActivity {
                         Profile_info profile = profilesnap.getValue(Profile_info.class);
 
 
-                        if (currentUser.getUid().equals(profile.getUserId())) {
 
-                            if (profile.getImg() != null) {
-                                Glide.with(HomeActivity.this).load(profile.getImg()).fitCenter().centerCrop().into(imageView);
+                            if (currentUser.getUid().equals(profile.getUserId())) {
 
-                            } else {
-                                Glide.with(HomeActivity.this).load(getDrawable(R.drawable.default_profile_img)).fitCenter().centerCrop().into(imageView);
+                                if (profile.getImg() != null) {
+                                    if (!isDestroyed()) {
+                                        Glide.with(HomeActivity.this).load(profile.getImg()).fitCenter().centerCrop().into(imageView);
+                                    }
+                                } else {
+                                    if (!isDestroyed()) {
+                                        Glide.with(HomeActivity.this).load(getDrawable(R.drawable.default_profile_img)).fitCenter().centerCrop().into(imageView);
+                                    }
+                                }
 
                             }
 
-                        }
+
 
                     }
                 }

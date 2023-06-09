@@ -168,11 +168,21 @@ public class EditableProfile extends AppCompatActivity {
 
                                     if (selectedImageUri == null) {
 
+                                        Toast.makeText(EditableProfile.this, "Wait ..", Toast.LENGTH_SHORT).show();
+
 
                                         //to set username from edtName
                                         username = person_name;
+                                        // to set user image
+                                        auth = FirebaseAuth.getInstance();
+                                        user = auth.getCurrentUser();
 
-                                        upload_profile_info = new Profile_info(username, spinner1Value, facebookLink, instagramLink, downloadedImage, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
+                                         profileUpdates = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(username)
+                                                .build();
+                                        user.updateProfile(profileUpdates);
+
+                                        upload_profile_info = new Profile_info(person_name, spinner1Value, facebookLink, instagramLink, downloadedImage, number, countryNum, whatsAppNumber, username, username_Id, major, SelectedItem);
 
 
                                         daoProfile.add(upload_profile_info).addOnSuccessListener(new OnSuccessListener<Void>() {
