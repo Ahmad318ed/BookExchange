@@ -10,11 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/notificationReceivedRecyclerView_request"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/notification_received_post_item" />
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notificationReceivedRecyclerView_request"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/notification_received_post_item" />
+
+
+        </ScrollView>
 
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

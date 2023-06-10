@@ -1,6 +1,7 @@
 package com.example.bookexchange.ui.fragments;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.example.bookexchange.dao.DAONotificationPosts;
 import com.example.bookexchange.dao.DAOPost;
 import com.example.bookexchange.models.NotificationPost;
 import com.example.bookexchange.models.Post;
+import com.example.bookexchange.models.ReceivedPostsNotification;
 import com.example.bookexchange.ui.activites.HomeActivity;
 import com.example.bookexchange.ui.activites.LoginActivity;
 import com.example.bookexchange.ui.activites.SignUpActivity;
@@ -486,72 +488,97 @@ public class PostsFragment extends Fragment implements SelectPostItemListener, S
     @Override
     public void onItemTakeClicked(Post post, FirebaseUser currentUser) {
         if (user != null) {
+
             // User is logged in
             // Perform necessary actions
-            Date date = Calendar.getInstance().getTime();
-            String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
-            auth = FirebaseAuth.getInstance();
-            user = auth.getCurrentUser();
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            databaseReference = database.getReference(NotificationPost.class.getSimpleName());
-            String currentUserID = user.getUid();
+
+            AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(requireContext());
+            alertDialog2.setTitle("Confirm");
+            alertDialog2.setMessage("Are You Sure ?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            Date date = Calendar.getInstance().getTime();
+                            String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
+                            auth = FirebaseAuth.getInstance();
+                            user = auth.getCurrentUser();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            databaseReference = database.getReference(NotificationPost.class.getSimpleName());
+                            String currentUserID = user.getUid();
 
 
-            if (!(post.getBookSellerId().equals(currentUser.getUid()))) {
+                            if (!(post.getBookSellerId().equals(currentUser.getUid()))) {
 
 
-                NotificationPost notificationPost2 = new NotificationPost(currentUser.getUid(), currentUser.getDisplayName(), post.getBookName(), dateFormat);
-                notificationPost2.setPostID(post.getPostID());
+                                NotificationPost notificationPost2 = new NotificationPost(currentUser.getUid(), currentUser.getDisplayName(), post.getBookName(), dateFormat);
+                                notificationPost2.setPostID(post.getPostID());
 
 
-                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        boolean notificationExists = false;
+                                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        boolean notificationExists = false;
 
 
-                        for (DataSnapshot idSnapshot : snapshot.getChildren()) {
-                            if (idSnapshot.getKey().equals(post.getBookSellerId())) {
-                                for (DataSnapshot pushSnapshot : idSnapshot.getChildren()) {
-                                    NotificationPost notificationPost = pushSnapshot.getValue(NotificationPost.class);
+                                        for (DataSnapshot idSnapshot : snapshot.getChildren()) {
+                                            if (idSnapshot.getKey().equals(post.getBookSellerId())) {
+                                                for (DataSnapshot pushSnapshot : idSnapshot.getChildren()) {
+                                                    NotificationPost notificationPost = pushSnapshot.getValue(NotificationPost.class);
 
 
-                                    if (notificationPost.getUserName().equals(user.getDisplayName()) && notificationPost.getBookName().equals(post.getBookName())) {
-                                        // NotificationPost already exists
-                                        notificationExists = true;
-                                        Toast.makeText(requireContext(), "You have already sent this Notification before !", Toast.LENGTH_SHORT).show();
-                                        break;
+                                                    if (notificationPost.getUserName().equals(user.getDisplayName()) && notificationPost.getBookName().equals(post.getBookName())) {
+                                                        // NotificationPost already exists
+                                                        notificationExists = true;
+                                                        Toast.makeText(requireContext(), "You have already sent this Notification before !", Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                    }
+                                                }
+                                                break; // Exit the loop once the specific ID is found
+                                            }
+                                        }
+
+                                        if (!notificationExists) {
+                                            daoNotificationPosts.add(notificationPost2, post).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    Toast.makeText(requireContext(), "Notification has been sent to the user", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
                                     }
-                                }
-                                break; // Exit the loop once the specific ID is found
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        // Handle onCancelled if needed
+                                    }
+                                });
+
+
+                            } else {
+                                Toast.makeText(requireContext(), "You Can not Press Take to your Own Book !", Toast.LENGTH_LONG).show();
                             }
+
                         }
-
-                        if (!notificationExists) {
-                            daoNotificationPosts.add(notificationPost2, post).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Toast.makeText(requireContext(), "Notification has been sent to the user", Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
                         }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle onCancelled if needed
-                    }
-                });
+                    });
 
 
-            } else {
-                Toast.makeText(requireContext(), "You Can not Press Take to your Own Book !", Toast.LENGTH_LONG).show();
-            }
+            alertDialog2.create().show();
+
+
+
+
         } else {
             // User is not logged in
             // Redirect to login screen or show a login prompt

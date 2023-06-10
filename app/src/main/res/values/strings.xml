@@ -33,4 +33,11 @@
     <string name="wise_colleges">Wise Colleges</string>
     <string name="information_technology_collage">Information technology collage</string>
     <string name="college_of_arts_and_sciences">College of Arts and Sciences</string>
+    <string name="college_of_da_wah_and_fundamentals_of_religion">College of Da\'wah and Fundamentals of Religion</string>
+    <string name="sheikh_noah_college">Sheikh Noah College of Sharia and Law</string>
+    <string name="faculty_of_educational">Faculty of Educational Sciences</string>
+    <string name="college_of_arts_and_islam">College of Arts and Islamic Architecture</string>
+    <string name="college_money_and_business">College Money and Business</string>
+    <string name="maliki_hanafi_shafi_i">Faculty of Al ( Maliki,Hanafi,Shafi\'i ) Jurisprudence</string>
+    <string name="college_graduate_studies">College Graduate Studies</string>
 </resources>

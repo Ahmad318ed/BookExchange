@@ -1,6 +1,7 @@
 package com.example.bookexchange.ui.fragments;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -436,69 +437,92 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
         if (currentUser != null) {
             // User is logged in
             // Perform necessary actions
-            Date date = Calendar.getInstance().getTime();
-            String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
-            auth = FirebaseAuth.getInstance();
-            user = auth.getCurrentUser();
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            databaseReference = database.getReference(NotificationRequest.class.getSimpleName());
-            String currentUserID = user.getUid();
+
+            AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(requireContext());
+            alertDialog2.setTitle("Confirm");
+            alertDialog2.setMessage("Are You Sure ?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
 
-            if (!(request.getBookSellerId().equals(currentUser.getUid()))) {
+                            Date date = Calendar.getInstance().getTime();
+                            String dateFormat = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(date);
+                            auth = FirebaseAuth.getInstance();
+                            user = auth.getCurrentUser();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            databaseReference = database.getReference(NotificationRequest.class.getSimpleName());
+                            String currentUserID = user.getUid();
 
 
-                NotificationRequest notification2 = new NotificationRequest(currentUser.getUid(), currentUser.getDisplayName(), request.getBookName(), dateFormat);
-                notification2.setRequestID(request.getRequestID());
-
-                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        boolean notificationExists = false;
+                            if (!(request.getBookSellerId().equals(currentUser.getUid()))) {
 
 
-                        for (DataSnapshot idSnapshot : snapshot.getChildren()) {
-                            if (idSnapshot.getKey().equals(request.getBookSellerId())) {
-                                for (DataSnapshot pushSnapshot : idSnapshot.getChildren()) {
-                                    NotificationRequest notification = pushSnapshot.getValue(NotificationRequest.class);
+                                NotificationRequest notification2 = new NotificationRequest(currentUser.getUid(), currentUser.getDisplayName(), request.getBookName(), dateFormat);
+                                notification2.setRequestID(request.getRequestID());
+
+                                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        boolean notificationExists = false;
 
 
-                                    if (notification.getUserName().equals(user.getDisplayName()) && notification.getBookName().equals(request.getBookName())) {
-                                        // NotificationPost already exists
-                                        notificationExists = true;
-                                        Toast.makeText(requireContext(), "You have already sent this Notification before!", Toast.LENGTH_SHORT).show();
-                                        break;
+                                        for (DataSnapshot idSnapshot : snapshot.getChildren()) {
+                                            if (idSnapshot.getKey().equals(request.getBookSellerId())) {
+                                                for (DataSnapshot pushSnapshot : idSnapshot.getChildren()) {
+                                                    NotificationRequest notification = pushSnapshot.getValue(NotificationRequest.class);
+
+
+                                                    if (notification.getUserName().equals(user.getDisplayName()) && notification.getBookName().equals(request.getBookName())) {
+                                                        // NotificationPost already exists
+                                                        notificationExists = true;
+                                                        Toast.makeText(requireContext(), "You have already sent this Notification before!", Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                    }
+                                                }
+                                                break; // Exit the loop once the specific ID is found
+                                            }
+                                        }
+
+                                        if (!notificationExists) {
+                                            daoNotificationrequest.add(notification2, request).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    Toast.makeText(requireContext(), "NotificationPost has been sent to the user", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
                                     }
-                                }
-                                break; // Exit the loop once the specific ID is found
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        // Handle onCancelled if needed
+                                    }
+                                });
+
+
+                            } else {
+                                Toast.makeText(requireContext(), "You Can not Press Take to your Own Book !", Toast.LENGTH_LONG).show();
                             }
+
                         }
-
-                        if (!notificationExists) {
-                            daoNotificationrequest.add(notification2, request).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Toast.makeText(requireContext(), "NotificationPost has been sent to the user", Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
                         }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle onCancelled if needed
-                    }
-                });
+                    });
 
 
-            } else {
-                Toast.makeText(requireContext(), "You Can not Press Take to your Own Book !", Toast.LENGTH_LONG).show();
-            }
+            alertDialog2.create().show();
+
+
 
         } else {
             // User is not logged in
@@ -544,3 +568,4 @@ public class RequestsFragment extends Fragment implements SelectRequestItemListe
 
     }
 }
+

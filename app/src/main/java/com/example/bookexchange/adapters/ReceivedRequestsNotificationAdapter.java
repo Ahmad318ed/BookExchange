@@ -100,7 +100,7 @@ public class ReceivedRequestsNotificationAdapter extends RecyclerView.Adapter<Re
 
                                 myNotificationArray.remove(position);
                                 notifyItemRemoved(position);
-                                databaseReference.child(currentUserID).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                databaseReference.child(currentUserID).child(myNotiList.getNotificationID()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
 
