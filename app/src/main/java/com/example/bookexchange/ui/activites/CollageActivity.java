@@ -12,7 +12,7 @@ import com.example.bookexchange.R;
 public class CollageActivity extends AppCompatActivity {
 
     CardView it,Arts_and_Sciences,Dawah,Sheikh_Noah,Educational_Sciences,Islamic_Architecture,Money_and_Business
-            ,Maliki_Hanafi_Shafii,Graduate_Studies;
+            ,Maliki_Hanafi_Shafii,Graduate_Studies,engineering;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
